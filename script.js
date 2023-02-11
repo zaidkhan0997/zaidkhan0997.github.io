@@ -6,6 +6,6 @@ setTimeout(() => {
     setTimeout(() => {
         spinnerwrapperel.style.display = 'none';
     }, 300);
-}, 700);
+}, 1200);
 
 });
