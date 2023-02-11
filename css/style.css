@@ -49,12 +49,17 @@
  nav{
      margin-bottom: 6rem;
  }
+ .content-body{
+  font-size: large;
+  font-weight: 500;
+ }
 
  .socialmedia{
    display: inline-block;
-   max-width: 10%;
-   margin-top:1rem;
+   width: 8%;
+   margin-top:1.5rem;
    margin-right: 1rem;
+   border-radius: 20%;
  }
 
  .profile-pic{
@@ -82,4 +87,21 @@
   height: 100vh ;
   background-color: rgba(0, 0, 0, 0.648);
   object-fit: cover;
+}
+.spinner-wrapper{
+  background-color: black;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.3s;
+}
+.spinner-grow{
+  height: 100px;
+  width: 100px;
 }
