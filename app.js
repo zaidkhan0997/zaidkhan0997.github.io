@@ -272,6 +272,9 @@ document.addEventListener('DOMContentLoaded', () => {
   setupTerminal();
   setupContactForm();
   
+  // Initialize Likes & Views counters (> 1M start, views first)
+  initPortfolioMetrics();
+
   // Render Skills tab initial view
   renderSkills(currentSkillTab);
 
@@ -720,4 +723,185 @@ function escapeHTML(str) {
     }[tag] || tag)
   );
 }
+
+/* =============================================================
+   PORTFOLIO LIKES & VIEWS COUNTER LOGIC (>1M baseline)
+   ============================================================= */
+
+let portfolioViews = 0;
+let portfolioLikes = 0;
+let userHasLiked = false;
+
+// Initialize Metrics: Ensures base numbers start > 1,000,000 and increments view on visit
+function initPortfolioMetrics() {
+  const STORAGE_KEY_VIEWS = 'zaid_portfolio_views_count';
+  const STORAGE_KEY_LIKES = 'zaid_portfolio_likes_count';
+  const STORAGE_KEY_LIKED = 'zaid_portfolio_has_liked';
+
+  let storedViews = localStorage.getItem(STORAGE_KEY_VIEWS);
+  let storedLikes = localStorage.getItem(STORAGE_KEY_LIKES);
+  let storedLikedStatus = localStorage.getItem(STORAGE_KEY_LIKED);
+
+  // Generate random baseline > 1,000,000 if not already initialized
+  if (!storedViews) {
+    const randomViews = Math.floor(1450000 + Math.random() * 950000 + Math.floor(Math.random() * 999));
+    storedViews = randomViews.toString();
+  }
+
+  if (!storedLikes) {
+    const randomLikes = Math.floor(1120000 + Math.random() * 650000 + Math.floor(Math.random() * 999));
+    storedLikes = randomLikes.toString();
+  }
+
+  // Increment views count by 1 on every page visit
+  portfolioViews = parseInt(storedViews, 10) + 1;
+  portfolioLikes = parseInt(storedLikes, 10);
+  userHasLiked = storedLikedStatus === 'true';
+
+  // Save updated view count back to localStorage
+  localStorage.setItem(STORAGE_KEY_VIEWS, portfolioViews.toString());
+  localStorage.setItem(STORAGE_KEY_LIKES, portfolioLikes.toString());
+
+  // Render metrics across UI elements
+  updateMetricsUI();
+}
+
+// Format numbers with commas (e.g. 1,482,931) and compact view (e.g. 1.48M)
+function formatMetricNumber(num) {
+  return num.toLocaleString('en-US');
+}
+
+function formatCompactNumber(num) {
+  if (num >= 1000000) {
+    return (num / 1000000).toFixed(2) + 'M';
+  }
+  if (num >= 1000) {
+    return (num / 1000).toFixed(1) + 'K';
+  }
+  return num.toString();
+}
+
+// Update all UI elements for Views and Likes (Views ALWAYS first)
+function updateMetricsUI() {
+  const viewsFormatted = formatMetricNumber(portfolioViews);
+  const likesFormatted = formatMetricNumber(portfolioLikes);
+  const viewsCompact = formatCompactNumber(portfolioViews);
+  const likesCompact = formatCompactNumber(portfolioLikes);
+
+  // 1. Hero Stat Cards (Views 1st, Likes 2nd)
+  const statViewsEl = document.getElementById('stat-views');
+  const statLikesEl = document.getElementById('stat-likes');
+  if (statViewsEl) statViewsEl.textContent = viewsFormatted;
+  if (statLikesEl) statLikesEl.textContent = likesFormatted;
+
+  // 2. Hero Engagement Row
+  const heroViewsCountEl = document.getElementById('hero-views-count');
+  const heroLikesCountEl = document.getElementById('hero-likes-count');
+  const heroLikeBtn = document.getElementById('hero-like-btn');
+  const heroLikeLabel = document.getElementById('hero-like-label');
+  const likeStatusTag = document.getElementById('like-status-tag');
+
+  if (heroViewsCountEl) heroViewsCountEl.textContent = viewsFormatted;
+  if (heroLikesCountEl) heroLikesCountEl.textContent = likesFormatted;
+
+  if (heroLikeBtn) {
+    if (userHasLiked) {
+      heroLikeBtn.classList.add('liked');
+      if (heroLikeLabel) heroLikeLabel.textContent = 'Portfolio Liked!';
+      if (likeStatusTag) likeStatusTag.textContent = 'Liked ❤';
+    } else {
+      heroLikeBtn.classList.remove('liked');
+      if (heroLikeLabel) heroLikeLabel.textContent = 'Like Portfolio';
+      if (likeStatusTag) likeStatusTag.textContent = 'Like';
+    }
+  }
+
+  // 3. Header Navbar Items
+  const navViewsCountEl = document.getElementById('nav-views-count');
+  const navLikesCountEl = document.getElementById('nav-likes-count');
+  const navLikeBtn = document.getElementById('nav-like-btn');
+
+  if (navViewsCountEl) navViewsCountEl.textContent = viewsCompact;
+  if (navLikesCountEl) navLikesCountEl.textContent = likesCompact;
+  if (navLikeBtn) {
+    if (userHasLiked) navLikeBtn.classList.add('liked');
+    else navLikeBtn.classList.remove('liked');
+  }
+
+  // 4. Sticky Floating Bar
+  const floatViewsCountEl = document.getElementById('float-views-count');
+  const floatLikesCountEl = document.getElementById('float-likes-count');
+  const floatLikePill = document.getElementById('float-like-pill');
+  const floatLikeTitle = document.getElementById('float-like-title');
+
+  if (floatViewsCountEl) floatViewsCountEl.textContent = viewsFormatted;
+  if (floatLikesCountEl) floatLikesCountEl.textContent = likesFormatted;
+  if (floatLikePill) {
+    if (userHasLiked) {
+      floatLikePill.classList.add('liked');
+      if (floatLikeTitle) floatLikeTitle.textContent = 'Liked ❤';
+    } else {
+      floatLikePill.classList.remove('liked');
+      if (floatLikeTitle) floatLikeTitle.textContent = 'Like';
+    }
+  }
+}
+
+// Handle Like Button Clicks (Toggle like status & update storage + UI)
+function handleLikeClick(event) {
+  const STORAGE_KEY_LIKES = 'zaid_portfolio_likes_count';
+  const STORAGE_KEY_LIKED = 'zaid_portfolio_has_liked';
+
+  if (!userHasLiked) {
+    portfolioLikes += 1;
+    userHasLiked = true;
+    localStorage.setItem(STORAGE_KEY_LIKES, portfolioLikes.toString());
+    localStorage.setItem(STORAGE_KEY_LIKED, 'true');
+
+    updateMetricsUI();
+    spawnHeartBurst(event);
+    showToast('Thank you for liking my portfolio! ❤️');
+  } else {
+    // Toggle unlike if clicked again
+    portfolioLikes = Math.max(1000000, portfolioLikes - 1);
+    userHasLiked = false;
+    localStorage.setItem(STORAGE_KEY_LIKES, portfolioLikes.toString());
+    localStorage.setItem(STORAGE_KEY_LIKED, 'false');
+
+    updateMetricsUI();
+    showToast('Portfolio unliked.');
+  }
+}
+
+// Particle animation on liking portfolio
+function spawnHeartBurst(e) {
+  let posX = window.innerWidth / 2;
+  let posY = window.innerHeight / 2;
+
+  if (e && e.clientX && e.clientY) {
+    posX = e.clientX;
+    posY = e.clientY;
+  }
+
+  const heartCount = 7;
+  for (let i = 0; i < heartCount; i++) {
+    const heart = document.createElement('i');
+    heart.className = 'fa-solid fa-heart heart-particle';
+    
+    const dx = (Math.random() - 0.5) * 120 + 'px';
+    const rot = (Math.random() - 0.5) * 60 + 'deg';
+    
+    heart.style.left = (posX + (Math.random() - 0.5) * 30) + 'px';
+    heart.style.top = (posY + (Math.random() - 0.5) * 30) + 'px';
+    heart.style.setProperty('--dx', dx);
+    heart.style.setProperty('--rot', rot);
+    
+    document.body.appendChild(heart);
+
+    setTimeout(() => {
+      heart.remove();
+    }, 1200);
+  }
+}
+
 
