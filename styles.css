@@ -225,6 +225,22 @@ a {
   font-size: 1.35rem;
   font-weight: 800;
   color: var(--text-bright);
+  white-space: nowrap;
+}
+
+.nav-logo span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  white-space: nowrap;
+}
+
+.logo-handle {
+  font-family: var(--font-code);
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--accent-cyan);
+  letter-spacing: 0.02em;
 }
 
 .logo-badge {
@@ -1828,15 +1844,32 @@ button.float-like-pill {
   50% { transform: translateY(-4px); }
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 992px) {
+  .logo-handle {
+    display: none !important;
+  }
+
   .nav-menu {
-    display: none;
+    display: none !important;
   }
 }
 
 @media (max-width: 768px) {
+  .nav-logo {
+    font-size: 1.1rem;
+  }
+
   .nav-engagement {
-    display: none;
+    display: none !important;
+  }
+
+  .github-btn-text {
+    display: none !important;
+  }
+
+  #github-nav-btn {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.9rem;
   }
 
   .floating-engagement-widget {
@@ -2080,7 +2113,7 @@ body.menu-open {
 .drawer-handle {
   font-family: var(--font-code);
   font-size: 0.78rem;
-  color: var(--text-muted);
+  color: var(--accent-cyan);
 }
 
 .drawer-tag {
