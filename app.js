@@ -742,20 +742,20 @@ function initPortfolioMetrics() {
   let storedLikes = localStorage.getItem(STORAGE_KEY_LIKES);
   let storedLikedStatus = localStorage.getItem(STORAGE_KEY_LIKED);
 
-  // Generate random baseline > 1,000,000 if not already initialized
-  if (!storedViews) {
-    const randomViews = Math.floor(1450000 + Math.random() * 950000 + Math.floor(Math.random() * 999));
-    storedViews = randomViews.toString();
+  // Validate & generate random baseline > 1,000,000 if missing or stale/less than 1M
+  let parsedViews = parseInt(storedViews, 10);
+  if (!storedViews || isNaN(parsedViews) || parsedViews < 1000000) {
+    parsedViews = Math.floor(1450000 + Math.random() * 950000 + Math.floor(Math.random() * 999));
   }
 
-  if (!storedLikes) {
-    const randomLikes = Math.floor(1120000 + Math.random() * 650000 + Math.floor(Math.random() * 999));
-    storedLikes = randomLikes.toString();
+  let parsedLikes = parseInt(storedLikes, 10);
+  if (!storedLikes || isNaN(parsedLikes) || parsedLikes < 1000000) {
+    parsedLikes = Math.floor(1120000 + Math.random() * 650000 + Math.floor(Math.random() * 999));
   }
 
   // Increment views count by 1 on every page visit
-  portfolioViews = parseInt(storedViews, 10) + 1;
-  portfolioLikes = parseInt(storedLikes, 10);
+  portfolioViews = parsedViews + 1;
+  portfolioLikes = parsedLikes;
   userHasLiked = storedLikedStatus === 'true';
 
   // Save updated view count back to localStorage

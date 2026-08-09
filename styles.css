@@ -1404,6 +1404,19 @@ textarea.form-control {
   -webkit-text-fill-color: transparent;
 }
 
+/* Explicit Button Base Resets to Prevent Native Browser White Button Fallback */
+button.hero-like-btn,
+button.nav-like-btn,
+button.float-like-pill {
+  font-family: var(--font-body);
+  color: var(--text-bright);
+  outline: none;
+  border-style: solid;
+  -webkit-appearance: none;
+  appearance: none;
+  text-align: left;
+}
+
 /* Header Navbar Engagement Items */
 .nav-engagement {
   display: flex;
