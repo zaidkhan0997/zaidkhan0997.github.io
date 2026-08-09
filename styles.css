@@ -475,7 +475,16 @@ a {
   font-family: var(--font-code);
   color: var(--primary-indigo);
   font-size: 0.9rem;
+  margin-bottom: 0.4rem;
+}
+
+.avatar-role {
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-bright);
   margin-bottom: 0.8rem;
+  line-height: 1.35;
 }
 
 .location-tag {
