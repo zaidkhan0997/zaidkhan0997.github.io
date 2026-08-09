@@ -1252,31 +1252,48 @@ textarea.form-control {
 }
 
 @media (max-width: 768px) {
-  /* Skills filter bar: horizontal touch scroll instead of giant dark oval blob */
+  /* Skills & Technologies filter bar: Wrap gracefully into centered pill buttons */
   .skills-tabs-container {
     width: 100%;
     max-width: 100%;
-    overflow-x: auto;
-    padding: 0.25rem 0.25rem 0.75rem 0.25rem;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
+    padding: 0;
+    margin-bottom: 2rem;
   }
-  .skills-tabs-container::-webkit-scrollbar {
-    display: none;
-  }
+  
   .skills-tabs-bar {
-    flex-wrap: nowrap;
-    justify-content: flex-start;
-    width: max-content;
-    border-radius: var(--radius-full);
-    padding: 0.35rem 0.6rem;
-    margin: 0 auto;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    padding: 0;
+    backdrop-filter: none;
+    box-shadow: none;
   }
+
   .skill-tab-btn {
-    white-space: nowrap;
-    padding: 0.5rem 1.1rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-full);
+    padding: 0.55rem 1.1rem;
     font-size: 0.85rem;
-    flex-shrink: 0;
+    color: var(--text-medium);
+    white-space: nowrap;
+    flex: 0 1 auto;
+  }
+
+  .skill-tab-btn:hover {
+    color: var(--text-bright);
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+
+  .skill-tab-btn.active {
+    background: linear-gradient(135deg, var(--primary-indigo), var(--accent-cyan));
+    color: #fff;
+    border-color: transparent;
+    box-shadow: 0 4px 15px var(--primary-indigo-glow);
   }
 }
 
@@ -1303,18 +1320,21 @@ textarea.form-control {
   }
 
   .filter-categories {
-    overflow-x: auto;
-    flex-wrap: nowrap;
-    padding-bottom: 0.5rem;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+    width: 100%;
   }
-  .filter-categories::-webkit-scrollbar {
-    display: none;
-  }
+
   .filter-btn {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-full);
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
     white-space: nowrap;
-    flex-shrink: 0;
+    flex: 0 1 auto;
   }
 
   .search-box {
