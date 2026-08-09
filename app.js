@@ -668,14 +668,22 @@ function executeTerminalCommand(cmd, body) {
   body.scrollTop = body.scrollHeight;
 }
 
-// Contact Form Handler
+// Contact Form Handler - Launches mailto template with pre-filled content
 function setupContactForm() {
   const form = document.getElementById('contact-form');
   if (form) {
     form.addEventListener('submit', (e) => {
       e.preventDefault();
-      showToast('Thank you! Your message has been sent successfully.');
-      form.reset();
+      
+      const name = document.getElementById('contact-name')?.value.trim() || 'Anonymous';
+      const subject = document.getElementById('contact-subject')?.value.trim() || 'Portfolio Inquiry / Collaboration';
+      const message = document.getElementById('contact-message')?.value.trim() || '';
+
+      const bodyText = `Hi MOHD ZAID,\n\n${message}\n\nSender Name: ${name}`;
+      const mailtoUrl = `mailto:zaidkhan0997@proton.me?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyText)}`;
+
+      showToast('Opening your default mail client...');
+      window.location.href = mailtoUrl;
     });
   }
 }

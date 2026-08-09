@@ -51,6 +51,9 @@
 html {
   scroll-behavior: smooth;
   font-size: 16px;
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100%;
 }
 
 body {
@@ -59,6 +62,8 @@ body {
   font-family: var(--font-body);
   line-height: 1.6;
   overflow-x: hidden;
+  width: 100%;
+  max-width: 100%;
   position: relative;
   min-height: 100vh;
 }
@@ -68,8 +73,8 @@ body {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   z-index: -1;
   overflow: hidden;
   pointer-events: none;
@@ -197,14 +202,18 @@ a {
 }
 
 .nav-avatar {
-  width: 42px;
-  height: 42px;
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  min-height: 40px;
+  aspect-ratio: 1 / 1;
   border-radius: 50%;
   object-fit: cover;
   object-position: top center;
   border: 2px solid var(--primary-indigo);
   box-shadow: 0 0 12px var(--primary-indigo-glow);
   transition: var(--transition-fast);
+  flex-shrink: 0;
 }
 
 .nav-logo:hover .nav-avatar {
@@ -1242,7 +1251,44 @@ textarea.form-control {
   }
 }
 
+@media (max-width: 768px) {
+  /* Skills filter bar: horizontal touch scroll instead of giant dark oval blob */
+  .skills-tabs-container {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    padding: 0.25rem 0.25rem 0.75rem 0.25rem;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .skills-tabs-container::-webkit-scrollbar {
+    display: none;
+  }
+  .skills-tabs-bar {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    width: max-content;
+    border-radius: var(--radius-full);
+    padding: 0.35rem 0.6rem;
+    margin: 0 auto;
+  }
+  .skill-tab-btn {
+    white-space: nowrap;
+    padding: 0.5rem 1.1rem;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+  }
+}
+
 @media (max-width: 640px) {
+  .container {
+    padding: 0 1rem;
+  }
+
+  .hero {
+    padding: 7rem 0 4rem 0;
+  }
+
   .hero-title {
     font-size: 2.2rem;
   }
@@ -1256,11 +1302,50 @@ textarea.form-control {
     align-items: stretch;
   }
 
+  .filter-categories {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-bottom: 0.5rem;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .filter-categories::-webkit-scrollbar {
+    display: none;
+  }
+  .filter-btn {
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
   .search-box {
     width: 100%;
   }
 
   .repos-grid {
     grid-template-columns: 1fr;
+  }
+
+  .nav-logo {
+    font-size: 1.1rem;
+  }
+
+  .logo-handle {
+    display: none;
+  }
+
+  .nav-avatar {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    min-height: 36px;
+  }
+
+  .btn-primary#github-nav-btn {
+    padding: 0.45rem 0.85rem;
+    font-size: 0.82rem;
+  }
+
+  .contact-info-card, .contact-form {
+    padding: 1.5rem;
   }
 }
