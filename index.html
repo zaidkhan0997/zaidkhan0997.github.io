@@ -43,7 +43,7 @@
             <i class="fa-solid fa-eye text-cyan"></i>
             <span id="nav-views-count" class="text-cyan">1.45M</span>
           </div>
-          <button class="nav-like-btn" id="nav-like-btn" onclick="handleLikeClick()" title="Like Portfolio">
+          <button class="nav-like-btn" id="nav-like-btn" onclick="handleLikeClick(event)" title="Like Portfolio">
             <i class="fa-solid fa-heart heart-icon"></i>
             <span id="nav-likes-count" class="text-pink">1.17M</span>
           </button>
@@ -51,6 +51,13 @@
         <a href="https://github.com/zaidkhan0997" target="_blank" rel="noopener noreferrer" class="btn btn-primary" id="github-nav-btn">
           <i class="fa-brands fa-github"></i> GitHub Profile
         </a>
+        <button class="nav-hamburger-btn" id="nav-hamburger-btn" onclick="toggleFloatingMenu()" aria-label="Toggle Navigation & Skills Menu" title="Open 3-Line Menu">
+          <div class="hamburger-lines">
+            <span class="line line-1"></span>
+            <span class="line line-2"></span>
+            <span class="line line-3"></span>
+          </div>
+        </button>
       </div>
     </div>
   </nav>
@@ -437,6 +444,198 @@
         <span class="float-count text-pink" id="float-likes-count">1,168,437</span>
       </div>
     </button>
+  </div>
+
+  <!-- Floating 3-Line Menu Trigger Button (Bottom Left Floating) -->
+  <button class="floating-menu-btn" id="floating-menu-btn" onclick="toggleFloatingMenu()" aria-label="Toggle Floating Navigation Menu" title="Open 3-Line Menu">
+    <div class="hamburger-lines">
+      <span class="line line-1"></span>
+      <span class="line line-2"></span>
+      <span class="line line-3"></span>
+    </div>
+    <span class="floating-menu-text">Menu</span>
+  </button>
+
+  <!-- Floating Menu Drawer Overlay & Backdrop -->
+  <div class="floating-menu-backdrop" id="floating-menu-backdrop" onclick="closeFloatingMenu()"></div>
+
+  <div class="floating-menu-drawer" id="floating-menu-drawer" role="dialog" aria-modal="true" aria-label="Floating Navigation Menu">
+    <!-- Header -->
+    <div class="drawer-header">
+      <div class="drawer-profile">
+        <div class="drawer-avatar-wrapper">
+          <img src="profile.jpg" alt="MOHD ZAID" class="drawer-avatar">
+          <span class="drawer-status-dot" title="Kernel Developer Active"></span>
+        </div>
+        <div class="drawer-profile-info">
+          <h3 class="drawer-name">MOHD ZAID</h3>
+          <span class="drawer-handle">( zaidkhan0997 )</span>
+          <span class="drawer-tag">Android & Kernel Developer</span>
+        </div>
+      </div>
+      <button class="drawer-close-btn" onclick="closeFloatingMenu()" aria-label="Close menu" title="Close Menu">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+
+    <!-- Scrollable Body Content -->
+    <div class="drawer-body">
+      <!-- 1. Main Navigation -->
+      <div class="drawer-section">
+        <div class="drawer-section-title">
+          <i class="fa-solid fa-compass text-cyan"></i> Navigation
+        </div>
+        <div class="drawer-nav-list">
+          <a href="#hero" class="drawer-nav-item" onclick="closeFloatingMenu()">
+            <div class="drawer-item-icon"><i class="fa-solid fa-house"></i></div>
+            <div class="drawer-item-text">
+              <span class="drawer-item-title">Home</span>
+              <span class="drawer-item-desc">Intro, hero & metrics showcase</span>
+            </div>
+            <i class="fa-solid fa-chevron-right drawer-arrow"></i>
+          </a>
+          <a href="#skills" class="drawer-nav-item" onclick="closeFloatingMenu()">
+            <div class="drawer-item-icon"><i class="fa-solid fa-screwdriver-wrench"></i></div>
+            <div class="drawer-item-text">
+              <span class="drawer-item-title">Specialization & Skills</span>
+              <span class="drawer-item-desc">Technical mastery, AOSP & tools</span>
+            </div>
+            <i class="fa-solid fa-chevron-right drawer-arrow"></i>
+          </a>
+          <a href="#projects" class="drawer-nav-item" onclick="closeFloatingMenu()">
+            <div class="drawer-item-icon"><i class="fa-solid fa-folder-open"></i></div>
+            <div class="drawer-item-text">
+              <span class="drawer-item-title">Repositories & Projects</span>
+              <span class="drawer-item-desc">58+ GitHub source trees & ROMs</span>
+            </div>
+            <i class="fa-solid fa-chevron-right drawer-arrow"></i>
+          </a>
+          <a href="#terminal" class="drawer-nav-item" onclick="closeFloatingMenu()">
+            <div class="drawer-item-icon"><i class="fa-solid fa-terminal"></i></div>
+            <div class="drawer-item-text">
+              <span class="drawer-item-title">CLI Terminal</span>
+              <span class="drawer-item-desc">Interactive developer prompt</span>
+            </div>
+            <i class="fa-solid fa-chevron-right drawer-arrow"></i>
+          </a>
+          <a href="#contact" class="drawer-nav-item" onclick="closeFloatingMenu()">
+            <div class="drawer-item-icon"><i class="fa-solid fa-envelope"></i></div>
+            <div class="drawer-item-text">
+              <span class="drawer-item-title">Contact & Socials</span>
+              <span class="drawer-item-desc">Email, Instagram & GitHub links</span>
+            </div>
+            <i class="fa-solid fa-chevron-right drawer-arrow"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 2. Skills & Specialization Filters -->
+      <div class="drawer-section">
+        <div class="drawer-section-title">
+          <i class="fa-solid fa-gears text-cyan"></i> Technical Specialization
+        </div>
+        <div class="drawer-skills-chips">
+          <button class="drawer-chip" onclick="handleDrawerSkillFilter('all')">
+            <i class="fa-solid fa-shapes"></i> All Skills
+          </button>
+          <button class="drawer-chip" onclick="handleDrawerSkillFilter('languages')">
+            <i class="fa-solid fa-code"></i> Languages (C/C++, Shell)
+          </button>
+          <button class="drawer-chip" onclick="handleDrawerSkillFilter('android')">
+            <i class="fa-brands fa-android"></i> Android & Kernel Trees
+          </button>
+          <button class="drawer-chip" onclick="handleDrawerSkillFilter('tools')">
+            <i class="fa-solid fa-screwdriver-wrench"></i> Build & AOSP Tools
+          </button>
+          <button class="drawer-chip" onclick="handleDrawerSkillFilter('devices')">
+            <i class="fa-solid fa-mobile-screen"></i> Hardware & Devices
+          </button>
+        </div>
+      </div>
+
+      <!-- 3. Repository Categories -->
+      <div class="drawer-section">
+        <div class="drawer-section-title">
+          <i class="fa-solid fa-code-fork text-pink"></i> Repository Categories
+        </div>
+        <div class="drawer-skills-chips">
+          <button class="drawer-chip" onclick="handleDrawerRepoFilter('all')">
+            <i class="fa-solid fa-layer-group"></i> All Repos (58+)
+          </button>
+          <button class="drawer-chip" onclick="handleDrawerRepoFilter('android')">
+            <i class="fa-brands fa-android"></i> Android & Kernel
+          </button>
+          <button class="drawer-chip" onclick="handleDrawerRepoFilter('cpp')">
+            <i class="fa-solid fa-microchip"></i> C / C++ Systems
+          </button>
+          <button class="drawer-chip" onclick="handleDrawerRepoFilter('shell')">
+            <i class="fa-solid fa-terminal"></i> Shell & Scripts
+          </button>
+          <button class="drawer-chip" onclick="handleDrawerRepoFilter('web')">
+            <i class="fa-solid fa-globe"></i> Web & Identity
+          </button>
+        </div>
+      </div>
+
+      <!-- 4. Programming Languages Badges -->
+      <div class="drawer-section">
+        <div class="drawer-section-title">
+          <i class="fa-solid fa-code text-cyan"></i> Languages Mastery
+        </div>
+        <div class="drawer-lang-grid">
+          <span class="drawer-lang-tag"><span class="lang-dot" style="background:#555555;"></span> C</span>
+          <span class="drawer-lang-tag"><span class="lang-dot" style="background:#f34b7d;"></span> C++</span>
+          <span class="drawer-lang-tag"><span class="lang-dot" style="background:#89e051;"></span> Shell / Bash</span>
+          <span class="drawer-lang-tag"><span class="lang-dot" style="background:#427819;"></span> Makefile</span>
+          <span class="drawer-lang-tag"><span class="lang-dot" style="background:#e34c26;"></span> HTML5</span>
+          <span class="drawer-lang-tag"><span class="lang-dot" style="background:#f1e05a;"></span> JavaScript</span>
+          <span class="drawer-lang-tag"><span class="lang-dot" style="background:#3572A5;"></span> Python</span>
+          <span class="drawer-lang-tag"><span class="lang-dot" style="background:#06b6d4;"></span> Linux Kernel</span>
+        </div>
+      </div>
+
+      <!-- 5. Direct Contact Links -->
+      <div class="drawer-section">
+        <div class="drawer-section-title">
+          <i class="fa-solid fa-address-card text-pink"></i> Contact & Profiles
+        </div>
+        <div class="drawer-contact-links">
+          <a href="mailto:zaidkhan0997@proton.me" class="drawer-contact-item">
+            <i class="fa-solid fa-envelope"></i>
+            <span>zaidkhan0997@proton.me</span>
+          </a>
+          <a href="https://www.instagram.com/zaidkhan0997" target="_blank" rel="noopener noreferrer" class="drawer-contact-item">
+            <i class="fa-brands fa-instagram"></i>
+            <span>instagram.com/zaidkhan0997</span>
+          </a>
+          <a href="https://github.com/zaidkhan0997" target="_blank" rel="noopener noreferrer" class="drawer-contact-item">
+            <i class="fa-brands fa-github"></i>
+            <span>github.com/zaidkhan0997</span>
+          </a>
+          <div class="drawer-contact-item drawer-contact-location">
+            <i class="fa-solid fa-location-dot"></i>
+            <span>Himachal Pradesh, India</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Drawer Footer Toolbar -->
+    <div class="drawer-footer">
+      <div class="drawer-footer-engagement">
+        <div class="drawer-views-pill" title="Total Views">
+          <i class="fa-solid fa-eye text-cyan"></i>
+          <span id="drawer-views-count" class="text-cyan">1.45M</span>
+        </div>
+        <button class="drawer-like-btn" id="drawer-like-btn" onclick="handleLikeClick(event)" title="Like Portfolio">
+          <i class="fa-solid fa-heart heart-icon"></i>
+          <span id="drawer-likes-count" class="text-pink">1.17M</span>
+        </button>
+      </div>
+      <a href="https://github.com/zaidkhan0997" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-drawer-github">
+        <i class="fa-brands fa-github"></i> GitHub Profile
+      </a>
+    </div>
   </div>
 
   <!-- App Interactivity Script -->

@@ -845,6 +845,21 @@ function updateMetricsUI() {
       if (floatLikeTitle) floatLikeTitle.textContent = 'Like';
     }
   }
+
+  // 5. Drawer Flyout Metrics
+  const drawerViewsCountEl = document.getElementById('drawer-views-count');
+  const drawerLikesCountEl = document.getElementById('drawer-likes-count');
+  const drawerLikeBtn = document.getElementById('drawer-like-btn');
+
+  if (drawerViewsCountEl) drawerViewsCountEl.textContent = viewsCompact;
+  if (drawerLikesCountEl) drawerLikesCountEl.textContent = likesCompact;
+  if (drawerLikeBtn) {
+    if (userHasLiked) {
+      drawerLikeBtn.classList.add('liked');
+    } else {
+      drawerLikeBtn.classList.remove('liked');
+    }
+  }
 }
 
 // Handle Like Button Clicks (Toggle like status & update storage + UI)
@@ -903,5 +918,72 @@ function spawnHeartBurst(e) {
     }, 1200);
   }
 }
+
+/* =============================================================
+   FLOATING 3-LINE MENU INTERACTIVITY & DRAWER CONTROLS
+   ============================================================= */
+
+function toggleFloatingMenu() {
+  const backdrop = document.getElementById('floating-menu-backdrop');
+  const drawer = document.getElementById('floating-menu-drawer');
+  const floatBtn = document.getElementById('floating-menu-btn');
+  const navBtn = document.getElementById('nav-hamburger-btn');
+
+  const isOpen = drawer && drawer.classList.contains('active');
+  if (isOpen) {
+    closeFloatingMenu();
+  } else {
+    if (backdrop) backdrop.classList.add('active');
+    if (drawer) drawer.classList.add('active');
+    if (floatBtn) floatBtn.classList.add('active');
+    if (navBtn) navBtn.classList.add('active');
+    document.body.classList.add('menu-open');
+  }
+}
+
+function closeFloatingMenu() {
+  const backdrop = document.getElementById('floating-menu-backdrop');
+  const drawer = document.getElementById('floating-menu-drawer');
+  const floatBtn = document.getElementById('floating-menu-btn');
+  const navBtn = document.getElementById('nav-hamburger-btn');
+
+  if (backdrop) backdrop.classList.remove('active');
+  if (drawer) drawer.classList.remove('active');
+  if (floatBtn) floatBtn.classList.remove('active');
+  if (navBtn) navBtn.classList.remove('active');
+  document.body.classList.remove('menu-open');
+}
+
+// Drawer Skill Filter handler
+function handleDrawerSkillFilter(category) {
+  const targetBtn = document.querySelector(`.skills-tabs-bar .skill-tab-btn[onclick*="'${category}'"]`);
+  switchSkillTab(category, targetBtn);
+  closeFloatingMenu();
+  const skillsSection = document.getElementById('skills');
+  if (skillsSection) {
+    skillsSection.scrollIntoView({ behavior: 'smooth' });
+  }
+}
+
+// Drawer Repo Category Filter handler
+function handleDrawerRepoFilter(filterCategory) {
+  const targetBtn = document.querySelector(`.filter-btn[data-filter="${filterCategory}"]`);
+  if (targetBtn) {
+    targetBtn.click();
+  }
+  closeFloatingMenu();
+  const projectsSection = document.getElementById('projects');
+  if (projectsSection) {
+    projectsSection.scrollIntoView({ behavior: 'smooth' });
+  }
+}
+
+// Global Key Listeners for ESC key to close drawer
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    closeFloatingMenu();
+  }
+});
+
 
 
