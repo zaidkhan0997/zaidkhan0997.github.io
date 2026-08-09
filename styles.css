@@ -1023,10 +1023,10 @@ a {
 }
 
 .contact-profile-subtitle {
-  font-family: var(--font-heading);
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--text-bright);
+  font-family: var(--font-code);
+  font-size: 0.85rem;
+  color: var(--accent-cyan);
+  line-height: 1.4;
 }
 
 .contact-item {
