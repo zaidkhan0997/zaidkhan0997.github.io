@@ -39,13 +39,13 @@
 
       <div class="nav-actions">
         <div class="nav-engagement">
-          <div class="nav-engagement-item nav-views-item" title="Portfolio Visits">
+          <div class="nav-engagement-item nav-views-btn" title="Portfolio Visits">
             <i class="fa-solid fa-eye text-cyan"></i>
-            <span id="nav-views-count">1.45M</span>
+            <span id="nav-views-count" class="text-cyan">1.45M</span>
           </div>
           <button class="nav-like-btn" id="nav-like-btn" onclick="handleLikeClick()" title="Like Portfolio">
             <i class="fa-solid fa-heart heart-icon"></i>
-            <span id="nav-likes-count">1.17M</span>
+            <span id="nav-likes-count" class="text-pink">1.17M</span>
           </button>
         </div>
         <a href="https://github.com/zaidkhan0997" target="_blank" rel="noopener noreferrer" class="btn btn-primary" id="github-nav-btn">
@@ -93,8 +93,9 @@
             </div>
             <div class="engagement-details">
               <span class="engagement-label">Total Views</span>
-              <span class="engagement-value" id="hero-views-count">1,453,122</span>
+              <span class="engagement-value gradient-cyan-text" id="hero-views-count">1,453,122</span>
             </div>
+            <span class="views-active-badge">Views</span>
           </div>
 
           <button class="hero-like-btn" id="hero-like-btn" onclick="handleLikeClick()" title="Click to Like Portfolio!">
@@ -103,7 +104,7 @@
             </div>
             <div class="engagement-details">
               <span class="engagement-label" id="hero-like-label">Like Portfolio</span>
-              <span class="engagement-value" id="hero-likes-count">1,168,437</span>
+              <span class="engagement-value gradient-pink-text" id="hero-likes-count">1,168,437</span>
             </div>
             <span class="like-active-badge" id="like-status-tag">Like</span>
           </button>
@@ -423,14 +424,14 @@
       <i class="fa-solid fa-eye float-eye-icon"></i>
       <div class="float-text-group">
         <span class="float-title">Views</span>
-        <span class="float-count" id="float-views-count">1,453,122</span>
+        <span class="float-count text-cyan" id="float-views-count">1,453,122</span>
       </div>
     </div>
     <button class="float-like-pill" id="float-like-pill" onclick="handleLikeClick()" title="Like Portfolio">
       <i class="fa-solid fa-heart float-heart-icon"></i>
       <div class="float-text-group">
         <span class="float-title" id="float-like-title">Like</span>
-        <span class="float-count" id="float-likes-count">1,168,437</span>
+        <span class="float-count text-pink" id="float-likes-count">1,168,437</span>
       </div>
     </button>
   </div>
