@@ -2253,7 +2253,7 @@ body.menu-open {
   transform: rotate(90deg);
 }
 
-/* Drawer Body Scroll Container */
+/* Drawer Body Scroll Container & Animations */
 .drawer-body {
   flex: 1;
   overflow-y: auto;
@@ -2261,17 +2261,45 @@ body.menu-open {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  scroll-behavior: smooth;
+}
+
+.drawer-header {
+  transition: background 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.drawer-header.scrolled {
+  background: rgba(15, 23, 42, 0.85);
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.6), 0 1px 0 rgba(6, 182, 212, 0.4);
+  backdrop-filter: blur(20px);
 }
 
 .drawer-body::-webkit-scrollbar {
-  width: 6px;
+  width: 5px;
+}
+.drawer-body::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
 }
 .drawer-body::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.15);
+  background: linear-gradient(180deg, var(--accent-cyan), var(--accent-pink));
   border-radius: 4px;
 }
 .drawer-body::-webkit-scrollbar-thumb:hover {
   background: var(--accent-cyan);
+  box-shadow: 0 0 12px var(--accent-cyan-glow);
+}
+
+/* Floating Menu Internal Scroll Reveal Classes */
+.drawer-scroll-item {
+  opacity: 0.3;
+  transform: translateY(16px) scale(0.97);
+  transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1), transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), background 0.25s ease, border-color 0.25s ease;
+  will-change: opacity, transform;
+}
+
+.drawer-scroll-item.drawer-revealed {
+  opacity: 1;
+  transform: translateY(0) scale(1);
 }
 
 /* Drawer Sections */

@@ -343,6 +343,43 @@ function setupScrollAnimations() {
 
   if (skillsGrid) mutObserver.observe(skillsGrid, { childList: true });
   if (reposGrid) mutObserver.observe(reposGrid, { childList: true });
+
+  // Floating Menu Inner Scroll Animations & Header Shadow Trigger
+  const drawerBody = document.querySelector('.drawer-body');
+  const drawerHeader = document.querySelector('.drawer-header');
+
+  if (drawerBody) {
+    // Header shadow on drawer scroll
+    drawerBody.addEventListener('scroll', () => {
+      if (drawerHeader) {
+        if (drawerBody.scrollTop > 12) {
+          drawerHeader.classList.add('scrolled');
+        } else {
+          drawerHeader.classList.remove('scrolled');
+        }
+      }
+    });
+
+    // Drawer internal item scroll observer
+    const drawerObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('drawer-revealed');
+        } else {
+          entry.target.classList.remove('drawer-revealed');
+        }
+      });
+    }, {
+      root: drawerBody,
+      rootMargin: '0px',
+      threshold: 0.15
+    });
+
+    document.querySelectorAll('.drawer-nav-item, .drawer-chip, .drawer-contact-item, .drawer-lang-tag').forEach(item => {
+      item.classList.add('drawer-scroll-item');
+      drawerObserver.observe(item);
+    });
+  }
 }
 
 // Render Skills grid based on active tab (with 4 skills initial limit)
