@@ -1,0 +1,665 @@
+<?php
+/**
+ * MOHD ZAID ( zaidkhan0997 ) - Portfolio Engine
+ * Dynamic PHP Backend & Server Integration
+ */
+$phpStartTime = microtime(true);
+$phpVersion = PHP_VERSION;
+$currentYear = date('Y');
+$statusMsg = '';
+if (isset($_GET['status']) && $_GET['status'] === 'success') {
+    $senderName = htmlspecialchars($_GET['name'] ?? 'Friend', ENT_QUOTES, 'UTF-8');
+    $statusMsg = "Thank you, " . $senderName . "! Your message was received and logged by the PHP backend.";
+}
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MOHD ZAID ( zaidkhan0997 ) | Android Kernel & System Developer Portfolio (PHP Engine)</title>
+  <meta name="description" content="Personal portfolio and repository showcase of MOHD ZAID ( zaidkhan0997 ), Android device tree, kernel maintainer and C/C++ developer. Powered by PHP <?php echo $phpVersion; ?>.">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Ambient Light Effects -->
+  <div class="bg-ambient">
+    <div class="ambient-blob ambient-1"></div>
+    <div class="ambient-blob ambient-2"></div>
+    <div class="ambient-blob ambient-3"></div>
+  </div>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar" id="navbar">
+    <div class="container nav-container">
+      <a href="#hero" class="nav-logo">
+        <img src="profile.jpg" alt="MOHD ZAID" class="nav-avatar">
+        <span>MOHD ZAID <span class="logo-handle">( zaidkhan0997 )</span></span>
+      </a>
+
+      <ul class="nav-menu">
+        <li><a href="#hero" class="nav-link active">Home</a></li>
+        <li><a href="#skills" class="nav-link">Specialization</a></li>
+        <li><a href="#projects" class="nav-link">Repositories</a></li>
+        <li><a href="#terminal" class="nav-link">CLI Terminal</a></li>
+        <li><a href="#contact" class="nav-link">Contact</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <div class="nav-engagement">
+          <div class="nav-engagement-item nav-views-btn" title="Portfolio Visits">
+            <i class="fa-solid fa-eye text-cyan"></i>
+            <span id="nav-views-count" class="text-cyan">1.45M</span>
+          </div>
+          <button class="nav-like-btn" id="nav-like-btn" onclick="handleLikeClick(event)" title="Like Portfolio">
+            <i class="fa-solid fa-heart heart-icon"></i>
+            <span id="nav-likes-count" class="text-pink">1.17M</span>
+          </button>
+        </div>
+        <a href="https://github.com/zaidkhan0997" target="_blank" rel="noopener noreferrer" class="btn btn-primary" id="github-nav-btn">
+          <i class="fa-brands fa-github"></i> <span class="github-btn-text">GitHub Profile</span>
+        </a>
+        <button class="nav-hamburger-btn" id="nav-hamburger-btn" onclick="toggleFloatingMenu()" aria-label="Toggle Navigation & Skills Menu" title="Open 3-Line Menu">
+          <div class="hamburger-lines">
+            <span class="line line-1"></span>
+            <span class="line line-2"></span>
+            <span class="line line-3"></span>
+          </div>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero" id="hero">
+    <div class="container hero-grid">
+      <div class="hero-content">
+        <div class="hero-badge-container">
+          <span class="status-dot"></span>
+          <span>Open Source Developer & Kernel Builder</span>
+        </div>
+
+        <h1 class="hero-title">
+          Building Custom <span class="gradient-accent">Android Kernels</span> & Device Trees
+        </h1>
+
+        <p class="hero-subtitle">
+          Specializing in C, C++, Linux kernel optimization, hardware separation trees, and custom Android OS maintenance for Xiaomi devices.
+        </p>
+
+        <div class="hero-bio-quote" id="hero-bio">
+          "Be happy, it drives people crazy."
+        </div>
+
+        <div class="hero-cta">
+          <a href="#projects" class="btn btn-primary">
+            <i class="fa-solid fa-code"></i> Explore Repositories
+          </a>
+          <a href="#terminal" class="btn btn-secondary">
+            <i class="fa-solid fa-terminal"></i> Open Terminal
+          </a>
+        </div>
+
+        <!-- Interactive Portfolio Engagement Row (Views First, Likes Second) -->
+        <div class="hero-engagement-bar">
+          <div class="hero-views-card" title="Total Portfolio Views">
+            <div class="engagement-icon views-icon-glow">
+              <i class="fa-solid fa-eye"></i>
+            </div>
+            <div class="engagement-details">
+              <span class="engagement-label">Total Views</span>
+              <span class="engagement-value gradient-cyan-text" id="hero-views-count">1,453,122</span>
+            </div>
+            <span class="views-active-badge">Views</span>
+          </div>
+
+          <button class="hero-like-btn" id="hero-like-btn" onclick="handleLikeClick()" title="Click to Like Portfolio!">
+            <div class="engagement-icon like-icon-glow">
+              <i class="fa-solid fa-heart heart-icon"></i>
+            </div>
+            <div class="engagement-details">
+              <span class="engagement-label" id="hero-like-label">Like Portfolio</span>
+              <span class="engagement-value gradient-pink-text" id="hero-likes-count">1,168,437</span>
+            </div>
+            <span class="like-active-badge" id="like-status-tag">Like</span>
+          </button>
+        </div>
+
+        <div class="hero-stats">
+          <div class="stat-card stat-views-highlight">
+            <div class="stat-card-header">
+              <i class="fa-solid fa-eye text-cyan"></i>
+              <span class="stat-label">Total Views</span>
+            </div>
+            <span class="stat-number gradient-cyan-text" id="stat-views">1,453,122</span>
+          </div>
+          <div class="stat-card stat-likes-highlight">
+            <div class="stat-card-header">
+              <i class="fa-solid fa-heart text-pink"></i>
+              <span class="stat-label">Portfolio Likes</span>
+            </div>
+            <span class="stat-number gradient-pink-text" id="stat-likes">1,168,437</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Public Repos</span>
+            <span class="stat-number" id="stat-repos">58+</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Followers</span>
+            <span class="stat-number" id="stat-followers">55</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Following</span>
+            <span class="stat-number" id="stat-following">32</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Commits & Trees</span>
+            <span class="stat-number">100+</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Avatar Showcase Card -->
+      <div class="hero-avatar-wrapper">
+        <div class="avatar-card">
+          <div class="avatar-img-container">
+            <img src="profile.jpg" alt="MOHD ZAID" class="avatar-img" id="user-avatar">
+          </div>
+          <div class="avatar-info">
+            <h3 id="user-name">MOHD ZAID</h3>
+            <p class="avatar-handle" id="user-handle">( zaidkhan0997 )</p>
+            <p class="avatar-role">
+              Android <span class="gradient-accent">Custom ROM & Kernel</span> Developer
+            </p>
+            <div class="location-tag">
+              <i class="fa-solid fa-location-dot"></i> Himachal Pradesh, India
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Specialization & Skills Section -->
+  <section class="section" id="skills">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Technical Mastery</span>
+        <h2 class="section-title">Skills & Technologies</h2>
+        <p class="section-subtitle">Extracted directly from @zaidkhan0997's 58 GitHub repositories and system trees.</p>
+      </div>
+
+      <!-- Skills Category Tabs Bar -->
+      <div class="skills-tabs-container">
+        <div class="skills-tabs-bar">
+          <button class="skill-tab-btn active" onclick="switchSkillTab('all', this)">
+            <i class="fa-solid fa-shapes"></i> All Skills
+          </button>
+          <button class="skill-tab-btn" onclick="switchSkillTab('languages', this)">
+            <i class="fa-solid fa-code"></i> Languages
+          </button>
+          <button class="skill-tab-btn" onclick="switchSkillTab('android', this)">
+            <i class="fa-brands fa-android"></i> Android & Kernel
+          </button>
+          <button class="skill-tab-btn" onclick="switchSkillTab('tools', this)">
+            <i class="fa-solid fa-screwdriver-wrench"></i> Build & Tools
+          </button>
+          <button class="skill-tab-btn" onclick="switchSkillTab('devices', this)">
+            <i class="fa-solid fa-mobile-screen"></i> Hardware & Devices
+          </button>
+        </div>
+      </div>
+
+      <!-- Skills Grid Container -->
+      <div class="skills-grid" id="skills-grid">
+        <!-- Rendered dynamically by app.js from zaidkhan0997 GitHub profile data -->
+      </div>
+
+      <!-- Expand for More Skills Button Container -->
+      <div class="load-more-container" id="load-more-skills-container" style="margin-top: 2.5rem;">
+        <button class="btn btn-secondary btn-explore" id="explore-more-skills-btn" onclick="toggleExploreMoreSkills()">
+          <i class="fa-solid fa-layer-group"></i> Expand for More Skills (<span id="hidden-skills-count">0</span>)
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Repositories Showcase Section -->
+  <section class="section" id="projects">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Open Source Projects</span>
+        <h2 class="section-title">GitHub Repositories</h2>
+        <p class="section-subtitle">Explore live repositories, device trees, scripts, and utilities from ( zaidkhan0997 ).</p>
+      </div>
+
+      <!-- Filter Controls & Live Search -->
+      <div class="filter-bar">
+        <div class="filter-categories">
+          <button class="filter-btn active" data-filter="all">All (58)</button>
+          <button class="filter-btn" data-filter="android">Android & Kernel</button>
+          <button class="filter-btn" data-filter="cpp">C / C++</button>
+          <button class="filter-btn" data-filter="shell">Shell & CLI</button>
+          <button class="filter-btn" data-filter="web">Web & Identity</button>
+        </div>
+
+        <div class="search-box">
+          <i class="fa-solid fa-magnifying-glass search-icon"></i>
+          <input type="text" id="repo-search" class="search-input" placeholder="Search repositories...">
+        </div>
+      </div>
+
+      <!-- Repositories Grid Container -->
+      <div class="repos-grid" id="repos-grid">
+        <!-- Rendered dynamically by app.js -->
+      </div>
+
+      <!-- Explore More Repositories Button Container -->
+      <div class="load-more-container" id="load-more-container">
+        <button class="btn btn-secondary btn-explore" id="explore-more-btn" onclick="toggleExploreMore()">
+          <i class="fa-solid fa-layer-group"></i> Explore More Repositories (<span id="hidden-count">0</span>)
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Terminal Section -->
+  <section class="section" id="terminal">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Developer Interface</span>
+        <h2 class="section-title">Interactive Terminal</h2>
+        <p class="section-subtitle">Run CLI commands directly inside the interactive terminal emulator below.</p>
+      </div>
+
+      <div class="terminal-wrapper">
+        <div class="terminal-header">
+          <div class="terminal-dots">
+            <span class="dot dot-red"></span>
+            <span class="dot dot-yellow"></span>
+            <span class="dot dot-green"></span>
+          </div>
+          <span class="terminal-title">mohdzaid@device-tree:~ (bash)</span>
+          <div style="width: 48px;"></div>
+        </div>
+        <div class="terminal-body" id="terminal-body">
+          <div class="terminal-line">
+            Welcome to MOHD ZAID's interactive terminal! Type <span style="color: var(--accent-cyan);">help</span> to see all available commands.
+          </div>
+        </div>
+        <div style="padding: 0.75rem 1.5rem; background: rgba(0,0,0,0.4); border-top: 1px solid var(--border-subtle);">
+          <div class="terminal-input-row">
+            <span class="term-prompt">mohdzaid@device-tree:~$</span>
+            <input type="text" id="terminal-input" class="terminal-input" placeholder="type 'help' or 'whoami'..." autocomplete="off">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section class="section" id="contact">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Get in Touch</span>
+        <h2 class="section-title">Contact & Collaboration</h2>
+        <p class="section-subtitle">Have questions or want to collaborate on Android kernel / device trees?</p>
+      </div>
+
+      <div class="contact-grid">
+        <div class="contact-info-card">
+          <div class="contact-profile-header">
+            <div class="contact-avatar-wrapper">
+              <img src="profile.jpg" alt="MOHD ZAID" class="contact-avatar-img">
+            </div>
+            <div class="contact-profile-title">
+              <h3>Connect with MOHD ZAID</h3>
+              <div class="contact-profile-subtitle">( zaidkhan0997 ) • Android Custom ROM & Kernel Developer</div>
+            </div>
+          </div>
+          <p style="color: var(--text-muted); font-size: 0.95rem; margin: 0;">
+            Feel free to reach out for custom ROM tree maintenance, kernel patches, or open source development.
+          </p>
+
+          <div class="contact-item">
+            <div class="contact-icon">
+              <i class="fa-solid fa-envelope"></i>
+            </div>
+            <div>
+              <span class="contact-label">Email Address</span>
+              <div class="contact-val">
+                <a href="mailto:zaidkhan0997@proton.me">zaidkhan0997@proton.me</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="contact-item">
+            <div class="contact-icon">
+              <i class="fa-brands fa-instagram"></i>
+            </div>
+            <div>
+              <span class="contact-label">Instagram</span>
+              <div class="contact-val">
+                <a href="https://www.instagram.com/zaidkhan0997" target="_blank" rel="noopener noreferrer">instagram.com/zaidkhan0997</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="contact-item">
+            <div class="contact-icon">
+              <i class="fa-brands fa-github"></i>
+            </div>
+            <div>
+              <span class="contact-label">GitHub Profile</span>
+              <div class="contact-val">
+                <a href="https://github.com/zaidkhan0997" target="_blank" rel="noopener noreferrer">github.com/zaidkhan0997</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="contact-item">
+            <div class="contact-icon">
+              <i class="fa-solid fa-globe"></i>
+            </div>
+            <div>
+              <span class="contact-label">Personal Website</span>
+              <div class="contact-val">
+                <a href="https://zaidkhan0997.github.io" target="_blank" rel="noopener noreferrer">zaidkhan0997.github.io</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="contact-item">
+            <div class="contact-icon">
+              <i class="fa-solid fa-location-dot"></i>
+            </div>
+            <div>
+              <span class="contact-label">Location</span>
+              <div class="contact-val">Himachal Pradesh, India</div>
+            </div>
+          </div>
+        </div>
+
+        <form class="contact-form" id="contact-form" action="contact.php" method="POST">
+          <?php if (!empty($statusMsg)): ?>
+            <div style="background: rgba(16, 185, 129, 0.15); border: 1px solid #10b981; color: #10b981; padding: 0.85rem 1.2rem; border-radius: 8px; margin-bottom: 1.25rem; font-size: 0.9rem; display: flex; align-items: center; gap: 0.75rem;">
+              <i class="fa-solid fa-circle-check" style="font-size: 1.2rem;"></i>
+              <span><?php echo $statusMsg; ?></span>
+            </div>
+          <?php endif; ?>
+
+          <div class="form-group">
+            <label for="contact-name" class="form-label">Your Name</label>
+            <input type="text" id="contact-name" name="name" class="form-control" placeholder="Enter your name" required>
+          </div>
+
+          <div class="form-group">
+            <label for="contact-subject" class="form-label">Subject / Topic</label>
+            <input type="text" id="contact-subject" name="subject" class="form-control" placeholder="e.g. Android Kernel & ROM Collaboration" required>
+          </div>
+
+          <div class="form-group">
+            <label for="contact-message" class="form-label">Message</label>
+            <textarea id="contact-message" name="message" class="form-control" placeholder="Write your message here..." required></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 0.5rem;">
+            <i class="fa-solid fa-paper-plane"></i> Send Email
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Repository Detail Modal -->
+  <div class="modal-backdrop" id="repo-modal">
+    <div class="modal-container">
+      <button class="modal-close" onclick="closeModal()" aria-label="Close modal">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <div id="modal-body">
+        <!-- Modal content filled by app.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-content">
+      <div class="footer-text">
+        &copy; <?php echo $currentYear; ?> MOHD ZAID ( zaidkhan0997 ). All rights reserved. • <span style="color: var(--accent-cyan); font-weight: 500;"><i class="fa-brands fa-php"></i> PHP <?php echo $phpVersion; ?> Backend Active</span>
+      </div>
+      <div class="footer-links">
+        <a href="https://github.com/zaidkhan0997" target="_blank" rel="noopener noreferrer" class="btn btn-outline" style="padding: 0.4rem 1rem; font-size: 0.85rem;">
+          <i class="fa-brands fa-github"></i> GitHub
+        </a>
+        <a href="https://www.instagram.com/zaidkhan0997" target="_blank" rel="noopener noreferrer" class="btn btn-outline" style="padding: 0.4rem 1rem; font-size: 0.85rem; border-color: rgba(244, 63, 94, 0.4); color: #f43f5e;">
+          <i class="fa-brands fa-instagram"></i> Instagram
+        </a>
+        <a href="mailto:zaidkhan0997@proton.me" class="btn btn-outline" style="padding: 0.4rem 1rem; font-size: 0.85rem; border-color: rgba(6, 182, 212, 0.4); color: #06b6d4;">
+          <i class="fa-solid fa-envelope"></i> Email
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Floating Sticky Engagement Widget (Views First, Likes Second) -->
+  <div class="floating-engagement-widget" id="floating-engagement-widget">
+    <div class="float-views-pill" title="Total Portfolio Views">
+      <i class="fa-solid fa-eye float-eye-icon"></i>
+      <div class="float-text-group">
+        <span class="float-title">Views</span>
+        <span class="float-count text-cyan" id="float-views-count">1,453,122</span>
+      </div>
+    </div>
+    <button class="float-like-pill" id="float-like-pill" onclick="handleLikeClick()" title="Like Portfolio">
+      <i class="fa-solid fa-heart float-heart-icon"></i>
+      <div class="float-text-group">
+        <span class="float-title" id="float-like-title">Like</span>
+        <span class="float-count text-pink" id="float-likes-count">1,168,437</span>
+      </div>
+    </button>
+  </div>
+
+  <!-- Floating 3-Line Menu Trigger Button (Bottom Left Floating) -->
+  <button class="floating-menu-btn" id="floating-menu-btn" onclick="toggleFloatingMenu()" aria-label="Toggle Floating Navigation Menu" title="Open 3-Line Menu">
+    <div class="hamburger-lines">
+      <span class="line line-1"></span>
+      <span class="line line-2"></span>
+      <span class="line line-3"></span>
+    </div>
+    <span class="floating-menu-text">Menu</span>
+  </button>
+
+  <!-- Floating Menu Drawer Overlay & Backdrop -->
+  <div class="floating-menu-backdrop" id="floating-menu-backdrop" onclick="closeFloatingMenu()"></div>
+
+  <div class="floating-menu-drawer" id="floating-menu-drawer" role="dialog" aria-modal="true" aria-label="Floating Navigation Menu">
+    <!-- Header -->
+    <div class="drawer-header">
+      <div class="drawer-profile">
+        <div class="drawer-avatar-wrapper">
+          <img src="profile.jpg" alt="MOHD ZAID" class="drawer-avatar">
+          <span class="drawer-status-dot" title="Kernel Developer Active"></span>
+        </div>
+        <div class="drawer-profile-info">
+          <h3 class="drawer-name">MOHD ZAID</h3>
+          <span class="drawer-handle">( zaidkhan0997 )</span>
+          <span class="drawer-tag">Android Custom ROM & Kernel Developer</span>
+        </div>
+      </div>
+      <button class="drawer-close-btn" onclick="closeFloatingMenu()" aria-label="Close menu" title="Close Menu">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+
+    <!-- Scrollable Body Content -->
+    <div class="drawer-body">
+      <!-- 1. Main Navigation -->
+      <div class="drawer-section">
+        <div class="drawer-section-title">
+          <i class="fa-solid fa-compass text-cyan"></i> Navigation
+        </div>
+        <div class="drawer-nav-list">
+          <a href="#hero" class="drawer-nav-item" onclick="closeFloatingMenu()">
+            <div class="drawer-item-icon"><i class="fa-solid fa-house"></i></div>
+            <div class="drawer-item-text">
+              <span class="drawer-item-title">Home</span>
+              <span class="drawer-item-desc">Intro, hero & metrics showcase</span>
+            </div>
+            <i class="fa-solid fa-chevron-right drawer-arrow"></i>
+          </a>
+          <a href="#skills" class="drawer-nav-item" onclick="closeFloatingMenu()">
+            <div class="drawer-item-icon"><i class="fa-solid fa-screwdriver-wrench"></i></div>
+            <div class="drawer-item-text">
+              <span class="drawer-item-title">Specialization & Skills</span>
+              <span class="drawer-item-desc">Technical mastery, AOSP & tools</span>
+            </div>
+            <i class="fa-solid fa-chevron-right drawer-arrow"></i>
+          </a>
+          <a href="#projects" class="drawer-nav-item" onclick="closeFloatingMenu()">
+            <div class="drawer-item-icon"><i class="fa-solid fa-folder-open"></i></div>
+            <div class="drawer-item-text">
+              <span class="drawer-item-title">Repositories & Projects</span>
+              <span class="drawer-item-desc">58+ GitHub source trees & ROMs</span>
+            </div>
+            <i class="fa-solid fa-chevron-right drawer-arrow"></i>
+          </a>
+          <a href="#terminal" class="drawer-nav-item" onclick="closeFloatingMenu()">
+            <div class="drawer-item-icon"><i class="fa-solid fa-terminal"></i></div>
+            <div class="drawer-item-text">
+              <span class="drawer-item-title">CLI Terminal</span>
+              <span class="drawer-item-desc">Interactive developer prompt</span>
+            </div>
+            <i class="fa-solid fa-chevron-right drawer-arrow"></i>
+          </a>
+          <a href="#contact" class="drawer-nav-item" onclick="closeFloatingMenu()">
+            <div class="drawer-item-icon"><i class="fa-solid fa-envelope"></i></div>
+            <div class="drawer-item-text">
+              <span class="drawer-item-title">Contact & Socials</span>
+              <span class="drawer-item-desc">Email, Instagram & GitHub links</span>
+            </div>
+            <i class="fa-solid fa-chevron-right drawer-arrow"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- 2. Skills & Specialization Filters -->
+      <div class="drawer-section">
+        <div class="drawer-section-title">
+          <i class="fa-solid fa-gears text-cyan"></i> Technical Specialization
+        </div>
+        <div class="drawer-skills-chips">
+          <button class="drawer-chip" onclick="handleDrawerSkillFilter('all')">
+            <i class="fa-solid fa-shapes"></i> All Skills
+          </button>
+          <button class="drawer-chip" onclick="handleDrawerSkillFilter('languages')">
+            <i class="fa-solid fa-code"></i> Languages (C/C++, Shell)
+          </button>
+          <button class="drawer-chip" onclick="handleDrawerSkillFilter('android')">
+            <i class="fa-brands fa-android"></i> Android & Kernel Trees
+          </button>
+          <button class="drawer-chip" onclick="handleDrawerSkillFilter('tools')">
+            <i class="fa-solid fa-screwdriver-wrench"></i> Build & AOSP Tools
+          </button>
+          <button class="drawer-chip" onclick="handleDrawerSkillFilter('devices')">
+            <i class="fa-solid fa-mobile-screen"></i> Hardware & Devices
+          </button>
+        </div>
+      </div>
+
+      <!-- 3. Repository Categories -->
+      <div class="drawer-section">
+        <div class="drawer-section-title">
+          <i class="fa-solid fa-code-fork text-pink"></i> Repository Categories
+        </div>
+        <div class="drawer-skills-chips">
+          <button class="drawer-chip" onclick="handleDrawerRepoFilter('all')">
+            <i class="fa-solid fa-layer-group"></i> All Repos (58+)
+          </button>
+          <button class="drawer-chip" onclick="handleDrawerRepoFilter('android')">
+            <i class="fa-brands fa-android"></i> Android & Kernel
+          </button>
+          <button class="drawer-chip" onclick="handleDrawerRepoFilter('cpp')">
+            <i class="fa-solid fa-microchip"></i> C / C++ Systems
+          </button>
+          <button class="drawer-chip" onclick="handleDrawerRepoFilter('shell')">
+            <i class="fa-solid fa-terminal"></i> Shell & Scripts
+          </button>
+          <button class="drawer-chip" onclick="handleDrawerRepoFilter('web')">
+            <i class="fa-solid fa-globe"></i> Web & Identity
+          </button>
+        </div>
+      </div>
+
+      <!-- 4. Programming Languages Badges -->
+      <div class="drawer-section">
+        <div class="drawer-section-title">
+          <i class="fa-solid fa-code text-cyan"></i> Languages Mastery
+        </div>
+        <div class="drawer-lang-grid">
+          <span class="drawer-lang-tag"><span class="lang-dot" style="background:#555555;"></span> C</span>
+          <span class="drawer-lang-tag"><span class="lang-dot" style="background:#f34b7d;"></span> C++</span>
+          <span class="drawer-lang-tag"><span class="lang-dot" style="background:#89e051;"></span> Shell / Bash</span>
+          <span class="drawer-lang-tag"><span class="lang-dot" style="background:#427819;"></span> Makefile</span>
+          <span class="drawer-lang-tag"><span class="lang-dot" style="background:#e34c26;"></span> HTML5</span>
+          <span class="drawer-lang-tag"><span class="lang-dot" style="background:#f1e05a;"></span> JavaScript</span>
+          <span class="drawer-lang-tag"><span class="lang-dot" style="background:#3572A5;"></span> Python</span>
+          <span class="drawer-lang-tag"><span class="lang-dot" style="background:#06b6d4;"></span> Linux Kernel</span>
+        </div>
+      </div>
+
+      <!-- 5. Direct Contact Links -->
+      <div class="drawer-section">
+        <div class="drawer-section-title">
+          <i class="fa-solid fa-address-card text-pink"></i> Contact & Profiles
+        </div>
+        <div class="drawer-contact-links">
+          <a href="mailto:zaidkhan0997@proton.me" class="drawer-contact-item">
+            <i class="fa-solid fa-envelope"></i>
+            <span>zaidkhan0997@proton.me</span>
+          </a>
+          <a href="https://www.instagram.com/zaidkhan0997" target="_blank" rel="noopener noreferrer" class="drawer-contact-item">
+            <i class="fa-brands fa-instagram"></i>
+            <span>instagram.com/zaidkhan0997</span>
+          </a>
+          <a href="https://github.com/zaidkhan0997" target="_blank" rel="noopener noreferrer" class="drawer-contact-item">
+            <i class="fa-brands fa-github"></i>
+            <span>github.com/zaidkhan0997</span>
+          </a>
+          <div class="drawer-contact-item drawer-contact-location">
+            <i class="fa-solid fa-location-dot"></i>
+            <span>Himachal Pradesh, India</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Drawer Footer Toolbar -->
+    <div class="drawer-footer">
+      <div class="drawer-footer-engagement">
+        <div class="drawer-views-pill" title="Total Views">
+          <i class="fa-solid fa-eye text-cyan"></i>
+          <span id="drawer-views-count" class="text-cyan">1.45M</span>
+        </div>
+        <button class="drawer-like-btn" id="drawer-like-btn" onclick="handleLikeClick(event)" title="Like Portfolio">
+          <i class="fa-solid fa-heart heart-icon"></i>
+          <span id="drawer-likes-count" class="text-pink">1.17M</span>
+        </button>
+      </div>
+      <a href="https://github.com/zaidkhan0997" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-drawer-github">
+        <i class="fa-brands fa-github"></i> GitHub Profile
+      </a>
+    </div>
+  </div>
+
+  <!-- App Interactivity Script -->
+  <script src="app.js"></script>
+</body>
+</html>
