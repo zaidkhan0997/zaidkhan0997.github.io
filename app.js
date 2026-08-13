@@ -271,6 +271,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setupSearch();
   setupTerminal();
   setupContactForm();
+  setupScrollAnimations();
   
   // Initialize Likes & Views counters (> 1M start, views first)
   initPortfolioMetrics();
@@ -285,6 +286,64 @@ document.addEventListener('DOMContentLoaded', () => {
   // Fetch live profile & repos from GitHub API
   fetchGitHubData();
 });
+
+// Scroll Reveal & Intersection Observer Engine
+function setupScrollAnimations() {
+  if (!('IntersectionObserver' in window)) return;
+
+  const observerOptions = {
+    root: null,
+    rootMargin: '0px 0px -50px 0px',
+    threshold: 0.1
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('revealed');
+      }
+    });
+  }, observerOptions);
+
+  function observeElements() {
+    const targets = [
+      { sel: '.section-header', type: 'scroll-reveal' },
+      { sel: '.hero-content', type: 'scroll-reveal-left' },
+      { sel: '.hero-avatar-wrapper', type: 'scroll-reveal-right' },
+      { sel: '.stat-card', type: 'scroll-reveal' },
+      { sel: '.skill-card', type: 'scroll-reveal' },
+      { sel: '.repo-card', type: 'scroll-reveal' },
+      { sel: '.terminal-wrapper', type: 'scroll-reveal' },
+      { sel: '.contact-info-card', type: 'scroll-reveal-left' },
+      { sel: '.contact-form', type: 'scroll-reveal-right' },
+      { sel: '.skills-tabs-container', type: 'scroll-reveal' },
+      { sel: '.filter-bar', type: 'scroll-reveal' }
+    ];
+
+    targets.forEach(({ sel, type }) => {
+      document.querySelectorAll(sel).forEach((el, idx) => {
+        if (!el.classList.contains('reveal-bound')) {
+          el.classList.add('reveal-bound', type);
+          if (sel === '.skill-card' || sel === '.repo-card' || sel === '.stat-card') {
+            el.style.transitionDelay = `${(idx % 6) * 0.08}s`;
+          }
+          observer.observe(el);
+        }
+      });
+    });
+  }
+
+  // Initial binding
+  observeElements();
+
+  // Watch for dynamic DOM updates (skills / repo cards)
+  const skillsGrid = document.getElementById('skills-grid');
+  const reposGrid = document.getElementById('repos-grid');
+  const mutObserver = new MutationObserver(() => observeElements());
+
+  if (skillsGrid) mutObserver.observe(skillsGrid, { childList: true });
+  if (reposGrid) mutObserver.observe(reposGrid, { childList: true });
+}
 
 // Render Skills grid based on active tab (with 4 skills initial limit)
 function renderSkills(category) {
