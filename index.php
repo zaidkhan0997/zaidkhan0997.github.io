@@ -55,11 +55,11 @@ if (isset($_GET['status']) && $_GET['status'] === 'success') {
         <div class="nav-engagement">
           <div class="nav-engagement-item nav-views-btn" title="Portfolio Visits">
             <i class="fa-solid fa-eye text-cyan"></i>
-            <span id="nav-views-count" class="text-cyan">1.45M</span>
+            <span id="nav-views-count" class="text-cyan">1.75M</span>
           </div>
           <button class="nav-like-btn" id="nav-like-btn" onclick="handleLikeClick(event)" title="Like Portfolio">
             <i class="fa-solid fa-heart heart-icon"></i>
-            <span id="nav-likes-count" class="text-pink">1.17M</span>
+            <span id="nav-likes-count" class="text-pink">1.51M</span>
           </button>
         </div>
         <a href="https://github.com/zaidkhan0997" target="_blank" rel="noopener noreferrer" class="btn btn-primary" id="github-nav-btn">
@@ -114,7 +114,7 @@ if (isset($_GET['status']) && $_GET['status'] === 'success') {
             </div>
             <div class="engagement-details">
               <span class="engagement-label">Total Views</span>
-              <span class="engagement-value gradient-cyan-text" id="hero-views-count">1,453,122</span>
+              <span class="engagement-value gradient-cyan-text" id="hero-views-count">1,753,123</span>
             </div>
             <span class="views-active-badge">Views</span>
           </div>
@@ -125,7 +125,7 @@ if (isset($_GET['status']) && $_GET['status'] === 'success') {
             </div>
             <div class="engagement-details">
               <span class="engagement-label" id="hero-like-label">Like Portfolio</span>
-              <span class="engagement-value gradient-pink-text" id="hero-likes-count">1,168,437</span>
+              <span class="engagement-value gradient-pink-text" id="hero-likes-count">1,518,437</span>
             </div>
             <span class="like-active-badge" id="like-status-tag">Like</span>
           </button>
@@ -137,14 +137,14 @@ if (isset($_GET['status']) && $_GET['status'] === 'success') {
               <i class="fa-solid fa-eye text-cyan"></i>
               <span class="stat-label">Total Views</span>
             </div>
-            <span class="stat-number gradient-cyan-text" id="stat-views">1,453,122</span>
+            <span class="stat-number gradient-cyan-text" id="stat-views">1,753,123</span>
           </div>
           <div class="stat-card stat-likes-highlight">
             <div class="stat-card-header">
               <i class="fa-solid fa-heart text-pink"></i>
               <span class="stat-label">Portfolio Likes</span>
             </div>
-            <span class="stat-number gradient-pink-text" id="stat-likes">1,168,437</span>
+            <span class="stat-number gradient-pink-text" id="stat-likes">1,518,437</span>
           </div>
           <div class="stat-card">
             <span class="stat-label">Public Repos</span>
@@ -455,14 +455,14 @@ if (isset($_GET['status']) && $_GET['status'] === 'success') {
       <i class="fa-solid fa-eye float-eye-icon"></i>
       <div class="float-text-group">
         <span class="float-title">Views</span>
-        <span class="float-count text-cyan" id="float-views-count">1,453,122</span>
+        <span class="float-count text-cyan" id="float-views-count">1,753,123</span>
       </div>
     </div>
     <button class="float-like-pill" id="float-like-pill" onclick="handleLikeClick()" title="Like Portfolio">
       <i class="fa-solid fa-heart float-heart-icon"></i>
       <div class="float-text-group">
         <span class="float-title" id="float-like-title">Like</span>
-        <span class="float-count text-pink" id="float-likes-count">1,168,437</span>
+        <span class="float-count text-pink" id="float-likes-count">1,518,437</span>
       </div>
     </button>
   </div>
@@ -646,11 +646,11 @@ if (isset($_GET['status']) && $_GET['status'] === 'success') {
       <div class="drawer-footer-engagement">
         <div class="drawer-views-pill" title="Total Views">
           <i class="fa-solid fa-eye text-cyan"></i>
-          <span id="drawer-views-count" class="text-cyan">1.45M</span>
+          <span id="drawer-views-count" class="text-cyan">1.75M</span>
         </div>
         <button class="drawer-like-btn" id="drawer-like-btn" onclick="handleLikeClick(event)" title="Like Portfolio">
           <i class="fa-solid fa-heart heart-icon"></i>
-          <span id="drawer-likes-count" class="text-pink">1.17M</span>
+          <span id="drawer-likes-count" class="text-pink">1.51M</span>
         </button>
       </div>
       <a href="https://github.com/zaidkhan0997" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-drawer-github">

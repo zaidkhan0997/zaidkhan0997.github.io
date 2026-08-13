@@ -10,17 +10,27 @@ header('Access-Control-Allow-Origin: *');
 $action = $_GET['action'] ?? 'info';
 $dataFile = __DIR__ . '/stats.json';
 
+// Exact baseline: Views 1.7M+ (1,753,124), Likes 1.5M+ (1,518,437)
+$defaultViews = 1753124;
+$defaultLikes = 1518437;
+
 // Initialize stats store if missing
 if (!file_exists($dataFile)) {
     $initialStats = [
-        'views' => 1453122,
-        'likes' => 1168437,
+        'views' => $defaultViews,
+        'likes' => $defaultLikes,
         'last_updated' => date('Y-m-d H:i:s')
     ];
     file_put_contents($dataFile, json_encode($initialStats, JSON_PRETTY_PRINT));
 }
 
-$stats = json_decode(file_get_contents($dataFile), true) ?? ['views' => 1453122, 'likes' => 1168437];
+$stats = json_decode(file_get_contents($dataFile), true);
+if (!$stats || !isset($stats['views']) || $stats['views'] < 1700000) {
+    $stats['views'] = $defaultViews;
+}
+if (!$stats || !isset($stats['likes']) || $stats['likes'] < 1500000) {
+    $stats['likes'] = $defaultLikes;
+}
 
 switch ($action) {
     case 'like':
@@ -30,6 +40,18 @@ switch ($action) {
         echo json_encode([
             'status' => 'success',
             'action' => 'like',
+            'likes' => $stats['likes'],
+            'views' => $stats['views']
+        ]);
+        break;
+
+    case 'unlike':
+        $stats['likes'] = max(1500000, $stats['likes'] - 1);
+        $stats['last_updated'] = date('Y-m-d H:i:s');
+        file_put_contents($dataFile, json_encode($stats, JSON_PRETTY_PRINT));
+        echo json_encode([
+            'status' => 'success',
+            'action' => 'unlike',
             'likes' => $stats['likes'],
             'views' => $stats['views']
         ]);
@@ -53,7 +75,7 @@ switch ($action) {
         echo json_encode([
             'status' => 'success',
             'count' => count($messages),
-            'messages' => array_slice($messages, 0, 10) // top 10 recent
+            'messages' => array_slice($messages, 0, 10)
         ]);
         break;
 

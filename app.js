@@ -857,45 +857,63 @@ function escapeHTML(str) {
    PORTFOLIO LIKES & VIEWS COUNTER LOGIC (>1M baseline)
    ============================================================= */
 
-let portfolioViews = 0;
-let portfolioLikes = 0;
+let portfolioViews = 1753124;
+let portfolioLikes = 1518437;
 let userHasLiked = false;
 
-// Initialize Metrics: Ensures base numbers start > 1,000,000 and increments view on visit
+// Fixed Base Numbers: Views 1.7M+ (1,753,124), Likes 1.5M+ (1,518,437)
+const BASE_VIEWS = 1753124;
+const BASE_LIKES = 1518437;
+
+// Initialize Metrics: Purges old random numbers & enforces strict baselines
 function initPortfolioMetrics() {
-  const STORAGE_KEY_VIEWS = 'zaid_portfolio_views_count';
-  const STORAGE_KEY_LIKES = 'zaid_portfolio_likes_count';
+  const STORAGE_KEY_VIEWS = 'zaid_portfolio_views_v2';
+  const STORAGE_KEY_LIKES = 'zaid_portfolio_likes_v2';
   const STORAGE_KEY_LIKED = 'zaid_portfolio_has_liked';
+
+  // Purge old legacy keys that held random numbers (e.g. 1,705,937)
+  try {
+    localStorage.removeItem('zaid_portfolio_views_count');
+    localStorage.removeItem('zaid_portfolio_likes_count');
+  } catch (e) {}
 
   let storedViews = localStorage.getItem(STORAGE_KEY_VIEWS);
   let storedLikes = localStorage.getItem(STORAGE_KEY_LIKES);
   let storedLikedStatus = localStorage.getItem(STORAGE_KEY_LIKED);
 
-  // Validate & generate random baseline > 1,000,000 if missing or stale/less than 1M
+  // Validate & set baseline
   let parsedViews = parseInt(storedViews, 10);
-  if (!storedViews || isNaN(parsedViews) || parsedViews < 1000000) {
-    parsedViews = Math.floor(1450000 + Math.random() * 950000 + Math.floor(Math.random() * 999));
+  if (!storedViews || isNaN(parsedViews) || parsedViews < BASE_VIEWS) {
+    parsedViews = BASE_VIEWS;
   }
 
-  let parsedLikes = parseInt(storedLikes, 10);
-  if (!storedLikes || isNaN(parsedLikes) || parsedLikes < 1000000) {
-    parsedLikes = Math.floor(1120000 + Math.random() * 650000 + Math.floor(Math.random() * 999));
-  }
-
-  // Increment views count by 1 on every page visit
-  portfolioViews = parsedViews + 1;
-  portfolioLikes = parsedLikes;
   userHasLiked = storedLikedStatus === 'true';
 
-  // Save updated view count back to localStorage
+  let parsedLikes = parseInt(storedLikes, 10);
+  if (!storedLikes || isNaN(parsedLikes) || parsedLikes < BASE_LIKES || parsedLikes > (BASE_LIKES + 1000)) {
+    parsedLikes = userHasLiked ? (BASE_LIKES + 1) : BASE_LIKES;
+  }
+
+  // Increment view count by 1 for this visit
+  if (!sessionStorage.getItem('zaid_session_viewed')) {
+    sessionStorage.setItem('zaid_session_viewed', 'true');
+    parsedViews += 1;
+    // Dispatch view increment to PHP backend
+    fetch('api.php?action=view').catch(() => {});
+  }
+
+  portfolioViews = parsedViews;
+  portfolioLikes = parsedLikes;
+
+  // Save current values back to localStorage
   localStorage.setItem(STORAGE_KEY_VIEWS, portfolioViews.toString());
   localStorage.setItem(STORAGE_KEY_LIKES, portfolioLikes.toString());
 
-  // Render metrics across UI elements
+  // Render initial UI
   updateMetricsUI();
 }
 
-// Format numbers with commas (e.g. 1,482,931) and compact view (e.g. 1.48M)
+// Format numbers with commas (e.g. 1,753,123) and compact view (e.g. 1.75M)
 function formatMetricNumber(num) {
   return num.toLocaleString('en-US');
 }
@@ -936,12 +954,14 @@ function updateMetricsUI() {
   if (heroLikeBtn) {
     if (userHasLiked) {
       heroLikeBtn.classList.add('liked');
-      if (heroLikeLabel) heroLikeLabel.textContent = 'Portfolio Liked!';
+      if (heroLikeLabel) heroLikeLabel.textContent = 'Liked (Click to Unlike)';
       if (likeStatusTag) likeStatusTag.textContent = 'Liked ❤';
+      heroLikeBtn.title = 'You already liked this portfolio! Click to Unlike.';
     } else {
       heroLikeBtn.classList.remove('liked');
       if (heroLikeLabel) heroLikeLabel.textContent = 'Like Portfolio';
       if (likeStatusTag) likeStatusTag.textContent = 'Like';
+      heroLikeBtn.title = 'Click to Like Portfolio!';
     }
   }
 
@@ -953,8 +973,13 @@ function updateMetricsUI() {
   if (navViewsCountEl) navViewsCountEl.textContent = viewsCompact;
   if (navLikesCountEl) navLikesCountEl.textContent = likesCompact;
   if (navLikeBtn) {
-    if (userHasLiked) navLikeBtn.classList.add('liked');
-    else navLikeBtn.classList.remove('liked');
+    if (userHasLiked) {
+      navLikeBtn.classList.add('liked');
+      navLikeBtn.title = 'You already liked this portfolio! Click to Unlike.';
+    } else {
+      navLikeBtn.classList.remove('liked');
+      navLikeBtn.title = 'Like Portfolio';
+    }
   }
 
   // 4. Sticky Floating Bar
@@ -991,9 +1016,9 @@ function updateMetricsUI() {
   }
 }
 
-// Handle Like Button Clicks (Toggle like status & update storage + UI)
+// Handle Like Button Clicks (Toggle like / unlike status & update storage + PHP + UI)
 function handleLikeClick(event) {
-  const STORAGE_KEY_LIKES = 'zaid_portfolio_likes_count';
+  const STORAGE_KEY_LIKES = 'zaid_portfolio_likes_v2';
   const STORAGE_KEY_LIKED = 'zaid_portfolio_has_liked';
 
   if (!userHasLiked) {
@@ -1005,15 +1030,21 @@ function handleLikeClick(event) {
     updateMetricsUI();
     spawnHeartBurst(event);
     showToast('Thank you for liking my portfolio! ❤️');
+
+    // Notify PHP backend
+    fetch('api.php?action=like').catch(() => {});
   } else {
     // Toggle unlike if clicked again
-    portfolioLikes = Math.max(1000000, portfolioLikes - 1);
+    portfolioLikes = Math.max(BASE_LIKES, portfolioLikes - 1);
     userHasLiked = false;
     localStorage.setItem(STORAGE_KEY_LIKES, portfolioLikes.toString());
     localStorage.setItem(STORAGE_KEY_LIKED, 'false');
 
     updateMetricsUI();
     showToast('Portfolio unliked.');
+
+    // Notify PHP backend
+    fetch('api.php?action=unlike').catch(() => {});
   }
 }
 
