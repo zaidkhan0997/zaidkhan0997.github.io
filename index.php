@@ -39,7 +39,7 @@ if (isset($_GET['status']) && $_GET['status'] === 'success') {
   <nav class="navbar" id="navbar">
     <div class="container nav-container">
       <a href="#hero" class="nav-logo">
-        <img src="profile.jpg" alt="MOHD ZAID" class="nav-avatar">
+        <img src="assets/profile.jpg" alt="MOHD ZAID" class="nav-avatar">
         <span>MOHD ZAID <span class="logo-handle">( zaidkhan0997 )</span></span>
       </a>
 
@@ -169,7 +169,7 @@ if (isset($_GET['status']) && $_GET['status'] === 'success') {
       <div class="hero-avatar-wrapper">
         <div class="avatar-card">
           <div class="avatar-img-container">
-            <img src="profile.jpg" alt="MOHD ZAID" class="avatar-img" id="user-avatar">
+            <img src="assets/profile.jpg" alt="MOHD ZAID" class="avatar-img" id="user-avatar">
           </div>
           <div class="avatar-info">
             <h3 id="user-name">MOHD ZAID</h3>
@@ -316,7 +316,7 @@ if (isset($_GET['status']) && $_GET['status'] === 'success') {
         <div class="contact-info-card">
           <div class="contact-profile-header">
             <div class="contact-avatar-wrapper">
-              <img src="profile.jpg" alt="MOHD ZAID" class="contact-avatar-img">
+              <img src="assets/profile.jpg" alt="MOHD ZAID" class="contact-avatar-img">
             </div>
             <div class="contact-profile-title">
               <h3>Connect with MOHD ZAID</h3>
@@ -462,7 +462,7 @@ if (isset($_GET['status']) && $_GET['status'] === 'success') {
       <i class="fa-solid fa-heart float-heart-icon"></i>
       <div class="float-text-group">
         <span class="float-title" id="float-like-title">Like</span>
-        <span class="float-count text-pink" id="float-likes-count">1,518,437</span>
+        <span class="float-count" id="float-likes-count">1,518,437</span>
       </div>
     </button>
   </div>
@@ -485,7 +485,7 @@ if (isset($_GET['status']) && $_GET['status'] === 'success') {
     <div class="drawer-header">
       <div class="drawer-profile">
         <div class="drawer-avatar-wrapper">
-          <img src="profile.jpg" alt="MOHD ZAID" class="drawer-avatar">
+          <img src="assets/profile.jpg" alt="MOHD ZAID" class="drawer-avatar">
           <span class="drawer-status-dot" title="Kernel Developer Active"></span>
         </div>
         <div class="drawer-profile-info">

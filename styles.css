@@ -1550,9 +1550,19 @@ button.float-like-pill {
 }
 
 .nav-like-btn.liked {
-  background: linear-gradient(135deg, rgba(244, 63, 94, 0.3), rgba(225, 29, 72, 0.4));
+  background: linear-gradient(135deg, rgba(244, 63, 94, 0.85), rgba(225, 29, 72, 0.95));
   border-color: #f43f5e;
   box-shadow: 0 0 12px rgba(244, 63, 94, 0.4);
+}
+
+.nav-like-btn.liked .heart-icon {
+  color: #ffffff;
+}
+
+.nav-like-btn.liked #nav-likes-count,
+.nav-like-btn.liked .text-pink {
+  color: #ffffff !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
 }
 
 /* Hero Engagement Bar (Views First, Likes Second) */
@@ -1774,7 +1784,7 @@ button.float-like-pill {
 }
 
 .float-like-pill.liked {
-  background: linear-gradient(135deg, rgba(244, 63, 94, 0.8), rgba(225, 29, 72, 0.9));
+  background: linear-gradient(135deg, rgba(244, 63, 94, 0.9), rgba(225, 29, 72, 0.95));
   border-color: #f43f5e;
   box-shadow: 0 0 15px rgba(244, 63, 94, 0.5);
 }
@@ -1782,11 +1792,11 @@ button.float-like-pill {
 .float-heart-icon {
   color: #f43f5e;
   font-size: 0.95rem;
-  transition: transform 0.2s ease;
+  transition: transform 0.2s ease, color 0.2s ease;
 }
 
 .float-like-pill.liked .float-heart-icon {
-  color: #fff;
+  color: #ffffff;
   animation: heart-pulse 0.6s infinite alternate;
 }
 
@@ -1802,17 +1812,26 @@ button.float-like-pill {
   text-transform: uppercase;
   font-weight: 700;
   letter-spacing: 0.05em;
+  transition: color 0.2s ease;
 }
 
 .float-like-pill.liked .float-title {
-  color: rgba(255, 255, 255, 0.85);
+  color: rgba(255, 255, 255, 0.9);
 }
 
 .float-count {
   font-family: var(--font-heading);
   font-size: 0.9rem;
   font-weight: 700;
-  color: var(--text-bright);
+  color: var(--accent-pink);
+  transition: color 0.2s ease;
+}
+
+.float-like-pill.liked .float-count,
+.float-like-pill.liked .float-count.text-pink,
+.float-like-pill.liked #float-likes-count {
+  color: #ffffff !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 /* Floating Heart Particle Effect */
@@ -2541,9 +2560,24 @@ body.menu-open {
 }
 
 .drawer-like-btn:hover, .drawer-like-btn.liked {
-  background: linear-gradient(135deg, rgba(244, 63, 94, 0.8), rgba(225, 29, 72, 0.9));
+  background: linear-gradient(135deg, rgba(244, 63, 94, 0.85), rgba(225, 29, 72, 0.95));
   border-color: #f43f5e;
   box-shadow: 0 0 15px rgba(244, 63, 94, 0.4);
+}
+
+.drawer-like-btn:hover .float-heart-icon,
+.drawer-like-btn.liked .float-heart-icon,
+.drawer-like-btn:hover i,
+.drawer-like-btn.liked i {
+  color: #ffffff;
+}
+
+.drawer-like-btn:hover #drawer-likes-count,
+.drawer-like-btn.liked #drawer-likes-count,
+.drawer-like-btn:hover .text-pink,
+.drawer-like-btn.liked .text-pink {
+  color: #ffffff !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
 }
 
 .btn-drawer-github {
