@@ -301,6 +301,8 @@ function setupScrollAnimations() {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         entry.target.classList.add('revealed');
+      } else {
+        entry.target.classList.remove('revealed');
       }
     });
   }, observerOptions);
@@ -360,7 +362,7 @@ function setupScrollAnimations() {
       }
     });
 
-    // Drawer internal item scroll observer
+    // Drawer internal item scroll observer (reverse scroll up & down animations inside floating menu)
     const drawerObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -371,11 +373,11 @@ function setupScrollAnimations() {
       });
     }, {
       root: drawerBody,
-      rootMargin: '0px',
-      threshold: 0.15
+      rootMargin: '0px 0px -10px 0px',
+      threshold: 0.05
     });
 
-    document.querySelectorAll('.drawer-nav-item, .drawer-chip, .drawer-contact-item, .drawer-lang-tag').forEach(item => {
+    document.querySelectorAll('.drawer-section-title, .drawer-nav-item, .drawer-chip, .drawer-contact-item, .drawer-lang-tag').forEach(item => {
       item.classList.add('drawer-scroll-item');
       drawerObserver.observe(item);
     });
@@ -447,16 +449,30 @@ function switchSkillTab(category, btnElement) {
   renderSkills(category);
 }
 
-// Navbar scroll & smooth scroll
+// Navbar scroll & smooth scroll with Scroll Direction Detection (for reverse scroll animations)
 function setupNavbar() {
   const navbar = document.querySelector('.navbar');
+  let lastScrollY = window.scrollY;
+
   window.addEventListener('scroll', () => {
-    if (window.scrollY > 40) {
+    const currentScrollY = window.scrollY;
+
+    if (currentScrollY > 40) {
       navbar.classList.add('scrolled');
     } else {
       navbar.classList.remove('scrolled');
     }
-  });
+
+    if (currentScrollY > lastScrollY && currentScrollY > 80) {
+      document.body.classList.add('scrolling-down');
+      document.body.classList.remove('scrolling-up');
+    } else if (currentScrollY < lastScrollY) {
+      document.body.classList.add('scrolling-up');
+      document.body.classList.remove('scrolling-down');
+    }
+
+    lastScrollY = currentScrollY <= 0 ? 0 : currentScrollY;
+  }, { passive: true });
 }
 
 // Fetch GitHub Profile and Repositories

@@ -2182,6 +2182,25 @@ body.menu-open {
 .floating-menu-drawer.active .drawer-nav-item:nth-child(4) { opacity: 1; transform: translateX(0); transition-delay: 0.27s; }
 .floating-menu-drawer.active .drawer-nav-item:nth-child(5) { opacity: 1; transform: translateX(0); transition-delay: 0.32s; }
 
+/* Reverse Animated Exit for Floating Menu Content when closing */
+.floating-menu-drawer:not(.active) .drawer-header {
+  transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1), transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  transition-delay: 0.15s;
+}
+
+.floating-menu-drawer:not(.active) .drawer-section:nth-child(1) { transition-delay: 0.12s; }
+.floating-menu-drawer:not(.active) .drawer-section:nth-child(2) { transition-delay: 0.09s; }
+.floating-menu-drawer:not(.active) .drawer-section:nth-child(3) { transition-delay: 0.06s; }
+.floating-menu-drawer:not(.active) .drawer-section:nth-child(4) { transition-delay: 0.03s; }
+.floating-menu-drawer:not(.active) .drawer-section:nth-child(5) { transition-delay: 0s; }
+.floating-menu-drawer:not(.active) .drawer-footer { transition-delay: 0s; }
+
+.floating-menu-drawer:not(.active) .drawer-nav-item:nth-child(1) { transition-delay: 0.12s; }
+.floating-menu-drawer:not(.active) .drawer-nav-item:nth-child(2) { transition-delay: 0.09s; }
+.floating-menu-drawer:not(.active) .drawer-nav-item:nth-child(3) { transition-delay: 0.06s; }
+.floating-menu-drawer:not(.active) .drawer-nav-item:nth-child(4) { transition-delay: 0.03s; }
+.floating-menu-drawer:not(.active) .drawer-nav-item:nth-child(5) { transition-delay: 0s; }
+
 /* Drawer Header */
 .drawer-header {
   padding: 1.5rem 1.5rem 1.25rem 1.5rem;
@@ -2308,11 +2327,11 @@ body.menu-open {
   box-shadow: 0 0 12px var(--accent-cyan-glow);
 }
 
-/* Floating Menu Internal Scroll Reveal Classes */
+/* Floating Menu Internal Scroll Reveal Classes (Supports Scroll Down & Scroll Up Reversals) */
 .drawer-scroll-item {
-  opacity: 0.3;
-  transform: translateY(16px) scale(0.97);
-  transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1), transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), background 0.25s ease, border-color 0.25s ease;
+  opacity: 0;
+  transform: translateY(20px) scale(0.96);
+  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background 0.2s ease, border-color 0.2s ease;
   will-change: opacity, transform;
 }
 
@@ -2637,5 +2656,18 @@ body.menu-open {
 .scroll-reveal-right.revealed {
   opacity: 1;
   transform: translateX(0);
+}
+
+/* Scroll Up Floating Menu & Engagement Widget Enhancements */
+body.scrolling-up .floating-menu-btn {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 14px 38px rgba(0, 0, 0, 0.6), 0 0 25px rgba(99, 102, 241, 0.35);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+}
+
+body.scrolling-up .floating-engagement-widget {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.6), 0 0 30px rgba(99, 102, 241, 0.35);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
 }
 
