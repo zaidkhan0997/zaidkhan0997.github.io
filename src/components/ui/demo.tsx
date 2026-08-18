@@ -1,6 +1,6 @@
 import React from 'react';
 import { MinimalistHero } from './minimalist-hero';
-import { Instagram, Github, Send, Linkedin } from 'lucide-react';
+import { Instagram, Github, Send, Linkedin, Mail } from 'lucide-react';
 
 export default function MinimalistHeroDemo() {
   return (
@@ -27,6 +27,7 @@ export default function MinimalistHeroDemo() {
         { icon: Instagram, href: 'https://www.instagram.com/zaidkhan0997' },
         { icon: Send, href: 'https://t.me/zaidkhan0997' },
         { icon: Linkedin, href: 'https://www.linkedin.com/in/zaid-khan-a74948212/' },
+        { icon: Mail, href: 'mailto:kzaid0997@gmail.com' },
       ]}
       locationText="Himachal Pradesh, India"
     />
