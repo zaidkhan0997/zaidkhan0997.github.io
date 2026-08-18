@@ -62,50 +62,50 @@ export const Footer = () => {
               </p>
             </div>
 
-            {/* Social Links Pill */}
-            <div className="flex items-center space-x-2.5 rounded-full border border-white/20 bg-white/[0.03] p-2 backdrop-blur-md shadow-sm">
+            {/* Enlarged Social Links Pill */}
+            <div className="flex items-center space-x-3 rounded-full border border-white/20 bg-white/[0.03] p-2.5 sm:p-3 backdrop-blur-md shadow-md">
               <a
                 href="https://github.com/zaidkhan0997"
                 target="_blank"
                 rel="noreferrer"
-                className="flex h-8 w-8 items-center justify-center rounded-full border border-white/15 bg-white/[0.06] text-white/80 hover:border-rose-300 hover:bg-rose-400 hover:text-black transition-all hover:scale-110"
+                className="flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full border border-white/15 bg-white/[0.06] text-white/90 hover:border-rose-300 hover:bg-rose-400 hover:text-black transition-all hover:scale-110 shadow-sm"
                 title="GitHub"
               >
-                <Github className="h-4 w-4" />
+                <Github className="h-5 w-5 sm:h-5.5 sm:w-5.5" />
               </a>
               <a
                 href="https://www.instagram.com/zaidkhan0997"
                 target="_blank"
                 rel="noreferrer"
-                className="flex h-8 w-8 items-center justify-center rounded-full border border-white/15 bg-white/[0.06] text-white/80 hover:border-rose-300 hover:bg-rose-400 hover:text-black transition-all hover:scale-110"
+                className="flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full border border-white/15 bg-white/[0.06] text-white/90 hover:border-rose-300 hover:bg-rose-400 hover:text-black transition-all hover:scale-110 shadow-sm"
                 title="Instagram"
               >
-                <Instagram className="h-4 w-4" />
+                <Instagram className="h-5 w-5 sm:h-5.5 sm:w-5.5" />
               </a>
               <a
                 href="https://t.me/zaidkhan0997"
                 target="_blank"
                 rel="noreferrer"
-                className="flex h-8 w-8 items-center justify-center rounded-full border border-white/15 bg-white/[0.06] text-white/80 hover:border-rose-300 hover:bg-rose-400 hover:text-black transition-all hover:scale-110"
+                className="flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full border border-white/15 bg-white/[0.06] text-white/90 hover:border-rose-300 hover:bg-rose-400 hover:text-black transition-all hover:scale-110 shadow-sm"
                 title="Telegram"
               >
-                <Send className="h-4 w-4" />
+                <Send className="h-5 w-5 sm:h-5.5 sm:w-5.5" />
               </a>
               <a
                 href="https://www.linkedin.com/in/zaid-khan-a74948212/"
                 target="_blank"
                 rel="noreferrer"
-                className="flex h-8 w-8 items-center justify-center rounded-full border border-white/15 bg-white/[0.06] text-white/80 hover:border-rose-300 hover:bg-rose-400 hover:text-black transition-all hover:scale-110"
+                className="flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full border border-white/15 bg-white/[0.06] text-white/90 hover:border-rose-300 hover:bg-rose-400 hover:text-black transition-all hover:scale-110 shadow-sm"
                 title="LinkedIn"
               >
-                <Linkedin className="h-4 w-4" />
+                <Linkedin className="h-5 w-5 sm:h-5.5 sm:w-5.5" />
               </a>
               <a
                 href="mailto:kzaid0997@gmail.com"
-                className="flex h-8 w-8 items-center justify-center rounded-full border border-white/15 bg-white/[0.06] text-white/80 hover:border-rose-300 hover:bg-rose-400 hover:text-black transition-all hover:scale-110"
+                className="flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full border border-white/15 bg-white/[0.06] text-white/90 hover:border-rose-300 hover:bg-rose-400 hover:text-black transition-all hover:scale-110 shadow-sm"
                 title="Email Inbox"
               >
-                <Mail className="h-4 w-4" />
+                <Mail className="h-5 w-5 sm:h-5.5 sm:w-5.5" />
               </a>
             </div>
 
@@ -116,10 +116,10 @@ export const Footer = () => {
 
               <button
                 onClick={scrollToTop}
-                className="flex h-9 w-9 items-center justify-center rounded-2xl border border-rose-400/40 bg-white/[0.08] text-rose-300 backdrop-blur-md transition-all hover:border-rose-300 hover:bg-rose-400 hover:text-black hover:scale-110 shadow-sm"
+                className="flex h-10 w-10 items-center justify-center rounded-2xl border border-rose-400/40 bg-white/[0.08] text-rose-300 backdrop-blur-md transition-all hover:border-rose-300 hover:bg-rose-400 hover:text-black hover:scale-110 shadow-sm"
                 title="Back to top"
               >
-                <ArrowUp className="h-4 w-4" />
+                <ArrowUp className="h-5 w-5" />
               </button>
             </div>
           </div>

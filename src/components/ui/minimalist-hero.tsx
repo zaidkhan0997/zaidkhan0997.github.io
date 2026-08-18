@@ -30,14 +30,15 @@ const NavLink = ({ href, children }: { href: string; children: React.ReactNode }
   </a>
 );
 
+// Perfectly optically centered Social Icon button
 const SocialIcon = ({ href, icon: Icon }: { href: string; icon: LucideIcon }) => (
   <a
     href={href}
     target="_blank"
     rel="noopener noreferrer"
-    className="flex h-8.5 w-8.5 sm:h-9 sm:w-9 items-center justify-center rounded-full border border-rose-400/30 bg-white/[0.08] text-white/80 backdrop-blur-md transition-all hover:border-rose-300 hover:bg-rose-400 hover:text-black hover:scale-110 shadow-sm"
+    className="flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full border border-rose-400/40 bg-white/[0.08] text-white/90 backdrop-blur-md transition-all hover:border-rose-300 hover:bg-rose-400 hover:text-black hover:scale-110 shadow-md shrink-0 p-0 leading-none"
   >
-    <Icon className="h-4 w-4 sm:h-4.5 sm:w-4.5" />
+    <Icon className="h-5 w-5 sm:h-5.5 sm:w-5.5 shrink-0" />
   </a>
 );
 
@@ -222,15 +223,15 @@ export const MinimalistHero = ({
           </HeroCard3D>
         </div>
 
-        {/* Right Text - 3D Glass Card */}
+        {/* Right Column - Name Card + Separate Aligned Social Links Pill Container */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 1 }}
-          className="z-20 order-3 flex justify-center md:justify-start"
+          className="z-20 order-3 flex flex-col gap-3.5 items-center md:items-start w-full"
         >
+          {/* MOHD ZAID Name Card */}
           <HeroCard3D className="flex flex-col items-center justify-center text-center md:items-start md:text-left w-full">
-            {/* High-Contrast Elegist Serif for big title MOHD ZAID */}
             <h1 className="text-2xl font-black tracking-widest text-white sm:text-3xl md:text-4xl lg:text-5xl leading-tight select-none uppercase font-display">
               {overlayText.part1}{' '}
               <span className="text-rose-300 font-black drop-shadow-[0_0_12px_rgba(244,63,94,0.8)]">
@@ -242,22 +243,18 @@ export const MinimalistHero = ({
               Xiaomi &amp; Linux Kernel Architecture
             </p>
           </HeroCard3D>
+
+          {/* Separate Social Links Pill Container - Perfectly optically centered inner icons */}
+          <div className="flex items-center justify-center gap-2.5 sm:gap-3 rounded-3xl border border-white/20 bg-white/[0.04] p-2.5 sm:p-3 backdrop-blur-xl [transform:translateZ(0)] shadow-[inset_0_1.5px_2px_rgba(255,255,255,0.25),0_8px_24px_rgba(0,0,0,0.3)] w-full">
+            {socialLinks.map((link, index) => (
+              <SocialIcon key={index} href={link.href} icon={link.icon} />
+            ))}
+          </div>
         </motion.div>
       </div>
 
-      {/* Footer Elements with 3D Glass Pills */}
-      <footer className="z-30 flex w-full max-w-7xl flex-wrap items-center justify-between gap-3 py-2">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 1.1 }}
-          className="flex items-center space-x-2.5 rounded-full border border-white/20 bg-white/[0.03] p-1.5 sm:p-2 backdrop-blur-xl [transform:translateZ(0)] shadow-[inset_0_1.5px_2px_rgba(255,255,255,0.25)]"
-        >
-          {socialLinks.map((link, index) => (
-            <SocialIcon key={index} href={link.href} icon={link.icon} />
-          ))}
-        </motion.div>
-
+      {/* Footer Row */}
+      <footer className="z-30 flex w-full max-w-7xl items-center justify-end gap-3 py-2">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
