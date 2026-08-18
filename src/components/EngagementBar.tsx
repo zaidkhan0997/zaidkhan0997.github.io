@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Eye, Heart, GitBranch, Users, FolderGit2 } from 'lucide-react';
 import { fetchGitHubUser, GitHubUser } from '@/lib/github';
+import { BASE_VIEWS, BASE_LIKES, fetchCloudStats, updateCloudStats } from '@/lib/statsApi';
 
 // Reusable Ultra-Translucent 3D Glass Tilt Wrapper
 const Glass3DCard = ({ children, className = '', ...props }: { children: React.ReactNode; className?: string; [key: string]: any }) => {
@@ -46,42 +47,83 @@ const Glass3DCard = ({ children, className = '', ...props }: { children: React.R
 };
 
 export const EngagementBar = () => {
-  const [likes, setLikes] = useState(1518437);
   const [hasLiked, setHasLiked] = useState(false);
+  const [likes, setLikes] = useState(BASE_LIKES);
+  const [views, setViews] = useState(BASE_VIEWS);
   const [userInfo, setUserInfo] = useState<GitHubUser | null>(null);
 
   useEffect(() => {
+    // Persistent Local Like State
+    const savedLiked = localStorage.getItem('portfolio_has_liked_v1') === 'true';
+    setHasLiked(savedLiked);
+
+    // Sync real-time stats from Cloud API
+    fetchCloudStats().then((data) => {
+      let currentViews = data.views;
+      const currentLikes = data.likes;
+
+      // Increment view count in Cloud if new visit in this session
+      if (typeof window !== 'undefined' && !sessionStorage.getItem('portfolio_visited_session')) {
+        sessionStorage.setItem('portfolio_visited_session', 'true');
+        currentViews += 1;
+        updateCloudStats({ views: currentViews, likes: currentLikes });
+      }
+
+      setViews(currentViews);
+      setLikes(currentLikes);
+    });
+
     fetchGitHubUser().then((data) => {
       if (data) setUserInfo(data);
     });
+
+    const handleSync = (e: Event) => {
+      const customEvent = e as CustomEvent;
+      if (customEvent.detail) {
+        if (typeof customEvent.detail.views === 'number') setViews(customEvent.detail.views);
+        if (typeof customEvent.detail.likes === 'number') setLikes(customEvent.detail.likes);
+        if (typeof customEvent.detail.hasLiked === 'boolean') setHasLiked(customEvent.detail.hasLiked);
+      }
+    };
+
+    window.addEventListener('portfolio-cloud-stats-updated', handleSync);
+    return () => window.removeEventListener('portfolio-cloud-stats-updated', handleSync);
   }, []);
 
-  const handleLike = () => {
-    if (!hasLiked) {
-      setLikes((prev) => prev + 1);
-      setHasLiked(true);
-    } else {
-      setLikes((prev) => prev - 1);
-      setHasLiked(false);
-    }
+  const handleLike = async () => {
+    const nextState = !hasLiked;
+    setHasLiked(nextState);
+    localStorage.setItem('portfolio_has_liked_v1', nextState ? 'true' : 'false');
+
+    const nextLikes = nextState ? likes + 1 : Math.max(BASE_LIKES, likes - 1);
+    setLikes(nextLikes);
+
+    const updated = await updateCloudStats({ views, likes: nextLikes });
+    setLikes(updated.likes);
+
+    window.dispatchEvent(
+      new CustomEvent('portfolio-cloud-stats-updated', {
+        detail: { views, likes: updated.likes, hasLiked: nextState },
+      })
+    );
   };
 
   return (
     <section className="bg-transparent py-6 sm:py-8 border-b border-white/10">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 md:px-10">
         <div className="grid grid-cols-2 gap-2.5 sm:gap-4 sm:grid-cols-3 lg:grid-cols-5">
-          {/* Views Card */}
+          {/* Views Card with Real-Time Global Views Count */}
           <Glass3DCard className="flex items-center gap-2 sm:gap-3 border-rose-400/30">
             <div className="flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl border border-rose-400/40 bg-white/[0.08] text-rose-300 shadow-sm backdrop-blur-md">
               <Eye className="h-4 w-4 sm:h-5 sm:w-5 animate-pulse" />
             </div>
             <div className="min-w-0 flex-1">
               <p className="text-[9px] sm:text-[10px] font-semibold tracking-wider text-rose-200/80 uppercase truncate">Total Views</p>
-              <p className="text-xs sm:text-base md:text-lg font-extrabold text-rose-300 tracking-tight truncate">1,753,123</p>
+              <p className="text-xs sm:text-base md:text-lg font-extrabold text-rose-300 tracking-tight truncate">{views.toLocaleString()}</p>
             </div>
           </Glass3DCard>
 
-          {/* Interactive Like Card */}
+          {/* Persistent Real-Time Global Like Card */}
           <motion.div onClick={handleLike} className="cursor-pointer">
             <Glass3DCard className={`flex items-center gap-2 sm:gap-3 ${hasLiked ? 'border-pink-400 bg-pink-500/15 text-pink-300' : 'border-pink-400/30 text-pink-300'}`}>
               <div className={`flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl border border-pink-400/40 transition-colors backdrop-blur-md ${hasLiked ? 'bg-pink-500 text-white' : 'bg-white/[0.08] text-pink-300'}`}>

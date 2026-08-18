@@ -19,36 +19,66 @@ import {
   Layers,
   HardDrive
 } from 'lucide-react';
+import { BASE_VIEWS, BASE_LIKES, fetchCloudStats, updateCloudStats } from '@/lib/statsApi';
 
 export const FloatingMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [likes, setLikes] = useState(1518437);
   const [hasLiked, setHasLiked] = useState(false);
+  const [likes, setLikes] = useState(BASE_LIKES);
+  const [views, setViews] = useState(BASE_VIEWS);
 
   useEffect(() => {
+    // Persistent Local Like State
+    const savedLiked = localStorage.getItem('portfolio_has_liked_v1') === 'true';
+    setHasLiked(savedLiked);
+
+    // Sync real-time stats from Cloud API
+    fetchCloudStats().then((data) => {
+      setViews(data.views);
+      setLikes(data.likes);
+    });
+
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') setIsOpen(false);
     };
     const handleToggleEvent = () => {
       setIsOpen((prev) => !prev);
     };
+    const handleSync = (e: Event) => {
+      const customEvent = e as CustomEvent;
+      if (customEvent.detail) {
+        if (typeof customEvent.detail.views === 'number') setViews(customEvent.detail.views);
+        if (typeof customEvent.detail.likes === 'number') setLikes(customEvent.detail.likes);
+        if (typeof customEvent.detail.hasLiked === 'boolean') setHasLiked(customEvent.detail.hasLiked);
+      }
+    };
 
     window.addEventListener('keydown', handleKeyDown);
     window.addEventListener('toggle-floating-menu', handleToggleEvent);
+    window.addEventListener('portfolio-cloud-stats-updated', handleSync);
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('toggle-floating-menu', handleToggleEvent);
+      window.removeEventListener('portfolio-cloud-stats-updated', handleSync);
     };
   }, []);
 
-  const handleLike = () => {
-    if (!hasLiked) {
-      setLikes((prev) => prev + 1);
-      setHasLiked(true);
-    } else {
-      setLikes((prev) => prev - 1);
-      setHasLiked(false);
-    }
+  const handleLike = async () => {
+    const nextState = !hasLiked;
+    setHasLiked(nextState);
+    localStorage.setItem('portfolio_has_liked_v1', nextState ? 'true' : 'false');
+
+    const nextLikes = nextState ? likes + 1 : Math.max(BASE_LIKES, likes - 1);
+    setLikes(nextLikes);
+
+    const updated = await updateCloudStats({ views, likes: nextLikes });
+    setLikes(updated.likes);
+
+    window.dispatchEvent(
+      new CustomEvent('portfolio-cloud-stats-updated', {
+        detail: { views, likes: updated.likes, hasLiked: nextState },
+      })
+    );
   };
 
   const navItems = [
@@ -252,14 +282,14 @@ export const FloatingMenu = () => {
                 </div>
               </div>
 
-              {/* Engagement Stats & GitHub Button Card with Working Interactive Like Button */}
+              {/* Engagement Stats & GitHub Button Card with Persistent Synchronized Views & Like Count */}
               <div className="rounded-2xl border border-white/20 bg-white/[0.04] p-3.5 backdrop-blur-2xl shadow-[inset_0_1px_1.5px_rgba(255,255,255,0.2)] space-y-3">
                 <div className="grid grid-cols-2 gap-2.5">
-                  <div className="flex items-center justify-center gap-2 rounded-xl border border-rose-400/40 bg-white/[0.08] py-2 px-3 text-rose-300 font-bold font-mono text-xs">
-                    <Eye className="h-3.5 w-3.5" /> 1.75M
+                  <div className="flex items-center justify-center gap-2 rounded-xl border border-rose-400/40 bg-white/[0.08] py-2 px-3 text-rose-300 font-bold font-mono text-xs" title="Total Views">
+                    <Eye className="h-3.5 w-3.5 animate-pulse" /> {(views / 1000000).toFixed(2)}M
                   </div>
 
-                  {/* Fully Working Interactive Like Button */}
+                  {/* Synchronized Persistent Interactive Like Button */}
                   <button
                     onClick={handleLike}
                     className={`flex items-center justify-center gap-2 rounded-xl border py-2 px-3 font-bold font-mono text-xs transition-all active:scale-95 ${
