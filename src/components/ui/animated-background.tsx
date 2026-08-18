@@ -23,26 +23,28 @@ export const AuroraBackground = ({
   }, []);
 
   return (
-    <div className={`relative min-h-screen overflow-hidden bg-[#070c1e] text-white w-full ${className}`}>
-      {/* Ambient CSS Radial Glow Mesh for Consistent Rich Color Across Desktop & Mobile */}
+    <div className={`relative min-h-screen overflow-hidden bg-[#14234d] text-white w-full ${className}`}>
+      {/* Lighter Luminous Ambient CSS Radial Glow Mesh */}
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-        {/* Top-Left Cyan Aura */}
-        <div className="absolute -top-40 -left-40 h-[500px] w-[500px] rounded-full bg-cyan-500/15 blur-[120px]" />
-        {/* Center-Right Purple Aura */}
-        <div className="absolute top-1/3 -right-40 h-[600px] w-[600px] rounded-full bg-purple-600/15 blur-[140px]" />
-        {/* Bottom Cyan Glow */}
-        <div className="absolute -bottom-40 left-1/4 h-[500px] w-[500px] rounded-full bg-cyan-600/10 blur-[130px]" />
+        {/* Top-Left Bright Cyan Aura */}
+        <div className="absolute -top-40 -left-40 h-[700px] w-[700px] rounded-full bg-cyan-400/40 blur-[140px]" />
+        {/* Center-Right Vibrant Purple Luminous Aura */}
+        <div className="absolute top-1/4 -right-40 h-[800px] w-[800px] rounded-full bg-purple-500/40 blur-[150px]" />
+        {/* Bottom Bright Teal Luminous Glow */}
+        <div className="absolute -bottom-40 left-1/3 h-[650px] w-[650px] rounded-full bg-cyan-500/35 blur-[130px]" />
+        {/* Center Luminous Royal Blue Glow */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[850px] w-[850px] rounded-full bg-indigo-500/30 blur-[160px]" />
       </div>
 
-      {/* 3D LightPillar active only on Desktop for 60 FPS Lag-Free Mobile Performance */}
+      {/* 3D LightPillar active on Desktop */}
       {!isMobile && (
-        <div className="fixed inset-0 pointer-events-none z-0 opacity-40">
+        <div className="fixed inset-0 pointer-events-none z-0 opacity-70">
           <LightPillar
             topColor="#06b6d4"
-            bottomColor="#a855f7"
-            intensity={0.8}
+            bottomColor="#c084fc"
+            intensity={1.2}
             rotationSpeed={0.2}
-            glowAmount={0.003}
+            glowAmount={0.005}
             pillarWidth={8.4}
             pillarHeight={0.5}
             noiseIntensity={0.05}
@@ -53,6 +55,9 @@ export const AuroraBackground = ({
           />
         </div>
       )}
+
+      {/* Whole-Website Background Glass Blur Overlay */}
+      <div className="fixed inset-0 pointer-events-none z-0 backdrop-blur-[50px] bg-black/10" />
 
       {/* Content Layer */}
       <div className="relative z-10">

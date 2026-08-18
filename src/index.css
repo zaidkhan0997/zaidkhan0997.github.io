@@ -32,7 +32,7 @@
     @apply border-border;
   }
   body {
-    @apply bg-[#070c1e] text-foreground font-sans antialiased selection:bg-cyan-400 selection:text-black;
+    @apply bg-[#14234d] text-foreground font-sans antialiased selection:bg-cyan-400 selection:text-black;
     font-family: 'Ubuntu', 'Ubuntu Sans', -apple-system, system-ui, sans-serif;
   }
 
