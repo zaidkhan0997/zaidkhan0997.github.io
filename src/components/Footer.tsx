@@ -77,7 +77,7 @@ export const Footer = () => {
                 href="https://www.instagram.com/zaidkhan0997"
                 target="_blank"
                 rel="noreferrer"
-                className="flex h-8 w-8 items-center justify-center rounded-full border border-white/15 bg-white/[0.06] text-white/80 hover:border-pink-300 hover:bg-pink-500 hover:text-white transition-all hover:scale-110"
+                className="flex h-8 w-8 items-center justify-center rounded-full border border-white/15 bg-white/[0.06] text-white/80 hover:border-rose-300 hover:bg-rose-400 hover:text-black transition-all hover:scale-110"
                 title="Instagram"
               >
                 <Instagram className="h-4 w-4" />
@@ -95,7 +95,7 @@ export const Footer = () => {
                 href="https://www.linkedin.com/in/zaid-khan-a74948212/"
                 target="_blank"
                 rel="noreferrer"
-                className="flex h-8 w-8 items-center justify-center rounded-full border border-white/15 bg-white/[0.06] text-white/80 hover:border-blue-300 hover:bg-blue-500 hover:text-white transition-all hover:scale-110"
+                className="flex h-8 w-8 items-center justify-center rounded-full border border-white/15 bg-white/[0.06] text-white/80 hover:border-rose-300 hover:bg-rose-400 hover:text-black transition-all hover:scale-110"
                 title="LinkedIn"
               >
                 <Linkedin className="h-4 w-4" />

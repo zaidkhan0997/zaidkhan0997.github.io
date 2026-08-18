@@ -124,7 +124,7 @@ export const ContactSection = () => {
             </ContactCard3D>
 
             <ContactCard3D className="flex items-center gap-3.5 sm:gap-4">
-              <div className="flex h-10 w-10 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-2xl border border-blue-400/40 bg-white/[0.08] text-blue-300 backdrop-blur-md shadow-sm">
+              <div className="flex h-10 w-10 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-2xl border border-rose-400/40 bg-white/[0.08] text-rose-300 backdrop-blur-md shadow-sm">
                 <Linkedin className="h-5 w-5 sm:h-5.5 sm:w-5.5" />
               </div>
               <div className="min-w-0">
@@ -133,7 +133,7 @@ export const ContactSection = () => {
                   href="https://www.linkedin.com/in/zaid-khan-a74948212/"
                   target="_blank"
                   rel="noreferrer"
-                  className="text-xs sm:text-sm font-bold text-white hover:text-blue-300 transition-colors truncate block"
+                  className="text-xs sm:text-sm font-bold text-white hover:text-rose-300 transition-colors truncate block"
                 >
                   zaid-khan-a74948212
                 </a>
