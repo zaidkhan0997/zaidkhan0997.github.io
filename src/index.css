@@ -32,7 +32,11 @@
     @apply border-border;
   }
   body {
-    @apply bg-black text-foreground font-sans antialiased selection:bg-yellow-400 selection:text-black;
-    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    @apply bg-[#030712] text-foreground font-sans antialiased selection:bg-cyan-400 selection:text-black;
+    font-family: 'Ubuntu', 'Ubuntu Sans', -apple-system, system-ui, sans-serif;
+  }
+
+  code, pre, .font-mono {
+    font-family: 'Ubuntu Mono', monospace, ui-monospace;
   }
 }

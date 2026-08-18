@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { Search, Star, GitFork, ExternalLink, FolderGit2, RefreshCw } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Search, Star, GitFork, ExternalLink, FolderGit2, RefreshCw, ChevronDown, ChevronUp } from 'lucide-react';
 import { fetchGitHubRepos, GitHubRepo } from '@/lib/github';
 
 const FALLBACK_REPOS: GitHubRepo[] = [
@@ -116,12 +116,93 @@ const FALLBACK_REPOS: GitHubRepo[] = [
   },
 ];
 
+// Interactive 3D Translucent Glass Tilt Card Component
+const RepoCard3D = ({ repo, index }: { repo: GitHubRepo; index: number }) => {
+  const [rotateX, setRotateX] = useState(0);
+  const [rotateY, setRotateY] = useState(0);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    const card = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - card.left;
+    const y = e.clientY - card.top;
+    const centerX = card.width / 2;
+    const centerY = card.height / 2;
+    const rotateXVal = ((y - centerY) / centerY) * -12;
+    const rotateYVal = ((x - centerX) / centerX) * 12;
+    setRotateX(rotateXVal);
+    setRotateY(rotateYVal);
+  };
+
+  const handleMouseLeave = () => {
+    setRotateX(0);
+    setRotateY(0);
+  };
+
+  return (
+    <motion.a
+      href={repo.html_url}
+      target="_blank"
+      rel="noopener noreferrer"
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      transition={{ duration: 0.4, delay: (index % 4) * 0.06 }}
+      style={{
+        transformStyle: 'preserve-3d',
+        perspective: '1000px',
+        transform: `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`,
+      }}
+      className="group relative flex flex-col justify-between rounded-3xl border border-white/20 bg-white/[0.03] p-5 sm:p-6 backdrop-blur-3xl shadow-[inset_0_1.5px_2px_rgba(255,255,255,0.25),0_12px_32px_rgba(0,0,0,0.35)] hover:border-cyan-300/80 hover:bg-white/[0.09] hover:shadow-[0_0_40px_rgba(6,182,212,0.4)] transition-all duration-300 ease-out"
+    >
+      {/* Glossy Top Specular Lighting Line */}
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent rounded-t-3xl" />
+
+      <div>
+        <div className="flex items-center justify-between gap-2 mb-3">
+          <div className="flex items-center gap-2.5 min-w-0">
+            <div className="flex h-8.5 w-8.5 sm:h-9 sm:w-9 items-center justify-center rounded-2xl border border-cyan-400/40 bg-white/[0.08] text-cyan-300 backdrop-blur-md group-hover:bg-cyan-400 group-hover:text-black transition-colors shadow-sm shrink-0">
+              <FolderGit2 className="h-4 w-4 sm:h-4.5 sm:w-4.5 group-hover:scale-110 transition-transform" />
+            </div>
+            <h3 className="text-sm sm:text-base font-bold text-white group-hover:text-cyan-300 transition-colors font-mono tracking-tight truncate">
+              {repo.name}
+            </h3>
+          </div>
+          <ExternalLink className="h-4 w-4 text-cyan-300/80 opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all shrink-0" />
+        </div>
+
+        <p className="text-xs text-white/75 leading-relaxed mb-5 font-normal">
+          {repo.description || 'Open source repository maintained by MOHD ZAID.'}
+        </p>
+      </div>
+
+      <div className="flex items-center justify-between pt-4 border-t border-white/15 text-xs text-white/75 font-mono">
+        <span className="inline-flex items-center gap-1.5 font-semibold text-cyan-300">
+          <span className="h-2 w-2 rounded-full bg-cyan-400 animate-pulse" />
+          {repo.language || 'Code'}
+        </span>
+
+        <div className="flex items-center gap-4">
+          <span className="flex items-center gap-1 hover:text-cyan-300 transition-colors">
+            <Star className="h-3.5 w-3.5 text-cyan-300 fill-cyan-300/20" /> {repo.stargazers_count}
+          </span>
+          <span className="flex items-center gap-1 hover:text-white transition-colors">
+            <GitFork className="h-3.5 w-3.5" /> {repo.forks_count}
+          </span>
+        </div>
+      </div>
+    </motion.a>
+  );
+};
+
 export const ReposSection = () => {
   const [repos, setRepos] = useState<GitHubRepo[]>(FALLBACK_REPOS);
   const [loading, setLoading] = useState(true);
   const [isLive, setIsLive] = useState(false);
   const [filter, setFilter] = useState<'all' | 'android' | 'cpp' | 'shell' | 'web'>('all');
   const [search, setSearch] = useState('');
+  const [showAll, setShowAll] = useState(false);
 
   const loadLiveRepos = async () => {
     setLoading(true);
@@ -146,6 +227,9 @@ export const ReposSection = () => {
     return matchesFilter && matchesSearch;
   });
 
+  const displayedRepos = showAll ? filteredRepos : filteredRepos.slice(0, 4);
+  const hasMore = filteredRepos.length > 4;
+
   return (
     <section id="projects" className="bg-transparent py-20 border-b border-white/10 overflow-hidden">
       <div className="mx-auto max-w-7xl px-6 md:px-10">
@@ -156,7 +240,7 @@ export const ReposSection = () => {
           transition={{ duration: 0.6 }}
           className="text-center space-y-3 mb-12"
         >
-          <div className="inline-flex items-center gap-2 rounded-full bg-cyan-500/10 px-3 py-1 text-xs font-semibold text-cyan-300 border border-cyan-500/30 backdrop-blur-md">
+          <div className="inline-flex items-center gap-2 rounded-full bg-cyan-400/20 px-3.5 py-1 text-xs font-semibold text-cyan-300 border border-cyan-400/40 backdrop-blur-3xl shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)]">
             <span className={`h-2 w-2 rounded-full ${isLive ? 'bg-emerald-400 animate-pulse' : 'bg-cyan-400'}`} />
             <span>{isLive ? 'LIVE GITHUB REST API' : 'OPEN SOURCE PROJECTS'}</span>
           </div>
@@ -164,7 +248,7 @@ export const ReposSection = () => {
           <h2 className="text-3xl font-extrabold md:text-5xl tracking-tight text-white">
             GitHub Repositories
           </h2>
-          <p className="text-sm text-white/60 max-w-2xl mx-auto">
+          <p className="text-sm text-white/70 max-w-2xl mx-auto">
             Fetched in real-time from @zaidkhan0997&apos;s GitHub profile ({repos.length} total repositories).
           </p>
         </motion.div>
@@ -179,41 +263,41 @@ export const ReposSection = () => {
         >
           <div className="flex flex-wrap items-center justify-center gap-2">
             <button
-              onClick={() => setFilter('all')}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold backdrop-blur-md transition-all ${
+              onClick={() => { setFilter('all'); setShowAll(false); }}
+              className={`px-3 py-1.5 rounded-2xl text-xs font-semibold backdrop-blur-3xl transition-all shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] ${
                 filter === 'all'
-                  ? 'bg-cyan-500 text-black shadow-sm font-bold'
-                  : 'bg-black/40 text-white/70 hover:text-white border border-white/10'
+                  ? 'bg-cyan-400 text-black font-bold shadow-md'
+                  : 'bg-white/[0.03] text-white/80 hover:text-white border border-white/20 hover:bg-white/10'
               }`}
             >
               All ({repos.length})
             </button>
             <button
-              onClick={() => setFilter('android')}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold backdrop-blur-md transition-all ${
+              onClick={() => { setFilter('android'); setShowAll(false); }}
+              className={`px-3 py-1.5 rounded-2xl text-xs font-semibold backdrop-blur-3xl transition-all shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] ${
                 filter === 'android'
-                  ? 'bg-cyan-500 text-black shadow-sm font-bold'
-                  : 'bg-black/40 text-white/70 hover:text-white border border-white/10'
+                  ? 'bg-cyan-400 text-black font-bold shadow-md'
+                  : 'bg-white/[0.03] text-white/80 hover:text-white border border-white/20 hover:bg-white/10'
               }`}
             >
               Android & Kernel
             </button>
             <button
-              onClick={() => setFilter('shell')}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold backdrop-blur-md transition-all ${
+              onClick={() => { setFilter('shell'); setShowAll(false); }}
+              className={`px-3 py-1.5 rounded-2xl text-xs font-semibold backdrop-blur-3xl transition-all shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] ${
                 filter === 'shell'
-                  ? 'bg-cyan-500 text-black shadow-sm font-bold'
-                  : 'bg-black/40 text-white/70 hover:text-white border border-white/10'
+                  ? 'bg-cyan-400 text-black font-bold shadow-md'
+                  : 'bg-white/[0.03] text-white/80 hover:text-white border border-white/20 hover:bg-white/10'
               }`}
             >
               Shell & CLI
             </button>
             <button
-              onClick={() => setFilter('web')}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold backdrop-blur-md transition-all ${
+              onClick={() => { setFilter('web'); setShowAll(false); }}
+              className={`px-3 py-1.5 rounded-2xl text-xs font-semibold backdrop-blur-3xl transition-all shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] ${
                 filter === 'web'
-                  ? 'bg-cyan-500 text-black shadow-sm font-bold'
-                  : 'bg-black/40 text-white/70 hover:text-white border border-white/10'
+                  ? 'bg-cyan-400 text-black font-bold shadow-md'
+                  : 'bg-white/[0.03] text-white/80 hover:text-white border border-white/20 hover:bg-white/10'
               }`}
             >
               Web & Identity
@@ -222,72 +306,57 @@ export const ReposSection = () => {
             <button
               onClick={loadLiveRepos}
               title="Refresh live GitHub data"
-              className="p-2 rounded-xl bg-black/40 text-white/70 hover:text-cyan-400 border border-white/10 transition-colors"
+              className="p-1.5 rounded-2xl bg-white/[0.03] text-white/80 hover:text-cyan-300 border border-white/20 backdrop-blur-3xl transition-colors"
             >
-              <RefreshCw className={`h-3.5 w-3.5 ${loading ? 'animate-spin text-cyan-400' : ''}`} />
+              <RefreshCw className={`h-3.5 w-3.5 ${loading ? 'animate-spin text-cyan-300' : ''}`} />
             </button>
           </div>
 
           <div className="relative w-full md:w-72">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/40" />
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-white/50 pointer-events-none" />
             <input
               type="text"
               placeholder="Search live repositories..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full rounded-xl border border-white/10 bg-black/40 backdrop-blur-md pl-9 pr-4 py-2 text-xs text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-cyan-400"
+              className="w-full rounded-2xl border border-white/20 bg-white/[0.03] backdrop-blur-3xl pl-10 pr-4 py-2.5 text-xs text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-cyan-400 shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] resize-none"
             />
           </div>
         </motion.div>
 
         {/* Repos Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {filteredRepos.map((repo, index) => (
-            <motion.a
-              key={repo.id}
-              href={repo.html_url}
-              target="_blank"
-              rel="noopener noreferrer"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: false, amount: 0.15 }}
-              transition={{ duration: 0.4, delay: (index % 2) * 0.1 }}
-              className="group flex flex-col justify-between rounded-2xl border border-white/10 bg-black/40 p-6 shadow-sm backdrop-blur-md hover:border-cyan-500/50 hover:shadow-md transition-all"
-            >
-              <div>
-                <div className="flex items-center justify-between gap-2 mb-2">
-                  <div className="flex items-center gap-2">
-                    <FolderGit2 className="h-4.5 w-4.5 text-cyan-400 group-hover:scale-110 transition-transform" />
-                    <h3 className="text-base font-bold text-white group-hover:text-cyan-300 transition-colors font-mono">
-                      {repo.name}
-                    </h3>
-                  </div>
-                  <ExternalLink className="h-4 w-4 text-white/40 opacity-0 group-hover:opacity-100 transition-opacity" />
-                </div>
-
-                <p className="text-xs text-white/60 leading-relaxed mb-4">
-                  {repo.description || 'Open source repository maintained by MOHD ZAID.'}
-                </p>
-              </div>
-
-              <div className="flex items-center justify-between pt-4 border-t border-white/10 text-xs text-white/60 font-mono">
-                <span className="inline-flex items-center gap-1.5 font-semibold text-white">
-                  <span className="h-2 w-2 rounded-full bg-cyan-400" />
-                  {repo.language || 'Code'}
-                </span>
-
-                <div className="flex items-center gap-4">
-                  <span className="flex items-center gap-1 hover:text-cyan-400 transition-colors">
-                    <Star className="h-3.5 w-3.5 text-cyan-400 fill-cyan-400/20" /> {repo.stargazers_count}
-                  </span>
-                  <span className="flex items-center gap-1 hover:text-white transition-colors">
-                    <GitFork className="h-3.5 w-3.5" /> {repo.forks_count}
-                  </span>
-                </div>
-              </div>
-            </motion.a>
-          ))}
+          <AnimatePresence mode="popLayout">
+            {displayedRepos.map((repo, index) => (
+              <RepoCard3D key={repo.id} repo={repo} index={index} />
+            ))}
+          </AnimatePresence>
         </div>
+
+        {/* Show More / Show Less Button */}
+        {hasMore && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mt-10 flex justify-center"
+          >
+            <button
+              onClick={() => setShowAll(!showAll)}
+              className="group flex items-center gap-2 rounded-full border border-cyan-400/50 bg-white/[0.05] px-6 py-3 text-xs font-bold text-cyan-300 backdrop-blur-3xl shadow-[inset_0_1.5px_2px_rgba(255,255,255,0.3),0_10px_25px_rgba(0,0,0,0.4)] transition-all hover:border-cyan-300 hover:bg-cyan-400 hover:text-black hover:scale-105"
+            >
+              <span>
+                {showAll
+                  ? 'Show Less Repositories'
+                  : `Show All Repositories (${filteredRepos.length} Total)`}
+              </span>
+              {showAll ? (
+                <ChevronUp className="h-4 w-4 transition-transform group-hover:-translate-y-0.5" />
+              ) : (
+                <ChevronDown className="h-4 w-4 transition-transform group-hover:translate-y-0.5" />
+              )}
+            </button>
+          </motion.div>
+        )}
       </div>
     </section>
   );
