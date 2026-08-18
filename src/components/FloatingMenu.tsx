@@ -22,6 +22,8 @@ import {
 
 export const FloatingMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [likes, setLikes] = useState(1518437);
+  const [hasLiked, setHasLiked] = useState(false);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -38,6 +40,16 @@ export const FloatingMenu = () => {
       window.removeEventListener('toggle-floating-menu', handleToggleEvent);
     };
   }, []);
+
+  const handleLike = () => {
+    if (!hasLiked) {
+      setLikes((prev) => prev + 1);
+      setHasLiked(true);
+    } else {
+      setLikes((prev) => prev - 1);
+      setHasLiked(false);
+    }
+  };
 
   const navItems = [
     {
@@ -117,12 +129,14 @@ export const FloatingMenu = () => {
                   </div>
                 </div>
 
+                {/* Bigger & Prominent Close Button */}
                 <button
                   onClick={() => setIsOpen(false)}
-                  className="flex h-8.5 w-8.5 items-center justify-center rounded-xl border border-rose-400/40 bg-white/[0.08] text-rose-300 backdrop-blur-md hover:bg-rose-400 hover:text-black transition-all shrink-0 shadow-sm"
+                  className="flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-2xl border border-rose-400/50 bg-white/[0.1] text-rose-300 backdrop-blur-md hover:bg-rose-400 hover:text-black hover:scale-105 transition-all shrink-0 shadow-md active:scale-95"
                   title="Close Menu"
+                  aria-label="Close Menu"
                 >
-                  <X className="h-4 w-4" />
+                  <X className="h-6 w-6 stroke-[2.5]" />
                 </button>
               </div>
 
@@ -238,16 +252,26 @@ export const FloatingMenu = () => {
                 </div>
               </div>
 
-              {/* Engagement Stats & GitHub Button Card */}
+              {/* Engagement Stats & GitHub Button Card with Working Interactive Like Button */}
               <div className="rounded-2xl border border-white/20 bg-white/[0.04] p-3.5 backdrop-blur-2xl shadow-[inset_0_1px_1.5px_rgba(255,255,255,0.2)] space-y-3">
                 <div className="grid grid-cols-2 gap-2.5">
                   <div className="flex items-center justify-center gap-2 rounded-xl border border-rose-400/40 bg-white/[0.08] py-2 px-3 text-rose-300 font-bold font-mono text-xs">
                     <Eye className="h-3.5 w-3.5" /> 1.75M
                   </div>
 
-                  <div className="flex items-center justify-center gap-2 rounded-xl border border-pink-400/40 bg-white/[0.08] py-2 px-3 text-pink-300 font-bold font-mono text-xs">
-                    <Heart className="h-3.5 w-3.5 fill-pink-400/20" /> 1.52M
-                  </div>
+                  {/* Fully Working Interactive Like Button */}
+                  <button
+                    onClick={handleLike}
+                    className={`flex items-center justify-center gap-2 rounded-xl border py-2 px-3 font-bold font-mono text-xs transition-all active:scale-95 ${
+                      hasLiked
+                        ? 'border-pink-400 bg-pink-500 text-white shadow-[0_0_15px_rgba(236,72,153,0.5)]'
+                        : 'border-pink-400/40 bg-white/[0.08] text-pink-300 hover:bg-pink-500/20'
+                    }`}
+                    title={hasLiked ? 'Liked!' : 'Click to Like'}
+                  >
+                    <Heart className={`h-3.5 w-3.5 ${hasLiked ? 'fill-current text-white' : 'fill-pink-400/20 text-pink-300'}`} />
+                    <span>{(likes / 1000000).toFixed(2)}M</span>
+                  </button>
                 </div>
 
                 <a
