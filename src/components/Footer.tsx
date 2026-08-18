@@ -31,7 +31,7 @@ const FooterGlassCard3D = ({ children, className = '' }: { children: React.React
         perspective: '1000px',
         transform: `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`,
       }}
-      className={`rounded-3xl border border-white/20 bg-white/[0.04] p-6 backdrop-blur-3xl shadow-[inset_0_1.5px_2px_rgba(255,255,255,0.25),0_12px_32px_rgba(0,0,0,0.35)] hover:border-cyan-300/80 hover:bg-white/[0.09] hover:shadow-[0_0_35px_rgba(6,182,212,0.4)] transition-all duration-300 ease-out ${className}`}
+      className={`rounded-3xl border border-white/20 bg-white/[0.04] p-6 backdrop-blur-3xl shadow-[inset_0_1.5px_2px_rgba(255,255,255,0.25),0_12px_32px_rgba(0,0,0,0.35)] hover:border-rose-300/80 hover:bg-white/[0.09] hover:shadow-[0_0_35px_rgba(244,63,94,0.4)] transition-all duration-300 ease-out ${className}`}
     >
       {children}
     </motion.div>
@@ -53,7 +53,7 @@ export const Footer = () => {
             <div>
               <p className="font-bold text-white text-sm mb-1 flex items-center gap-2">
                 <span>MOHD ZAID</span>
-                <span className="rounded-full border border-cyan-400/30 bg-white/[0.08] px-2.5 py-0.5 text-[10px] font-mono text-cyan-300 backdrop-blur-md">
+                <span className="rounded-full border border-rose-400/30 bg-white/[0.08] px-2.5 py-0.5 text-[10px] font-mono text-rose-300 backdrop-blur-md">
                   zaidkhan0997
                 </span>
               </p>
@@ -68,7 +68,7 @@ export const Footer = () => {
                 href="https://github.com/zaidkhan0997"
                 target="_blank"
                 rel="noreferrer"
-                className="flex h-8 w-8 items-center justify-center rounded-full border border-white/15 bg-white/[0.06] text-white/80 hover:border-cyan-300 hover:bg-cyan-400 hover:text-black transition-all hover:scale-110"
+                className="flex h-8 w-8 items-center justify-center rounded-full border border-white/15 bg-white/[0.06] text-white/80 hover:border-rose-300 hover:bg-rose-400 hover:text-black transition-all hover:scale-110"
                 title="GitHub"
               >
                 <Github className="h-4 w-4" />
@@ -86,7 +86,7 @@ export const Footer = () => {
                 href="https://t.me/zaidkhan0997"
                 target="_blank"
                 rel="noreferrer"
-                className="flex h-8 w-8 items-center justify-center rounded-full border border-white/15 bg-white/[0.06] text-white/80 hover:border-cyan-300 hover:bg-cyan-400 hover:text-black transition-all hover:scale-110"
+                className="flex h-8 w-8 items-center justify-center rounded-full border border-white/15 bg-white/[0.06] text-white/80 hover:border-rose-300 hover:bg-rose-400 hover:text-black transition-all hover:scale-110"
                 title="Telegram"
               >
                 <Send className="h-4 w-4" />
@@ -102,7 +102,7 @@ export const Footer = () => {
               </a>
               <a
                 href="mailto:kzaid0997@gmail.com"
-                className="flex h-8 w-8 items-center justify-center rounded-full border border-white/15 bg-white/[0.06] text-white/80 hover:border-cyan-300 hover:bg-cyan-400 hover:text-black transition-all hover:scale-110"
+                className="flex h-8 w-8 items-center justify-center rounded-full border border-white/15 bg-white/[0.06] text-white/80 hover:border-rose-300 hover:bg-rose-400 hover:text-black transition-all hover:scale-110"
                 title="Email Inbox"
               >
                 <Mail className="h-4 w-4" />
@@ -116,7 +116,7 @@ export const Footer = () => {
 
               <button
                 onClick={scrollToTop}
-                className="flex h-9 w-9 items-center justify-center rounded-2xl border border-cyan-400/40 bg-white/[0.08] text-cyan-300 backdrop-blur-md transition-all hover:border-cyan-300 hover:bg-cyan-400 hover:text-black hover:scale-110 shadow-sm"
+                className="flex h-9 w-9 items-center justify-center rounded-2xl border border-rose-400/40 bg-white/[0.08] text-rose-300 backdrop-blur-md transition-all hover:border-rose-300 hover:bg-rose-400 hover:text-black hover:scale-110 shadow-sm"
                 title="Back to top"
               >
                 <ArrowUp className="h-4 w-4" />

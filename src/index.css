@@ -32,7 +32,8 @@
     @apply border-border;
   }
   body {
-    @apply bg-[#14234d] text-foreground font-sans antialiased selection:bg-cyan-400 selection:text-black;
+    background: radial-gradient(circle at center bottom, #3b0b15 0%, #0d080a 65%);
+    @apply text-foreground font-sans antialiased selection:bg-rose-400 selection:text-black;
     font-family: 'Ubuntu', 'Ubuntu Sans', -apple-system, system-ui, sans-serif;
   }
 

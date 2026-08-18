@@ -24,7 +24,7 @@ export interface MinimalistHeroProps {
 const NavLink = ({ href, children }: { href: string; children: React.ReactNode }) => (
   <a
     href={href}
-    className="px-3.5 py-1.5 rounded-2xl text-xs font-semibold tracking-wider text-white/80 transition-all hover:text-cyan-300 border border-white/15 hover:border-cyan-400/50 bg-white/[0.03] hover:bg-white/[0.09] [transform:translateZ(0)] uppercase font-ubuntu"
+    className="px-3.5 py-1.5 rounded-2xl text-xs font-semibold tracking-wider text-white/80 transition-all hover:text-rose-300 border border-white/15 hover:border-rose-400/50 bg-white/[0.03] hover:bg-white/[0.09] [transform:translateZ(0)] uppercase font-ubuntu"
   >
     {children}
   </a>
@@ -35,7 +35,7 @@ const SocialIcon = ({ href, icon: Icon }: { href: string; icon: LucideIcon }) =>
     href={href}
     target="_blank"
     rel="noopener noreferrer"
-    className="flex h-8.5 w-8.5 sm:h-9 sm:w-9 items-center justify-center rounded-full border border-cyan-400/30 bg-white/[0.08] text-white/80 backdrop-blur-md transition-all hover:border-cyan-300 hover:bg-cyan-400 hover:text-black hover:scale-110 shadow-sm"
+    className="flex h-8.5 w-8.5 sm:h-9 sm:w-9 items-center justify-center rounded-full border border-rose-400/30 bg-white/[0.08] text-white/80 backdrop-blur-md transition-all hover:border-rose-300 hover:bg-rose-400 hover:text-black hover:scale-110 shadow-sm"
   >
     <Icon className="h-4 w-4 sm:h-4.5 sm:w-4.5" />
   </a>
@@ -76,7 +76,7 @@ const HeroCard3D = ({ children, className = '' }: { children: React.ReactNode; c
         transform: `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`,
       }}
       className={cn(
-        'rounded-3xl border border-white/20 bg-white/[0.04] p-5 sm:p-8 backdrop-blur-xl [transform:translateZ(0)] shadow-[inset_0_1.5px_2px_rgba(255,255,255,0.25),0_12px_32px_rgba(0,0,0,0.35)] hover:border-cyan-300/80 hover:bg-white/[0.09] hover:shadow-[0_0_40px_rgba(6,182,212,0.4)] transition-all duration-300 ease-out',
+        'rounded-3xl border border-white/20 bg-white/[0.04] p-5 sm:p-8 backdrop-blur-xl [transform:translateZ(0)] shadow-[inset_0_1.5px_2px_rgba(255,255,255,0.25),0_12px_32px_rgba(0,0,0,0.35)] hover:border-rose-300/80 hover:bg-white/[0.09] hover:shadow-[0_0_40px_rgba(244,63,94,0.4)] transition-all duration-300 ease-out',
         className
       )}
     >
@@ -88,8 +88,6 @@ const HeroCard3D = ({ children, className = '' }: { children: React.ReactNode; c
 export const MinimalistHero = ({
   logoText,
   navLinks,
-  mainText,
-  readMoreLink,
   imageSrc,
   imageAlt,
   overlayText,
@@ -126,14 +124,14 @@ export const MinimalistHero = ({
                 <img
                   src={imageSrc}
                   alt="MOHD ZAID"
-                  className="h-8 w-8 sm:h-9 sm:w-9 rounded-full object-cover border border-cyan-400/50 shadow-md"
+                  className="h-8 w-8 sm:h-9 sm:w-9 rounded-full object-cover border border-rose-400/50 shadow-md"
                 />
-                <span className="absolute -bottom-0.5 -right-0.5 h-2 w-2 sm:h-2.5 sm:w-2.5 rounded-full bg-cyan-400 ring-2 ring-black" />
+                <span className="absolute -bottom-0.5 -right-0.5 h-2 w-2 sm:h-2.5 sm:w-2.5 rounded-full bg-rose-400 ring-2 ring-black" />
               </div>
-              {/* High-Contrast Luxury Stencil Serif (Bodoni Moda) for MOHD ZAID name */}
+              {/* High-Contrast Elegist Serif for MOHD ZAID name */}
               <span className="truncate font-display font-black tracking-widest text-white uppercase">{logoText}</span>
             </div>
-            <span className="hidden lg:inline-block rounded-full border border-cyan-400/30 bg-white/[0.08] px-2.5 py-0.5 text-[10px] font-mono font-medium text-cyan-300">
+            <span className="hidden lg:inline-block rounded-full border border-rose-400/30 bg-white/[0.08] px-2.5 py-0.5 text-[10px] font-mono font-medium text-rose-300">
               @zaidkhan0997
             </span>
           </motion.div>
@@ -156,7 +154,7 @@ export const MinimalistHero = ({
               href="https://github.com/zaidkhan0997"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-full border border-cyan-400/40 bg-white/[0.08] text-cyan-300 px-4 py-2 text-xs font-semibold transition-all hover:bg-cyan-400 hover:text-black hover:scale-105 shadow-sm font-ubuntu"
+              className="inline-flex items-center gap-2 rounded-full border border-rose-400/40 bg-white/[0.08] text-rose-300 px-4 py-2 text-xs font-semibold transition-all hover:bg-rose-400 hover:text-black hover:scale-105 shadow-sm font-ubuntu"
             >
               GitHub Profile
             </a>
@@ -166,7 +164,7 @@ export const MinimalistHero = ({
         {/* Separate 3D Glass Menu Pill Button */}
         <button
           onClick={triggerMenu}
-          className="shrink-0 h-12 w-12 flex items-center justify-center rounded-3xl border border-white/20 bg-white/[0.04] text-cyan-300 backdrop-blur-xl [transform:translateZ(0)] shadow-[inset_0_1.5px_2px_rgba(255,255,255,0.25),0_8px_32px_rgba(0,0,0,0.35)] hover:border-cyan-300/80 hover:bg-cyan-400 hover:text-black hover:scale-105 transition-all focus:outline-none"
+          className="shrink-0 h-12 w-12 flex items-center justify-center rounded-3xl border border-white/20 bg-white/[0.04] text-rose-300 backdrop-blur-xl [transform:translateZ(0)] shadow-[inset_0_1.5px_2px_rgba(255,255,255,0.25),0_8px_32px_rgba(0,0,0,0.35)] hover:border-rose-300/80 hover:bg-rose-400 hover:text-black hover:scale-105 transition-all focus:outline-none"
           title="Open Navigation Menu"
           aria-label="Toggle Navigation Menu"
         >
@@ -184,28 +182,28 @@ export const MinimalistHero = ({
           className="z-20 order-2 md:order-1 flex justify-center md:justify-start"
         >
           <HeroCard3D className="space-y-4 text-center md:text-left w-full">
-            <div className="inline-flex items-center gap-2 rounded-full border border-cyan-400/40 bg-white/[0.08] px-3.5 py-1 text-xs font-semibold text-cyan-300 shadow-sm font-ubuntu tracking-wide">
-              <span className="h-1.5 w-1.5 rounded-full bg-cyan-400 animate-ping" />
+            <div className="inline-flex items-center gap-2 rounded-full border border-rose-400/40 bg-white/[0.08] px-3.5 py-1 text-xs font-semibold text-rose-300 shadow-[0_0_15px_rgba(244,63,94,0.25)] font-ubuntu tracking-wide">
+              <span className="h-1.5 w-1.5 rounded-full bg-rose-400 animate-ping" />
               {subBadge}
             </div>
 
             <p className="mx-auto max-w-xs text-xs sm:text-sm leading-relaxed text-white/80 md:mx-0 font-normal font-ubuntu">
-              {mainText}
+              <span className="text-rose-300 font-extrabold drop-shadow-[0_0_8px_rgba(244,63,94,0.6)]">Android Custom ROM &amp; Linux Kernel Developer</span> specializing in <span className="text-rose-300 font-bold">Xiaomi devices (lisa &amp; sweet)</span>, AOSP bringup, C/C++, and low-level system software.
             </p>
 
-            {/* Quote */}
+            {/* Quote with Rose Pink Highlight */}
             {quote && (
-              <div className="inline-flex items-center gap-2 rounded-2xl border border-cyan-400/40 bg-white/[0.08] px-3.5 py-2 shadow-[0_0_20px_rgba(6,182,212,0.3)]">
+              <div className="inline-flex items-center gap-2 rounded-2xl border border-rose-400/40 bg-white/[0.08] px-3.5 py-2 shadow-[0_0_20px_rgba(244,63,94,0.3)]">
                 <span className="text-xs font-medium text-white/90 font-ubuntu italic">
-                  &quot;Be happy, <span className="text-cyan-300 font-extrabold not-italic drop-shadow-[0_0_8px_rgba(6,182,212,0.8)]">it drives people crazy.</span>&quot;
+                  &quot;Be happy, <span className="text-rose-300 font-extrabold not-italic drop-shadow-[0_0_8px_rgba(244,63,94,0.8)]">it drives people crazy.</span>&quot;
                 </span>
               </div>
             )}
 
             <div className="pt-1">
               <a
-                href={readMoreLink}
-                className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-cyan-300 underline decoration-cyan-400 decoration-2 underline-offset-4 transition-all hover:text-cyan-200 font-ubuntu"
+                href="#skills"
+                className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-rose-300 underline decoration-rose-400 decoration-2 underline-offset-4 transition-all hover:text-rose-200 font-ubuntu"
               >
                 Explore Specialization &rarr;
               </a>
@@ -215,7 +213,7 @@ export const MinimalistHero = ({
 
         {/* Center Image - Spacious Circular 3D Glass Frame with Head Visible */}
         <div className="relative order-1 md:order-2 flex justify-center items-center h-[300px] sm:h-[380px] md:h-[460px]">
-          <HeroCard3D className="!p-1.5 overflow-hidden !rounded-full border-2 border-cyan-400/50 shadow-[0_0_50px_rgba(6,182,212,0.4)] bg-white/[0.04] backdrop-blur-xl">
+          <HeroCard3D className="!p-1.5 overflow-hidden !rounded-full border-2 border-rose-400/50 shadow-[0_0_50px_rgba(244,63,94,0.4)] bg-white/[0.04] backdrop-blur-xl">
             <img
               src={imageSrc}
               alt={imageAlt}
@@ -232,15 +230,15 @@ export const MinimalistHero = ({
           className="z-20 order-3 flex justify-center md:justify-start"
         >
           <HeroCard3D className="flex flex-col items-center justify-center text-center md:items-start md:text-left w-full">
-            {/* High-Contrast Luxury Stencil Serif (Bodoni Moda) for big title MOHD ZAID */}
+            {/* High-Contrast Elegist Serif for big title MOHD ZAID */}
             <h1 className="text-2xl font-black tracking-widest text-white sm:text-3xl md:text-4xl lg:text-5xl leading-tight select-none uppercase font-display">
               {overlayText.part1}{' '}
-              <span className="text-cyan-300 font-black">
+              <span className="text-rose-300 font-black drop-shadow-[0_0_12px_rgba(244,63,94,0.8)]">
                 {overlayText.part2}
               </span>
             </h1>
-            <p className="mt-2.5 text-[11px] sm:text-xs font-mono text-cyan-300/80 tracking-widest uppercase flex items-center gap-2">
-              <span className="h-1.5 w-1.5 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_8px_rgba(6,182,212,0.8)]" />
+            <p className="mt-2.5 text-[11px] sm:text-xs font-mono text-rose-300/80 tracking-widest uppercase flex items-center gap-2">
+              <span className="h-1.5 w-1.5 rounded-full bg-rose-400 animate-pulse shadow-[0_0_8px_rgba(244,63,94,0.8)]" />
               Xiaomi &amp; Linux Kernel Architecture
             </p>
           </HeroCard3D>
@@ -267,7 +265,7 @@ export const MinimalistHero = ({
         >
           <HeroCard3D className="!p-2.5 !px-4 sm:!p-3 sm:!px-5 !rounded-full">
             <div className="flex items-center gap-2 text-xs font-semibold text-white/90 font-ubuntu">
-              <span className="h-2 w-2 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_8px_rgba(6,182,212,0.8)]" />
+              <span className="h-2 w-2 rounded-full bg-rose-400 animate-pulse shadow-[0_0_8px_rgba(244,63,94,0.8)]" />
               <span>{locationText}</span>
             </div>
           </HeroCard3D>

@@ -68,16 +68,16 @@ const SkillCard3D = ({ skill, index }: { skill: SkillItem; index: number }) => {
         perspective: '1000px',
         transform: `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`,
       }}
-      className="group rounded-3xl border border-white/20 bg-white/[0.03] p-6 backdrop-blur-3xl shadow-[inset_0_1.5px_2px_rgba(255,255,255,0.25),0_12px_32px_rgba(0,0,0,0.35)] hover:border-cyan-300/80 hover:bg-white/[0.09] hover:shadow-[0_0_35px_rgba(6,182,212,0.4)] transition-all duration-300 ease-out"
+      className="group rounded-3xl border border-white/20 bg-white/[0.03] p-6 backdrop-blur-3xl shadow-[inset_0_1.5px_2px_rgba(255,255,255,0.25),0_12px_32px_rgba(0,0,0,0.35)] hover:border-rose-300/80 hover:bg-white/[0.09] hover:shadow-[0_0_35px_rgba(244,63,94,0.4)] transition-all duration-300 ease-out"
     >
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2.5">
-          <CheckCircle2 className="h-4.5 w-4.5 text-cyan-300" />
-          <h3 className="text-base font-bold text-white group-hover:text-cyan-300 transition-colors">
+          <CheckCircle2 className="h-4.5 w-4.5 text-rose-300" />
+          <h3 className="text-base font-bold text-white group-hover:text-rose-300 transition-colors">
             {skill.name}
           </h3>
         </div>
-        <span className="text-xs font-mono font-bold text-cyan-300">
+        <span className="text-xs font-mono font-bold text-rose-300">
           {skill.level}%
         </span>
       </div>
@@ -86,14 +86,14 @@ const SkillCard3D = ({ skill, index }: { skill: SkillItem; index: number }) => {
         {skill.desc}
       </p>
 
-      {/* Solid Clean Cyan Progress bar */}
+      {/* Solid Clean Rose Progress bar */}
       <div className="h-2 w-full rounded-full bg-white/15 overflow-hidden shadow-inner">
         <motion.div
           initial={{ width: 0 }}
           whileInView={{ width: `${skill.level}%` }}
           viewport={{ once: false }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="h-full rounded-full bg-cyan-400 shadow-md"
+          className="h-full rounded-full bg-rose-400 shadow-md"
         />
       </div>
     </motion.div>
@@ -121,7 +121,7 @@ export const SkillsSection = () => {
           transition={{ duration: 0.6 }}
           className="text-center space-y-3 mb-12"
         >
-          <span className="inline-block rounded-full bg-cyan-400/20 px-3.5 py-1 text-xs font-semibold text-cyan-300 border border-cyan-400/40 backdrop-blur-3xl shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)]">
+          <span className="inline-block rounded-full bg-rose-400/20 px-3.5 py-1 text-xs font-semibold text-rose-300 border border-rose-400/40 backdrop-blur-3xl shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)]">
             TECHNICAL MASTERY
           </span>
           <h2 className="text-3xl font-extrabold md:text-5xl tracking-tight text-white">
@@ -144,7 +144,7 @@ export const SkillsSection = () => {
             onClick={() => { setActiveTab('all'); setShowAllSkills(false); }}
             className={`px-4 py-2 rounded-2xl text-xs font-semibold backdrop-blur-3xl transition-all shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] ${
               activeTab === 'all'
-                ? 'bg-cyan-400 text-black font-bold shadow-md'
+                ? 'bg-rose-400 text-black font-bold shadow-md'
                 : 'bg-white/[0.04] text-white/80 hover:text-white border border-white/20 hover:bg-white/10'
             }`}
           >
@@ -155,7 +155,7 @@ export const SkillsSection = () => {
             onClick={() => { setActiveTab('languages'); setShowAllSkills(false); }}
             className={`flex items-center gap-1.5 px-4 py-2 rounded-2xl text-xs font-semibold backdrop-blur-3xl transition-all shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] ${
               activeTab === 'languages'
-                ? 'bg-cyan-400 text-black font-bold shadow-md'
+                ? 'bg-rose-400 text-black font-bold shadow-md'
                 : 'bg-white/[0.04] text-white/80 hover:text-white border border-white/20 hover:bg-white/10'
             }`}
           >
@@ -166,7 +166,7 @@ export const SkillsSection = () => {
             onClick={() => { setActiveTab('android'); setShowAllSkills(false); }}
             className={`flex items-center gap-1.5 px-4 py-2 rounded-2xl text-xs font-semibold backdrop-blur-3xl transition-all shadow-[inset_0_1.5px_2px_rgba(255,255,255,0.3)] ${
               activeTab === 'android'
-                ? 'bg-cyan-400 text-black font-bold shadow-md'
+                ? 'bg-rose-400 text-black font-bold shadow-md'
                 : 'bg-white/[0.04] text-white/80 hover:text-white border border-white/20 hover:bg-white/10'
             }`}
           >
@@ -177,7 +177,7 @@ export const SkillsSection = () => {
             onClick={() => { setActiveTab('tools'); setShowAllSkills(false); }}
             className={`flex items-center gap-1.5 px-4 py-2 rounded-2xl text-xs font-semibold backdrop-blur-3xl transition-all shadow-[inset_0_1.5px_2px_rgba(255,255,255,0.3)] ${
               activeTab === 'tools'
-                ? 'bg-cyan-400 text-black font-bold shadow-md'
+                ? 'bg-rose-400 text-black font-bold shadow-md'
                 : 'bg-white/[0.04] text-white/80 hover:text-white border border-white/20 hover:bg-white/10'
             }`}
           >
@@ -188,7 +188,7 @@ export const SkillsSection = () => {
             onClick={() => { setActiveTab('devices'); setShowAllSkills(false); }}
             className={`flex items-center gap-1.5 px-4 py-2 rounded-2xl text-xs font-semibold backdrop-blur-3xl transition-all shadow-[inset_0_1.5px_2px_rgba(255,255,255,0.3)] ${
               activeTab === 'devices'
-                ? 'bg-cyan-400 text-black font-bold shadow-md'
+                ? 'bg-rose-400 text-black font-bold shadow-md'
                 : 'bg-white/[0.04] text-white/80 hover:text-white border border-white/20 hover:bg-white/10'
             }`}
           >
@@ -214,7 +214,7 @@ export const SkillsSection = () => {
           >
             <button
               onClick={() => setShowAllSkills(!showAllSkills)}
-              className="group flex items-center gap-2 rounded-full border border-cyan-400/50 bg-white/[0.05] px-6 py-3 text-xs font-bold text-cyan-300 backdrop-blur-3xl shadow-[inset_0_1.5px_2px_rgba(255,255,255,0.3),0_10px_25px_rgba(0,0,0,0.4)] transition-all hover:border-cyan-300 hover:bg-cyan-400 hover:text-black hover:scale-105"
+              className="group flex items-center gap-2 rounded-full border border-rose-400/50 bg-white/[0.05] px-6 py-3 text-xs font-bold text-rose-300 backdrop-blur-3xl shadow-[inset_0_1.5px_2px_rgba(255,255,255,0.3),0_10px_25px_rgba(0,0,0,0.4)] transition-all hover:border-rose-300 hover:bg-rose-400 hover:text-black hover:scale-105"
             >
               <span>
                 {showAllSkills

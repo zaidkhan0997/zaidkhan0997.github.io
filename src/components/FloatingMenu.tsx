@@ -74,7 +74,7 @@ export const FloatingMenu = () => {
 
   return (
     <>
-      {/* Pure 3D Translucent Glass Blur Drawer Panel - Zero Solid Color, Pure Glass & Backdrop Blur */}
+      {/* Pure 3D Translucent Glass Blur Drawer Panel */}
       <AnimatePresence>
         {isOpen && (
           <>
@@ -102,16 +102,16 @@ export const FloatingMenu = () => {
                     <img
                       src="/assets/profile.jpg"
                       alt="MOHD ZAID"
-                      className="h-10 w-10 sm:h-11 sm:w-11 rounded-full object-cover border border-cyan-400/50 shadow-md"
+                      className="h-10 w-10 sm:h-11 sm:w-11 rounded-full object-cover border border-rose-400/50 shadow-md"
                     />
-                    <span className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 sm:h-3 sm:w-3 rounded-full bg-cyan-400 ring-2 ring-black" />
+                    <span className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 sm:h-3 sm:w-3 rounded-full bg-rose-400 ring-2 ring-black" />
                   </div>
 
                   <div className="min-w-0">
                     <h3 className="text-sm sm:text-base font-black tracking-widest font-display uppercase text-white leading-tight truncate">
                       MOHD ZAID
                     </h3>
-                    <p className="text-xs font-mono text-cyan-300 font-medium">
+                    <p className="text-xs font-mono text-rose-300 font-medium">
                       ( zaidkhan0997 )
                     </p>
                   </div>
@@ -119,7 +119,7 @@ export const FloatingMenu = () => {
 
                 <button
                   onClick={() => setIsOpen(false)}
-                  className="flex h-8.5 w-8.5 items-center justify-center rounded-xl border border-cyan-400/40 bg-white/[0.08] text-cyan-300 backdrop-blur-md hover:bg-cyan-400 hover:text-black transition-all shrink-0 shadow-sm"
+                  className="flex h-8.5 w-8.5 items-center justify-center rounded-xl border border-rose-400/40 bg-white/[0.08] text-rose-300 backdrop-blur-md hover:bg-rose-400 hover:text-black transition-all shrink-0 shadow-sm"
                   title="Close Menu"
                 >
                   <X className="h-4 w-4" />
@@ -128,7 +128,7 @@ export const FloatingMenu = () => {
 
               {/* NAVIGATION 3D Glass Card Container */}
               <div className="rounded-2xl border border-white/20 bg-white/[0.04] p-3.5 backdrop-blur-2xl shadow-[inset_0_1px_1.5px_rgba(255,255,255,0.2)] mb-4 space-y-3">
-                <div className="flex items-center gap-1.5 text-[10px] font-bold tracking-widest text-cyan-300 uppercase">
+                <div className="flex items-center gap-1.5 text-[10px] font-bold tracking-widest text-rose-300 uppercase">
                   <Compass className="h-3.5 w-3.5" />
                   <span>Navigation</span>
                 </div>
@@ -144,14 +144,14 @@ export const FloatingMenu = () => {
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: idx * 0.04 }}
                         onClick={() => setIsOpen(false)}
-                        className="flex items-center justify-between rounded-xl border border-white/15 bg-white/[0.04] p-2.5 sm:p-3 transition-all hover:border-cyan-300/80 hover:bg-white/[0.09] group"
+                        className="flex items-center justify-between rounded-xl border border-white/15 bg-white/[0.04] p-2.5 sm:p-3 transition-all hover:border-rose-300/80 hover:bg-white/[0.09] group"
                       >
                         <div className="flex items-center gap-2.5">
-                          <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-cyan-400/40 bg-white/[0.08] text-cyan-300 group-hover:bg-cyan-400 group-hover:text-black transition-colors shrink-0">
+                          <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-rose-400/40 bg-white/[0.08] text-rose-300 group-hover:bg-rose-400 group-hover:text-black transition-colors shrink-0">
                             <Icon className="h-4 w-4" />
                           </div>
                           <div>
-                            <p className="text-xs font-bold text-white group-hover:text-cyan-300 transition-colors">
+                            <p className="text-xs font-bold text-white group-hover:text-rose-300 transition-colors">
                               {item.label}
                             </p>
                             <p className="text-[10px] text-white/60">
@@ -160,7 +160,7 @@ export const FloatingMenu = () => {
                           </div>
                         </div>
 
-                        <ChevronRight className="h-4 w-4 text-white/40 group-hover:text-cyan-300 group-hover:translate-x-1 transition-all shrink-0" />
+                        <ChevronRight className="h-4 w-4 text-white/40 group-hover:text-rose-300 group-hover:translate-x-1 transition-all shrink-0" />
                       </motion.a>
                     );
                   })}
@@ -169,7 +169,7 @@ export const FloatingMenu = () => {
 
               {/* TECHNICAL SPECIALIZATION 3D Glass Card Container */}
               <div className="rounded-2xl border border-white/20 bg-white/[0.04] p-3.5 backdrop-blur-2xl shadow-[inset_0_1px_1.5px_rgba(255,255,255,0.2)] mb-4 space-y-2.5">
-                <div className="flex items-center gap-1.5 text-[10px] font-bold tracking-widest text-cyan-300 uppercase">
+                <div className="flex items-center gap-1.5 text-[10px] font-bold tracking-widest text-rose-300 uppercase">
                   <Cpu className="h-3.5 w-3.5" />
                   <span>Technical Specialization</span>
                 </div>
@@ -178,44 +178,44 @@ export const FloatingMenu = () => {
                   <a
                     href="#skills"
                     onClick={() => setIsOpen(false)}
-                    className="flex items-center gap-1.5 rounded-xl border border-white/15 bg-white/[0.04] px-2.5 py-1.5 font-medium text-white/90 hover:border-cyan-300 hover:bg-white/[0.09] hover:text-cyan-300 transition-colors"
+                    className="flex items-center gap-1.5 rounded-xl border border-white/15 bg-white/[0.04] px-2.5 py-1.5 font-medium text-white/90 hover:border-rose-300 hover:bg-white/[0.09] hover:text-rose-300 transition-colors"
                   >
-                    <Layers className="h-3 w-3 text-cyan-300" /> All Skills
+                    <Layers className="h-3 w-3 text-rose-300" /> All Skills
                   </a>
                   <a
                     href="#skills"
                     onClick={() => setIsOpen(false)}
-                    className="flex items-center gap-1.5 rounded-xl border border-white/15 bg-white/[0.04] px-2.5 py-1.5 font-medium text-white/90 hover:border-cyan-300 hover:bg-white/[0.09] hover:text-cyan-300 transition-colors"
+                    className="flex items-center gap-1.5 rounded-xl border border-white/15 bg-white/[0.04] px-2.5 py-1.5 font-medium text-white/90 hover:border-rose-300 hover:bg-white/[0.09] hover:text-rose-300 transition-colors"
                   >
-                    <Code className="h-3 w-3 text-cyan-300" /> Languages (C/C++, Shell)
+                    <Code className="h-3 w-3 text-rose-300" /> Languages (C/C++, Shell)
                   </a>
                   <a
                     href="#skills"
                     onClick={() => setIsOpen(false)}
-                    className="flex items-center gap-1.5 rounded-xl border border-white/15 bg-white/[0.04] px-2.5 py-1.5 font-medium text-white/90 hover:border-cyan-300 hover:bg-white/[0.09] hover:text-cyan-300 transition-colors"
+                    className="flex items-center gap-1.5 rounded-xl border border-white/15 bg-white/[0.04] px-2.5 py-1.5 font-medium text-white/90 hover:border-rose-300 hover:bg-white/[0.09] hover:text-rose-300 transition-colors"
                   >
-                    <Smartphone className="h-3 w-3 text-cyan-300" /> Android &amp; Kernel Trees
+                    <Smartphone className="h-3 w-3 text-rose-300" /> Android &amp; Kernel Trees
                   </a>
                   <a
                     href="#skills"
                     onClick={() => setIsOpen(false)}
-                    className="flex items-center gap-1.5 rounded-xl border border-white/15 bg-white/[0.04] px-2.5 py-1.5 font-medium text-white/90 hover:border-cyan-300 hover:bg-white/[0.09] hover:text-cyan-300 transition-colors"
+                    className="flex items-center gap-1.5 rounded-xl border border-white/15 bg-white/[0.04] px-2.5 py-1.5 font-medium text-white/90 hover:border-rose-300 hover:bg-white/[0.09] hover:text-rose-300 transition-colors"
                   >
-                    <Wrench className="h-3 w-3 text-cyan-300" /> Build &amp; AOSP Tools
+                    <Wrench className="h-3 w-3 text-rose-300" /> Build &amp; AOSP Tools
                   </a>
                   <a
                     href="#skills"
                     onClick={() => setIsOpen(false)}
-                    className="flex items-center gap-1.5 rounded-xl border border-white/15 bg-white/[0.04] px-2.5 py-1.5 font-medium text-white/90 hover:border-cyan-300 hover:bg-white/[0.09] hover:text-cyan-300 transition-colors"
+                    className="flex items-center gap-1.5 rounded-xl border border-white/15 bg-white/[0.04] px-2.5 py-1.5 font-medium text-white/90 hover:border-rose-300 hover:bg-white/[0.09] hover:text-rose-300 transition-colors"
                   >
-                    <HardDrive className="h-3 w-3 text-cyan-300" /> Hardware &amp; Devices
+                    <HardDrive className="h-3 w-3 text-rose-300" /> Hardware &amp; Devices
                   </a>
                 </div>
               </div>
 
               {/* REPOSITORY CATEGORIES 3D Glass Card Container */}
               <div className="rounded-2xl border border-white/20 bg-white/[0.04] p-3.5 backdrop-blur-2xl shadow-[inset_0_1px_1.5px_rgba(255,255,255,0.2)] mb-4 space-y-2.5">
-                <div className="flex items-center gap-1.5 text-[10px] font-bold tracking-widest text-cyan-300 uppercase">
+                <div className="flex items-center gap-1.5 text-[10px] font-bold tracking-widest text-rose-300 uppercase">
                   <GitBranch className="h-3.5 w-3.5" />
                   <span>Repository Categories</span>
                 </div>
@@ -224,16 +224,16 @@ export const FloatingMenu = () => {
                   <a
                     href="#projects"
                     onClick={() => setIsOpen(false)}
-                    className="flex items-center gap-1.5 rounded-xl border border-white/15 bg-white/[0.04] px-2.5 py-1.5 font-medium text-white/90 hover:border-cyan-300 hover:bg-white/[0.09] hover:text-cyan-300 transition-colors"
+                    className="flex items-center gap-1.5 rounded-xl border border-white/15 bg-white/[0.04] px-2.5 py-1.5 font-medium text-white/90 hover:border-rose-300 hover:bg-white/[0.09] hover:text-rose-300 transition-colors"
                   >
-                    <FolderGit2 className="h-3 w-3 text-cyan-300" /> All Repos (58+)
+                    <FolderGit2 className="h-3 w-3 text-rose-300" /> All Repos (58+)
                   </a>
                   <a
                     href="#projects"
                     onClick={() => setIsOpen(false)}
-                    className="flex items-center gap-1.5 rounded-xl border border-white/15 bg-white/[0.04] px-2.5 py-1.5 font-medium text-white/90 hover:border-cyan-300 hover:bg-white/[0.09] hover:text-cyan-300 transition-colors"
+                    className="flex items-center gap-1.5 rounded-xl border border-white/15 bg-white/[0.04] px-2.5 py-1.5 font-medium text-white/90 hover:border-rose-300 hover:bg-white/[0.09] hover:text-rose-300 transition-colors"
                   >
-                    <Smartphone className="h-3 w-3 text-cyan-300" /> Android &amp; Kernel
+                    <Smartphone className="h-3 w-3 text-rose-300" /> Android &amp; Kernel
                   </a>
                 </div>
               </div>
@@ -241,7 +241,7 @@ export const FloatingMenu = () => {
               {/* Engagement Stats & GitHub Button Card */}
               <div className="rounded-2xl border border-white/20 bg-white/[0.04] p-3.5 backdrop-blur-2xl shadow-[inset_0_1px_1.5px_rgba(255,255,255,0.2)] space-y-3">
                 <div className="grid grid-cols-2 gap-2.5">
-                  <div className="flex items-center justify-center gap-2 rounded-xl border border-cyan-400/40 bg-white/[0.08] py-2 px-3 text-cyan-300 font-bold font-mono text-xs">
+                  <div className="flex items-center justify-center gap-2 rounded-xl border border-rose-400/40 bg-white/[0.08] py-2 px-3 text-rose-300 font-bold font-mono text-xs">
                     <Eye className="h-3.5 w-3.5" /> 1.75M
                   </div>
 
@@ -254,7 +254,7 @@ export const FloatingMenu = () => {
                   href="https://github.com/zaidkhan0997"
                   target="_blank"
                   rel="noreferrer"
-                  className="flex w-full items-center justify-center gap-2 rounded-xl bg-cyan-400 py-2.5 text-xs font-bold text-black shadow-md transition-transform hover:scale-[1.01] active:scale-[0.99]"
+                  className="flex w-full items-center justify-center gap-2 rounded-xl bg-rose-400 py-2.5 text-xs font-bold text-black shadow-md transition-transform hover:scale-[1.01] active:scale-[0.99]"
                 >
                   <Github className="h-4 w-4" />
                   <span>GitHub Profile</span>

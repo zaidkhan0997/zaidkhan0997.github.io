@@ -23,28 +23,27 @@ export const AuroraBackground = ({
   }, []);
 
   return (
-    <div className={`relative min-h-screen overflow-hidden bg-[#14234d] text-white w-full ${className}`}>
-      {/* Lighter Luminous Ambient CSS Radial Glow Mesh */}
+    <div
+      className={`relative min-h-screen overflow-hidden text-white w-full ${className}`}
+      style={{
+        background: 'radial-gradient(circle at center bottom, #3b0b15 0%, #0d080a 65%)',
+      }}
+    >
+      {/* Fixed Ambient Crimson/Wine Glow Mesh */}
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-        {/* Top-Left Bright Cyan Aura */}
-        <div className="absolute -top-40 -left-40 h-[700px] w-[700px] rounded-full bg-cyan-400/40 blur-[140px]" />
-        {/* Center-Right Vibrant Purple Luminous Aura */}
-        <div className="absolute top-1/4 -right-40 h-[800px] w-[800px] rounded-full bg-purple-500/40 blur-[150px]" />
-        {/* Bottom Bright Teal Luminous Glow */}
-        <div className="absolute -bottom-40 left-1/3 h-[650px] w-[650px] rounded-full bg-cyan-500/35 blur-[130px]" />
-        {/* Center Luminous Royal Blue Glow */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[850px] w-[850px] rounded-full bg-indigo-500/30 blur-[160px]" />
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 h-[750px] w-[750px] rounded-full bg-[#3b0b15]/60 blur-[160px]" />
+        <div className="absolute top-1/3 left-1/4 h-[600px] w-[600px] rounded-full bg-[#3b0b15]/30 blur-[150px]" />
       </div>
 
       {/* 3D LightPillar active on Desktop */}
       {!isMobile && (
-        <div className="fixed inset-0 pointer-events-none z-0 opacity-70">
+        <div className="fixed inset-0 pointer-events-none z-0 opacity-60">
           <LightPillar
-            topColor="#06b6d4"
-            bottomColor="#c084fc"
-            intensity={1.2}
+            topColor="#fb7185"
+            bottomColor="#3b0b15"
+            intensity={1.0}
             rotationSpeed={0.2}
-            glowAmount={0.005}
+            glowAmount={0.004}
             pillarWidth={8.4}
             pillarHeight={0.5}
             noiseIntensity={0.05}

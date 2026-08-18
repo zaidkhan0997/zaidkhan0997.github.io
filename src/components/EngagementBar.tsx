@@ -34,7 +34,7 @@ const Glass3DCard = ({ children, className = '', ...props }: { children: React.R
         perspective: '1000px',
         transform: `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`,
       }}
-      className={`rounded-3xl border border-white/20 bg-white/[0.04] p-4 backdrop-blur-3xl shadow-[inset_0_1.5px_2px_rgba(255,255,255,0.25),0_12px_32px_rgba(0,0,0,0.35)] hover:border-cyan-300/80 hover:bg-white/[0.1] hover:shadow-[0_0_35px_rgba(6,182,212,0.4)] transition-all ${className}`}
+      className={`rounded-3xl border border-white/20 bg-white/[0.04] p-4 backdrop-blur-3xl shadow-[inset_0_1.5px_2px_rgba(255,255,255,0.25),0_12px_32px_rgba(0,0,0,0.35)] hover:border-rose-300/80 hover:bg-white/[0.1] hover:shadow-[0_0_35px_rgba(244,63,94,0.4)] transition-all ${className}`}
       {...props}
     >
       {children}
@@ -68,13 +68,13 @@ export const EngagementBar = () => {
       <div className="mx-auto max-w-7xl px-6 md:px-10">
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
           {/* Views Card */}
-          <Glass3DCard className="flex items-center gap-3 border-cyan-400/30">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-cyan-400/40 bg-white/[0.08] text-cyan-300 shadow-sm backdrop-blur-md">
+          <Glass3DCard className="flex items-center gap-3 border-rose-400/30">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-rose-400/40 bg-white/[0.08] text-rose-300 shadow-sm backdrop-blur-md">
               <Eye className="h-5 w-5 animate-pulse" />
             </div>
             <div>
-              <p className="text-[10px] font-semibold tracking-wider text-cyan-200/80 uppercase">Total Views</p>
-              <p className="text-base sm:text-lg font-extrabold text-cyan-300">1,753,123</p>
+              <p className="text-[10px] font-semibold tracking-wider text-rose-200/80 uppercase">Total Views</p>
+              <p className="text-base sm:text-lg font-extrabold text-rose-300">1,753,123</p>
             </div>
           </Glass3DCard>
 
@@ -97,7 +97,7 @@ export const EngagementBar = () => {
 
           {/* Repos Card */}
           <Glass3DCard className="flex items-center gap-3">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-white/30 bg-white/[0.08] text-cyan-300 shadow-sm backdrop-blur-md">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-white/30 bg-white/[0.08] text-rose-300 shadow-sm backdrop-blur-md">
               <FolderGit2 className="h-5 w-5" />
             </div>
             <div>

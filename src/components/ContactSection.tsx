@@ -32,7 +32,7 @@ const ContactCard3D = ({ children, className = '', ...props }: { children: React
         perspective: '1000px',
         transform: `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`,
       }}
-      className={`rounded-3xl border border-white/20 bg-white/[0.03] p-4.5 sm:p-5 backdrop-blur-3xl shadow-[inset_0_1.5px_2px_rgba(255,255,255,0.25),0_12px_32px_rgba(0,0,0,0.35)] hover:border-cyan-300/80 hover:bg-white/[0.09] hover:shadow-[0_0_35px_rgba(6,182,212,0.4)] transition-all ${className}`}
+      className={`rounded-3xl border border-white/20 bg-white/[0.03] p-4.5 sm:p-5 backdrop-blur-3xl shadow-[inset_0_1.5px_2px_rgba(255,255,255,0.25),0_12px_32px_rgba(0,0,0,0.35)] hover:border-rose-300/80 hover:bg-white/[0.09] hover:shadow-[0_0_35px_rgba(244,63,94,0.4)] transition-all ${className}`}
       {...props}
     >
       {children}
@@ -99,7 +99,7 @@ export const ContactSection = () => {
             Contact & Collaboration
           </h2>
           <p className="text-sm text-white/70 max-w-2xl mx-auto">
-            Have questions or want to collaborate on Android kernels, device trees, or low-level systems programming? Send a direct email to <span className="text-cyan-300 font-mono font-semibold">kzaid0997@gmail.com</span> below!
+            Have questions or want to collaborate on Android kernels, device trees, or low-level systems programming? Send a direct email to <span className="text-rose-300 font-mono font-semibold">kzaid0997@gmail.com</span> below!
           </p>
         </motion.div>
 
@@ -141,24 +141,24 @@ export const ContactSection = () => {
             </ContactCard3D>
 
             <ContactCard3D className="flex items-center gap-3.5 sm:gap-4">
-              <div className="flex h-10 w-10 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-2xl border border-cyan-400/40 bg-white/[0.08] text-cyan-300 backdrop-blur-md shadow-sm">
+              <div className="flex h-10 w-10 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-2xl border border-rose-400/40 bg-white/[0.08] text-rose-300 backdrop-blur-md shadow-sm">
                 <Mail className="h-5 w-5 sm:h-5.5 sm:w-5.5" />
               </div>
               <div className="min-w-0">
                 <p className="text-xs font-semibold text-white/70 uppercase tracking-wider">Direct Inbox</p>
-                <a href="mailto:kzaid0997@gmail.com" className="text-xs sm:text-sm font-bold text-white hover:text-cyan-300 transition-colors truncate block">
+                <a href="mailto:kzaid0997@gmail.com" className="text-xs sm:text-sm font-bold text-white hover:text-rose-300 transition-colors truncate block">
                   kzaid0997@gmail.com
                 </a>
               </div>
             </ContactCard3D>
 
             <ContactCard3D className="flex items-center gap-3.5 sm:gap-4">
-              <div className="flex h-10 w-10 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-2xl border border-cyan-400/40 bg-white/[0.08] text-cyan-300 backdrop-blur-md shadow-sm">
+              <div className="flex h-10 w-10 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-2xl border border-rose-400/40 bg-white/[0.08] text-rose-300 backdrop-blur-md shadow-sm">
                 <Send className="h-5 w-5 sm:h-5.5 sm:w-5.5" />
               </div>
               <div className="min-w-0">
                 <p className="text-xs font-semibold text-white/70 uppercase tracking-wider">Telegram</p>
-                <a href="https://t.me/zaidkhan0997" target="_blank" rel="noreferrer" className="text-xs sm:text-sm font-bold text-white hover:text-cyan-300 transition-colors truncate block">
+                <a href="https://t.me/zaidkhan0997" target="_blank" rel="noreferrer" className="text-xs sm:text-sm font-bold text-white hover:text-rose-300 transition-colors truncate block">
                   @zaidkhan0997
                 </a>
               </div>
@@ -186,7 +186,7 @@ export const ContactSection = () => {
           >
             <h3 className="text-lg sm:text-xl font-bold text-white mb-2">Send a Direct Message</h3>
             <p className="text-xs text-white/70 mb-6">
-              Submitting this form delivers your message straight to <strong className="text-cyan-300">kzaid0997@gmail.com</strong>.
+              Submitting this form delivers your message straight to <strong className="text-rose-300">kzaid0997@gmail.com</strong>.
             </p>
 
             {submitted ? (
@@ -215,7 +215,7 @@ export const ContactSection = () => {
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     placeholder="MOHD ZAID"
-                    className="w-full rounded-2xl border border-white/20 bg-white/[0.05] px-4 py-2.5 text-xs text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-cyan-300 shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] resize-none"
+                    className="w-full rounded-2xl border border-white/20 bg-white/[0.05] px-4 py-2.5 text-xs text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-rose-300 shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] resize-none"
                   />
                 </div>
 
@@ -229,7 +229,7 @@ export const ContactSection = () => {
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     placeholder="you@example.com"
-                    className="w-full rounded-2xl border border-white/20 bg-white/[0.05] px-4 py-2.5 text-xs text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-cyan-300 shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] resize-none"
+                    className="w-full rounded-2xl border border-white/20 bg-white/[0.05] px-4 py-2.5 text-xs text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-rose-300 shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] resize-none"
                   />
                 </div>
 
@@ -243,14 +243,14 @@ export const ContactSection = () => {
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                     placeholder="Let's build custom kernels together..."
-                    className="w-full rounded-2xl border border-white/20 bg-white/[0.05] px-4 py-2.5 text-xs text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-cyan-300 shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] resize-none"
+                    className="w-full rounded-2xl border border-white/20 bg-white/[0.05] px-4 py-2.5 text-xs text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-rose-300 shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] resize-none"
                   />
                 </div>
 
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="flex w-full items-center justify-center gap-2 rounded-2xl bg-cyan-400 py-3 text-xs font-bold text-black transition-transform hover:scale-[1.01] active:scale-[0.99] disabled:opacity-50 shadow-md"
+                  className="flex w-full items-center justify-center gap-2 rounded-2xl bg-rose-400 py-3 text-xs font-bold text-black transition-transform hover:scale-[1.01] active:scale-[0.99] disabled:opacity-50 shadow-md"
                 >
                   {isSubmitting ? (
                     <>
