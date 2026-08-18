@@ -144,14 +144,9 @@ export const FloatingMenu = () => {
               <div className="flex items-center gap-3 border-b border-cyan-500/20 pb-4 mb-5">
                 <div className="relative">
                   <img
-                    src="assets/profile.jpg"
+                    src="/assets/profile.jpg"
                     alt="MOHD ZAID"
                     className="h-11 w-11 rounded-2xl object-cover border border-cyan-400/40 shadow-md"
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement;
-                      target.onerror = null;
-                      target.src = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=800&auto=format&fit=crop';
-                    }}
                   />
                   <span className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full bg-cyan-400 ring-2 ring-[#090d16]" />
                 </div>

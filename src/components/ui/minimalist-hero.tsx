@@ -77,11 +77,6 @@ export const MinimalistHero = ({
                 src={imageSrc}
                 alt="MOHD ZAID"
                 className="h-9 w-9 rounded-full object-cover border border-cyan-400/50 shadow-md"
-                onError={(e) => {
-                  const target = e.target as HTMLImageElement;
-                  target.onerror = null;
-                  target.src = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=800&auto=format&fit=crop';
-                }}
               />
               <span className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full bg-cyan-400 ring-2 ring-black" />
             </div>
@@ -170,11 +165,6 @@ export const MinimalistHero = ({
               src={imageSrc}
               alt={imageAlt}
               className="h-64 w-52 md:h-80 md:w-64 lg:h-96 lg:w-72 object-cover transition-transform duration-700 hover:scale-105"
-              onError={(e) => {
-                const target = e.target as HTMLImageElement;
-                target.onerror = null;
-                target.src = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=800&auto=format&fit=crop';
-              }}
             />
           </motion.div>
         </div>
