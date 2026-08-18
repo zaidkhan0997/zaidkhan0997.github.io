@@ -41,6 +41,15 @@
   }
 }
 
+/* Elegist-style high contrast hairline editorial serif for MOHD ZAID */
+.font-display {
+  font-family: 'Cormorant Garamond', 'Italiana', 'Instrument Serif', 'Cinzel Decorative', serif;
+}
+
+.font-ubuntu {
+  font-family: 'Ubuntu', sans-serif;
+}
+
 .light-pillar-fallback {
   width: 100%;
   height: 100%;

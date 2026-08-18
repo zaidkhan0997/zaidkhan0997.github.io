@@ -108,7 +108,7 @@ export const FloatingMenu = () => {
                   </div>
 
                   <div className="min-w-0">
-                    <h3 className="text-sm sm:text-base font-bold tracking-wide text-white leading-tight truncate">
+                    <h3 className="text-sm sm:text-base font-black tracking-widest font-display uppercase text-white leading-tight truncate">
                       MOHD ZAID
                     </h3>
                     <p className="text-xs font-mono text-cyan-300 font-medium">

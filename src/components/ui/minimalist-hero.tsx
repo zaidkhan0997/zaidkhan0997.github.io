@@ -24,7 +24,7 @@ export interface MinimalistHeroProps {
 const NavLink = ({ href, children }: { href: string; children: React.ReactNode }) => (
   <a
     href={href}
-    className="px-3.5 py-1.5 rounded-2xl text-xs font-semibold tracking-wider text-white/80 transition-all hover:text-cyan-300 border border-white/15 hover:border-cyan-400/50 bg-white/[0.03] hover:bg-white/[0.09] [transform:translateZ(0)] uppercase"
+    className="px-3.5 py-1.5 rounded-2xl text-xs font-semibold tracking-wider text-white/80 transition-all hover:text-cyan-300 border border-white/15 hover:border-cyan-400/50 bg-white/[0.03] hover:bg-white/[0.09] [transform:translateZ(0)] uppercase font-ubuntu"
   >
     {children}
   </a>
@@ -130,7 +130,8 @@ export const MinimalistHero = ({
                 />
                 <span className="absolute -bottom-0.5 -right-0.5 h-2 w-2 sm:h-2.5 sm:w-2.5 rounded-full bg-cyan-400 ring-2 ring-black" />
               </div>
-              <span className="truncate">{logoText}</span>
+              {/* High-Contrast Luxury Stencil Serif (Bodoni Moda) for MOHD ZAID name */}
+              <span className="truncate font-display font-black tracking-widest text-white uppercase">{logoText}</span>
             </div>
             <span className="hidden lg:inline-block rounded-full border border-cyan-400/30 bg-white/[0.08] px-2.5 py-0.5 text-[10px] font-mono font-medium text-cyan-300">
               @zaidkhan0997
@@ -155,14 +156,14 @@ export const MinimalistHero = ({
               href="https://github.com/zaidkhan0997"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-full border border-cyan-400/40 bg-white/[0.08] text-cyan-300 px-4 py-2 text-xs font-semibold transition-all hover:bg-cyan-400 hover:text-black hover:scale-105 shadow-sm"
+              className="inline-flex items-center gap-2 rounded-full border border-cyan-400/40 bg-white/[0.08] text-cyan-300 px-4 py-2 text-xs font-semibold transition-all hover:bg-cyan-400 hover:text-black hover:scale-105 shadow-sm font-ubuntu"
             >
               GitHub Profile
             </a>
           </motion.div>
         </header>
 
-        {/* Separate 3D Glass Menu Pill Button (Aligned in ONE line with Header) */}
+        {/* Separate 3D Glass Menu Pill Button */}
         <button
           onClick={triggerMenu}
           className="shrink-0 h-12 w-12 flex items-center justify-center rounded-3xl border border-white/20 bg-white/[0.04] text-cyan-300 backdrop-blur-xl [transform:translateZ(0)] shadow-[inset_0_1.5px_2px_rgba(255,255,255,0.25),0_8px_32px_rgba(0,0,0,0.35)] hover:border-cyan-300/80 hover:bg-cyan-400 hover:text-black hover:scale-105 transition-all focus:outline-none"
@@ -183,19 +184,19 @@ export const MinimalistHero = ({
           className="z-20 order-2 md:order-1 flex justify-center md:justify-start"
         >
           <HeroCard3D className="space-y-4 text-center md:text-left w-full">
-            <div className="inline-flex items-center gap-2 rounded-full border border-cyan-400/40 bg-white/[0.08] px-3 py-1 text-xs font-medium text-cyan-300 shadow-sm">
+            <div className="inline-flex items-center gap-2 rounded-full border border-cyan-400/40 bg-white/[0.08] px-3.5 py-1 text-xs font-semibold text-cyan-300 shadow-sm font-ubuntu tracking-wide">
               <span className="h-1.5 w-1.5 rounded-full bg-cyan-400 animate-ping" />
               {subBadge}
             </div>
 
-            <p className="mx-auto max-w-xs text-xs sm:text-sm leading-relaxed text-white/80 md:mx-0 font-normal">
+            <p className="mx-auto max-w-xs text-xs sm:text-sm leading-relaxed text-white/80 md:mx-0 font-normal font-ubuntu">
               {mainText}
             </p>
 
-            {/* Glowing Colorful Highlighted Quote */}
+            {/* Quote */}
             {quote && (
               <div className="inline-flex items-center gap-2 rounded-2xl border border-cyan-400/40 bg-white/[0.08] px-3.5 py-2 shadow-[0_0_20px_rgba(6,182,212,0.3)]">
-                <span className="text-xs font-medium text-white/90">
+                <span className="text-xs font-medium text-white/90 font-ubuntu italic">
                   &quot;Be happy, <span className="text-cyan-300 font-extrabold not-italic drop-shadow-[0_0_8px_rgba(6,182,212,0.8)]">it drives people crazy.</span>&quot;
                 </span>
               </div>
@@ -204,7 +205,7 @@ export const MinimalistHero = ({
             <div className="pt-1">
               <a
                 href={readMoreLink}
-                className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-cyan-300 underline decoration-cyan-400 decoration-2 underline-offset-4 transition-all hover:text-cyan-200"
+                className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-cyan-300 underline decoration-cyan-400 decoration-2 underline-offset-4 transition-all hover:text-cyan-200 font-ubuntu"
               >
                 Explore Specialization &rarr;
               </a>
@@ -231,7 +232,8 @@ export const MinimalistHero = ({
           className="z-20 order-3 flex justify-center md:justify-start"
         >
           <HeroCard3D className="flex flex-col items-center justify-center text-center md:items-start md:text-left w-full">
-            <h1 className="text-2xl font-black tracking-tight text-white sm:text-3xl md:text-4xl lg:text-5xl leading-tight select-none uppercase">
+            {/* High-Contrast Luxury Stencil Serif (Bodoni Moda) for big title MOHD ZAID */}
+            <h1 className="text-2xl font-black tracking-widest text-white sm:text-3xl md:text-4xl lg:text-5xl leading-tight select-none uppercase font-display">
               {overlayText.part1}{' '}
               <span className="text-cyan-300 font-black">
                 {overlayText.part2}
@@ -264,7 +266,7 @@ export const MinimalistHero = ({
           transition={{ duration: 0.5, delay: 1.2 }}
         >
           <HeroCard3D className="!p-2.5 !px-4 sm:!p-3 sm:!px-5 !rounded-full">
-            <div className="flex items-center gap-2 text-xs font-semibold text-white/90">
+            <div className="flex items-center gap-2 text-xs font-semibold text-white/90 font-ubuntu">
               <span className="h-2 w-2 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_8px_rgba(6,182,212,0.8)]" />
               <span>{locationText}</span>
             </div>
