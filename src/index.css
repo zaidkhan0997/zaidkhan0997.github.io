@@ -4,25 +4,25 @@
 
 @layer base {
   :root {
-    --background: 165 50% 4%;
+    --background: 0 50% 4%;
     --foreground: 0 0% 98%;
-    --card: 165 40% 5%;
+    --card: 0 40% 5%;
     --card-foreground: 0 0% 98%;
-    --popover: 165 40% 5%;
+    --popover: 0 40% 5%;
     --popover-foreground: 0 0% 98%;
     --primary: 0 0% 98%;
-    --primary-foreground: 165 50% 4%;
-    --secondary: 165 30% 12%;
+    --primary-foreground: 0 50% 4%;
+    --secondary: 0 30% 12%;
     --secondary-foreground: 0 0% 98%;
-    --muted: 165 30% 12%;
-    --muted-foreground: 165 10% 65%;
-    --accent: 165 30% 12%;
+    --muted: 0 30% 12%;
+    --muted-foreground: 0 10% 65%;
+    --accent: 0 30% 12%;
     --accent-foreground: 0 0% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
-    --border: 165 20% 16%;
-    --input: 165 20% 16%;
-    --ring: 165 70% 60%;
+    --border: 0 20% 16%;
+    --input: 0 20% 16%;
+    --ring: 350 80% 60%;
     --radius: 0.75rem;
   }
 }
@@ -36,7 +36,7 @@
   }
   body {
     background-color: #05020a;
-    @apply text-foreground font-sans antialiased selection:bg-teal-400 selection:text-black;
+    @apply text-foreground font-sans antialiased selection:bg-rose-500 selection:text-white;
     font-family: 'Ubuntu', 'Ubuntu Sans', -apple-system, system-ui, sans-serif;
   }
 
@@ -64,12 +64,12 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(86, 189, 156, 0.35);
+  background: rgba(255, 48, 71, 0.4);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(86, 189, 156, 0.7);
+  background: rgba(255, 48, 71, 0.75);
 }
 
 /* Frosted Glassmorphism Design System matching user reference */
@@ -88,7 +88,7 @@
 
 .frosted-glass-card:hover {
   background: rgba(255, 255, 255, 0.055);
-  border-color: rgba(159, 255, 240, 0.45);
+  border-color: rgba(255, 80, 100, 0.45);
   box-shadow: 
     0 20px 45px 0 rgba(0, 0, 0, 0.45),
     inset 0 1.5px 2px 0 rgba(255, 255, 255, 0.45),
@@ -106,5 +106,3 @@
   border-radius: 9999px;
   transition: all 0.2s ease-out;
 }
-
-

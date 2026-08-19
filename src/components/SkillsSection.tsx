@@ -72,12 +72,12 @@ const SkillCard3D = ({ skill, index }: { skill: SkillItem; index: number }) => {
     >
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2.5">
-          <CheckCircle2 className="h-4.5 w-4.5 text-teal-300" />
-          <h3 className="text-base font-bold text-white group-hover:text-teal-300 transition-colors">
+          <CheckCircle2 className="h-4.5 w-4.5 text-rose-400" />
+          <h3 className="text-base font-bold text-white group-hover:text-rose-300 transition-colors">
             {skill.name}
           </h3>
         </div>
-        <span className="text-xs font-mono font-bold text-teal-300">
+        <span className="text-xs font-mono font-bold text-rose-400">
           {skill.level}%
         </span>
       </div>
@@ -86,14 +86,14 @@ const SkillCard3D = ({ skill, index }: { skill: SkillItem; index: number }) => {
         {skill.desc}
       </p>
 
-      {/* Solid Clean Teal Progress bar */}
+      {/* Solid Clean Rose/Crimson Progress bar */}
       <div className="h-2 w-full rounded-full bg-white/20 overflow-hidden shadow-inner">
         <motion.div
           initial={{ width: 0 }}
           whileInView={{ width: `${skill.level}%` }}
           viewport={{ once: false }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="h-full rounded-full bg-gradient-to-r from-teal-400 to-emerald-400 shadow-md"
+          className="h-full rounded-full bg-gradient-to-r from-rose-500 to-red-500 shadow-md"
         />
       </div>
     </motion.div>
@@ -121,7 +121,7 @@ export const SkillsSection = () => {
           transition={{ duration: 0.6 }}
           className="text-center space-y-3 mb-12"
         >
-          <span className="inline-block rounded-full bg-teal-400/20 px-3.5 py-1 text-xs font-semibold text-teal-300 border border-teal-400/40 backdrop-blur-3xl shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)]">
+          <span className="inline-block rounded-full bg-rose-500/20 px-3.5 py-1 text-xs font-semibold text-rose-300 border border-rose-400/40 backdrop-blur-3xl shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)]">
             TECHNICAL MASTERY
           </span>
           <h2 className="text-3xl font-extrabold md:text-5xl tracking-tight text-white">
@@ -144,7 +144,7 @@ export const SkillsSection = () => {
             onClick={() => { setActiveTab('all'); setShowAllSkills(false); }}
             className={`px-4 py-2 rounded-2xl text-xs font-semibold transition-all ${
               activeTab === 'all'
-                ? 'bg-teal-400 text-black font-bold shadow-md'
+                ? 'bg-rose-500 text-white font-bold shadow-md'
                 : 'frosted-glass-pill text-white/80 hover:text-white hover:bg-white/15'
             }`}
           >
@@ -155,7 +155,7 @@ export const SkillsSection = () => {
             onClick={() => { setActiveTab('languages'); setShowAllSkills(false); }}
             className={`flex items-center gap-1.5 px-4 py-2 rounded-2xl text-xs font-semibold transition-all ${
               activeTab === 'languages'
-                ? 'bg-teal-400 text-black font-bold shadow-md'
+                ? 'bg-rose-500 text-white font-bold shadow-md'
                 : 'frosted-glass-pill text-white/80 hover:text-white hover:bg-white/15'
             }`}
           >
@@ -166,7 +166,7 @@ export const SkillsSection = () => {
             onClick={() => { setActiveTab('android'); setShowAllSkills(false); }}
             className={`flex items-center gap-1.5 px-4 py-2 rounded-2xl text-xs font-semibold transition-all ${
               activeTab === 'android'
-                ? 'bg-teal-400 text-black font-bold shadow-md'
+                ? 'bg-rose-500 text-white font-bold shadow-md'
                 : 'frosted-glass-pill text-white/80 hover:text-white hover:bg-white/15'
             }`}
           >
@@ -177,7 +177,7 @@ export const SkillsSection = () => {
             onClick={() => { setActiveTab('tools'); setShowAllSkills(false); }}
             className={`flex items-center gap-1.5 px-4 py-2 rounded-2xl text-xs font-semibold transition-all ${
               activeTab === 'tools'
-                ? 'bg-teal-400 text-black font-bold shadow-md'
+                ? 'bg-rose-500 text-white font-bold shadow-md'
                 : 'frosted-glass-pill text-white/80 hover:text-white hover:bg-white/15'
             }`}
           >
@@ -188,7 +188,7 @@ export const SkillsSection = () => {
             onClick={() => { setActiveTab('devices'); setShowAllSkills(false); }}
             className={`flex items-center gap-1.5 px-4 py-2 rounded-2xl text-xs font-semibold transition-all ${
               activeTab === 'devices'
-                ? 'bg-teal-400 text-black font-bold shadow-md'
+                ? 'bg-rose-500 text-white font-bold shadow-md'
                 : 'frosted-glass-pill text-white/80 hover:text-white hover:bg-white/15'
             }`}
           >
@@ -214,7 +214,7 @@ export const SkillsSection = () => {
           >
             <button
               onClick={() => setShowAllSkills(!showAllSkills)}
-              className="group flex items-center gap-2 rounded-full frosted-glass-pill px-6 py-3 text-xs font-bold text-teal-300 transition-all hover:border-teal-300 hover:bg-teal-400 hover:text-black hover:scale-105 shadow-md"
+              className="group flex items-center gap-2 rounded-full frosted-glass-pill px-6 py-3 text-xs font-bold text-rose-300 transition-all hover:border-rose-300 hover:bg-rose-500 hover:text-white hover:scale-105 shadow-md"
             >
               <span>
                 {showAllSkills

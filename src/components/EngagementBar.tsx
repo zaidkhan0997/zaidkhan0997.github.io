@@ -1,18 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Eye, Heart, GitBranch, Users, FolderGit2 } from 'lucide-react';
+import { Eye, Heart, FolderGit2, Users, GitBranch } from 'lucide-react';
 import { fetchGitHubUser, GitHubUser } from '@/lib/github';
 import { BASE_VIEWS, BASE_LIKES, fetchCloudStats, updateCloudStats } from '@/lib/statsApi';
 
-// Reusable Ultra-Translucent 3D Glass Tilt Wrapper
-const Glass3DCard = ({ children, className = '', ...props }: { children: React.ReactNode; className?: string; [key: string]: any }) => {
+// Reusable 3D Frosted Glass Tilt Card Wrapper for Metrics
+const Glass3DCard = ({
+  children,
+  className = '',
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) => {
   const [rotateX, setRotateX] = useState(0);
   const [rotateY, setRotateY] = useState(0);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    // Disable tilt on small screens to prevent layout shifting
     if (typeof window !== 'undefined' && window.innerWidth < 768) return;
-
     const rect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
@@ -38,8 +42,7 @@ const Glass3DCard = ({ children, className = '', ...props }: { children: React.R
         perspective: '1000px',
         transform: `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`,
       }}
-      className={`frosted-glass-card rounded-2xl sm:rounded-3xl p-3 sm:p-4 ${className}`}
-      {...props}
+      className={`frosted-glass-card rounded-3xl p-3 sm:p-4.5 ${className}`}
     >
       {children}
     </motion.div>
@@ -113,27 +116,27 @@ export const EngagementBar = () => {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 md:px-10">
         <div className="grid grid-cols-2 gap-2.5 sm:gap-4 sm:grid-cols-3 lg:grid-cols-5">
           {/* Views Card with Real-Time Global Views Count */}
-          <Glass3DCard className="flex items-center gap-2 sm:gap-3 border-teal-400/30">
-            <div className="flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl border border-teal-400/40 bg-white/[0.08] text-teal-300 shadow-sm backdrop-blur-md">
+          <Glass3DCard className="flex items-center gap-2 sm:gap-3 border-rose-400/30">
+            <div className="flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl border border-rose-400/40 bg-white/[0.08] text-rose-300 shadow-sm backdrop-blur-md">
               <Eye className="h-4 w-4 sm:h-5 sm:w-5 animate-pulse" />
             </div>
             <div className="min-w-0 flex-1">
-              <p className="text-[9px] sm:text-[10px] font-semibold tracking-wider text-teal-200/80 uppercase truncate">Total Views</p>
-              <p className="text-xs sm:text-base md:text-lg font-extrabold text-teal-300 tracking-tight truncate">{views.toLocaleString()}</p>
+              <p className="text-[9px] sm:text-[10px] font-semibold tracking-wider text-rose-200/80 uppercase truncate">Total Views</p>
+              <p className="text-xs sm:text-base md:text-lg font-extrabold text-rose-300 tracking-tight truncate">{views.toLocaleString()}</p>
             </div>
           </Glass3DCard>
 
           {/* Persistent Real-Time Global Like Card */}
           <motion.div onClick={handleLike} className="cursor-pointer">
-            <Glass3DCard className={`flex items-center gap-2 sm:gap-3 ${hasLiked ? 'border-teal-400 bg-teal-500/15 text-teal-300' : 'border-teal-400/30 text-teal-300'}`}>
-              <div className={`flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl border border-teal-400/40 transition-colors backdrop-blur-md ${hasLiked ? 'bg-teal-500 text-black font-bold' : 'bg-white/[0.08] text-teal-300'}`}>
+            <Glass3DCard className={`flex items-center gap-2 sm:gap-3 ${hasLiked ? 'border-rose-400 bg-rose-500/15 text-rose-300' : 'border-rose-400/30 text-rose-300'}`}>
+              <div className={`flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl border border-rose-400/40 transition-colors backdrop-blur-md ${hasLiked ? 'bg-rose-500 text-white font-bold' : 'bg-white/[0.08] text-rose-300'}`}>
                 <Heart className={`h-4 w-4 sm:h-5 sm:w-5 ${hasLiked ? 'fill-current' : ''}`} />
               </div>
               <div className="min-w-0 flex-1">
-                <p className="text-[9px] sm:text-[10px] font-semibold tracking-wider text-teal-200/80 uppercase truncate">
+                <p className="text-[9px] sm:text-[10px] font-semibold tracking-wider text-rose-200/80 uppercase truncate">
                   {hasLiked ? 'Liked!' : 'Click to Like'}
                 </p>
-                <p className="text-xs sm:text-base md:text-lg font-extrabold text-teal-300 tracking-tight truncate">
+                <p className="text-xs sm:text-base md:text-lg font-extrabold text-rose-300 tracking-tight truncate">
                   {likes.toLocaleString()}
                 </p>
               </div>
@@ -142,7 +145,7 @@ export const EngagementBar = () => {
 
           {/* Repos Card */}
           <Glass3DCard className="flex items-center gap-2 sm:gap-3">
-            <div className="flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl border border-white/30 bg-white/[0.08] text-teal-300 shadow-sm backdrop-blur-md">
+            <div className="flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl border border-white/30 bg-white/[0.08] text-rose-300 shadow-sm backdrop-blur-md">
               <FolderGit2 className="h-4 w-4 sm:h-5 sm:w-5" />
             </div>
             <div className="min-w-0 flex-1">
@@ -155,7 +158,7 @@ export const EngagementBar = () => {
 
           {/* Followers Card */}
           <Glass3DCard className="flex items-center gap-2 sm:gap-3">
-            <div className="flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl border border-emerald-400/40 bg-white/[0.08] text-emerald-300 shadow-sm backdrop-blur-md">
+            <div className="flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl border border-rose-400/40 bg-white/[0.08] text-rose-300 shadow-sm backdrop-blur-md">
               <Users className="h-4 w-4 sm:h-5 sm:w-5" />
             </div>
             <div className="min-w-0 flex-1">
@@ -168,7 +171,7 @@ export const EngagementBar = () => {
 
           {/* Commits Card */}
           <Glass3DCard className="col-span-2 sm:col-span-1 flex items-center gap-2 sm:gap-3">
-            <div className="flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl border border-cyan-400/40 bg-white/[0.08] text-cyan-300 shadow-sm backdrop-blur-md">
+            <div className="flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl border border-rose-400/40 bg-white/[0.08] text-rose-300 shadow-sm backdrop-blur-md">
               <GitBranch className="h-4 w-4 sm:h-5 sm:w-5" />
             </div>
             <div className="min-w-0 flex-1">

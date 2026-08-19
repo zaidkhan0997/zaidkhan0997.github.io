@@ -128,7 +128,7 @@ export const FloatingMenu = () => {
               className="fixed inset-0 z-[90] bg-black/50 backdrop-blur-sm"
             />
 
-            {/* Main Outer Drawer Container - matching frosted-glass-card */}
+            {/* Main Outer Drawer Container */}
             <motion.div
               initial={{ opacity: 0, scale: 0.95, y: -15 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -143,16 +143,16 @@ export const FloatingMenu = () => {
                     <img
                       src="/assets/profile.jpg"
                       alt="MOHD ZAID"
-                      className="h-10 w-10 sm:h-11 sm:w-11 rounded-full object-cover border border-teal-400/50 shadow-md"
+                      className="h-10 w-10 sm:h-11 sm:w-11 rounded-full object-cover border border-rose-400/50 shadow-md"
                     />
-                    <span className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 sm:h-3 sm:w-3 rounded-full bg-teal-400 ring-2 ring-black" />
+                    <span className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 sm:h-3 sm:w-3 rounded-full bg-rose-500 ring-2 ring-black" />
                   </div>
 
                   <div className="min-w-0">
                     <h3 className="text-sm sm:text-base font-black tracking-widest font-display uppercase text-white leading-tight truncate">
                       MOHD ZAID
                     </h3>
-                    <p className="text-xs font-mono text-teal-300 font-medium">
+                    <p className="text-xs font-mono text-rose-300 font-medium">
                       ( zaidkhan0997 )
                     </p>
                   </div>
@@ -160,7 +160,7 @@ export const FloatingMenu = () => {
 
                 <button
                   onClick={() => setIsOpen(false)}
-                  className="flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-full frosted-glass-pill text-white/80 hover:border-teal-300 hover:bg-teal-400 hover:text-black hover:scale-105 transition-all shrink-0 shadow-md"
+                  className="flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-full frosted-glass-pill text-white/80 hover:border-rose-300 hover:bg-rose-500 hover:text-white hover:scale-105 transition-all shrink-0 shadow-md"
                   title="Close Navigation Drawer"
                 >
                   <X className="h-4.5 w-4.5" />
@@ -169,7 +169,7 @@ export const FloatingMenu = () => {
 
               {/* NAVIGATION Card Section */}
               <div className="rounded-3xl frosted-glass-card p-3.5 sm:p-4 mb-4 space-y-3">
-                <div className="flex items-center gap-1.5 text-[10px] font-bold tracking-widest text-teal-300 uppercase pl-1">
+                <div className="flex items-center gap-1.5 text-[10px] font-bold tracking-widest text-rose-300 uppercase pl-1">
                   <Compass className="h-3.5 w-3.5" />
                   <span>Navigation</span>
                 </div>
@@ -185,14 +185,14 @@ export const FloatingMenu = () => {
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: index * 0.05 }}
                         onClick={() => setIsOpen(false)}
-                        className="flex items-center justify-between rounded-full frosted-glass-pill p-2 sm:p-2.5 transition-all hover:border-teal-400/80 group"
+                        className="flex items-center justify-between rounded-full frosted-glass-pill p-2 sm:p-2.5 transition-all hover:border-rose-400/80 group"
                       >
                         <div className="flex items-center gap-2.5 min-w-0">
-                          <div className="flex h-9 w-9 items-center justify-center rounded-2xl border border-teal-400/40 bg-white/[0.08] text-teal-300 group-hover:bg-teal-400 group-hover:text-black transition-colors shrink-0">
+                          <div className="flex h-9 w-9 items-center justify-center rounded-2xl border border-rose-400/40 bg-white/[0.08] text-rose-300 group-hover:bg-rose-500 group-hover:text-white transition-colors shrink-0">
                             <Icon className="h-4.5 w-4.5" />
                           </div>
                           <div className="min-w-0">
-                            <p className="text-xs font-bold text-white group-hover:text-teal-300 transition-colors truncate">
+                            <p className="text-xs font-bold text-white group-hover:text-rose-300 transition-colors truncate">
                               {item.label}
                             </p>
                             <p className="text-[10px] text-white/60 truncate">
@@ -201,7 +201,7 @@ export const FloatingMenu = () => {
                           </div>
                         </div>
 
-                        <ChevronRight className="h-4 w-4 text-white/40 group-hover:text-teal-300 group-hover:translate-x-1 transition-all shrink-0 mr-1.5" />
+                        <ChevronRight className="h-4 w-4 text-white/40 group-hover:text-rose-300 group-hover:translate-x-1 transition-all shrink-0 mr-1.5" />
                       </motion.a>
                     );
                   })}
@@ -210,7 +210,7 @@ export const FloatingMenu = () => {
 
               {/* TECHNICAL SPECIALIZATION Card Section */}
               <div className="rounded-3xl frosted-glass-card p-3.5 sm:p-4 mb-4 space-y-3">
-                <div className="flex items-center gap-1.5 text-[10px] font-bold tracking-widest text-teal-300 uppercase pl-1">
+                <div className="flex items-center gap-1.5 text-[10px] font-bold tracking-widest text-rose-300 uppercase pl-1">
                   <Cpu className="h-3.5 w-3.5" />
                   <span>Technical Specialization</span>
                 </div>
@@ -219,44 +219,44 @@ export const FloatingMenu = () => {
                   <a
                     href="#skills"
                     onClick={() => setIsOpen(false)}
-                    className="flex items-center gap-1.5 rounded-full frosted-glass-pill px-3 py-1.5 font-medium text-white/90 hover:border-teal-400 hover:text-teal-300 transition-colors"
+                    className="flex items-center gap-1.5 rounded-full frosted-glass-pill px-3 py-1.5 font-medium text-white/90 hover:border-rose-400 hover:text-rose-300 transition-colors"
                   >
-                    <Layers className="h-3 w-3 text-teal-300" /> All Skills
+                    <Layers className="h-3 w-3 text-rose-300" /> All Skills
                   </a>
                   <a
                     href="#skills"
                     onClick={() => setIsOpen(false)}
-                    className="flex items-center gap-1.5 rounded-full frosted-glass-pill px-3 py-1.5 font-medium text-white/90 hover:border-teal-400 hover:text-teal-300 transition-colors"
+                    className="flex items-center gap-1.5 rounded-full frosted-glass-pill px-3 py-1.5 font-medium text-white/90 hover:border-rose-400 hover:text-rose-300 transition-colors"
                   >
-                    <Code className="h-3 w-3 text-teal-300" /> Languages (C/C++, Shell)
+                    <Code className="h-3 w-3 text-rose-300" /> Languages (C/C++, Shell)
                   </a>
                   <a
                     href="#skills"
                     onClick={() => setIsOpen(false)}
-                    className="flex items-center gap-1.5 rounded-full frosted-glass-pill px-3 py-1.5 font-medium text-white/90 hover:border-teal-400 hover:text-teal-300 transition-colors"
+                    className="flex items-center gap-1.5 rounded-full frosted-glass-pill px-3 py-1.5 font-medium text-white/90 hover:border-rose-400 hover:text-rose-300 transition-colors"
                   >
-                    <Smartphone className="h-3 w-3 text-teal-300" /> Android &amp; Kernel Trees
+                    <Smartphone className="h-3 w-3 text-rose-300" /> Android &amp; Kernel Trees
                   </a>
                   <a
                     href="#skills"
                     onClick={() => setIsOpen(false)}
-                    className="flex items-center gap-1.5 rounded-full frosted-glass-pill px-3 py-1.5 font-medium text-white/90 hover:border-teal-400 hover:text-teal-300 transition-colors"
+                    className="flex items-center gap-1.5 rounded-full frosted-glass-pill px-3 py-1.5 font-medium text-white/90 hover:border-rose-400 hover:text-rose-300 transition-colors"
                   >
-                    <Wrench className="h-3 w-3 text-teal-300" /> Build &amp; AOSP Tools
+                    <Wrench className="h-3 w-3 text-rose-300" /> Build &amp; AOSP Tools
                   </a>
                   <a
                     href="#skills"
                     onClick={() => setIsOpen(false)}
-                    className="flex items-center gap-1.5 rounded-full frosted-glass-pill px-3 py-1.5 font-medium text-white/90 hover:border-teal-400 hover:text-teal-300 transition-colors"
+                    className="flex items-center gap-1.5 rounded-full frosted-glass-pill px-3 py-1.5 font-medium text-white/90 hover:border-rose-400 hover:text-rose-300 transition-colors"
                   >
-                    <HardDrive className="h-3 w-3 text-teal-300" /> Hardware &amp; Devices
+                    <HardDrive className="h-3 w-3 text-rose-300" /> Hardware &amp; Devices
                   </a>
                 </div>
               </div>
 
               {/* REPOSITORY CATEGORIES Card Section */}
               <div className="rounded-3xl frosted-glass-card p-3.5 sm:p-4 mb-4 space-y-3">
-                <div className="flex items-center gap-1.5 text-[10px] font-bold tracking-widest text-teal-300 uppercase pl-1">
+                <div className="flex items-center gap-1.5 text-[10px] font-bold tracking-widest text-rose-300 uppercase pl-1">
                   <GitBranch className="h-3.5 w-3.5" />
                   <span>Repository Categories</span>
                 </div>
@@ -265,16 +265,16 @@ export const FloatingMenu = () => {
                   <a
                     href="#projects"
                     onClick={() => setIsOpen(false)}
-                    className="flex items-center gap-1.5 rounded-full frosted-glass-pill px-3 py-1.5 font-medium text-white/90 hover:border-teal-400 hover:text-teal-300 transition-colors"
+                    className="flex items-center gap-1.5 rounded-full frosted-glass-pill px-3 py-1.5 font-medium text-white/90 hover:border-rose-400 hover:text-rose-300 transition-colors"
                   >
-                    <FolderGit2 className="h-3 w-3 text-teal-300" /> All Repos (58+)
+                    <FolderGit2 className="h-3 w-3 text-rose-300" /> All Repos (58+)
                   </a>
                   <a
                     href="#projects"
                     onClick={() => setIsOpen(false)}
-                    className="flex items-center gap-1.5 rounded-full frosted-glass-pill px-3 py-1.5 font-medium text-white/90 hover:border-teal-400 hover:text-teal-300 transition-colors"
+                    className="flex items-center gap-1.5 rounded-full frosted-glass-pill px-3 py-1.5 font-medium text-white/90 hover:border-rose-400 hover:text-rose-300 transition-colors"
                   >
-                    <Smartphone className="h-3 w-3 text-teal-300" /> Android &amp; Kernel
+                    <Smartphone className="h-3 w-3 text-rose-300" /> Android &amp; Kernel
                   </a>
                 </div>
               </div>
@@ -282,7 +282,7 @@ export const FloatingMenu = () => {
               {/* Engagement Stats & GitHub Button Card Section */}
               <div className="rounded-3xl frosted-glass-card p-3.5 sm:p-4 space-y-3">
                 <div className="grid grid-cols-2 gap-2.5">
-                  <div className="flex items-center justify-center gap-2 rounded-full frosted-glass-pill py-2.5 px-3 text-teal-300 font-bold font-mono text-xs" title="Total Views">
+                  <div className="flex items-center justify-center gap-2 rounded-full frosted-glass-pill py-2.5 px-3 text-rose-300 font-bold font-mono text-xs" title="Total Views">
                     <Eye className="h-3.5 w-3.5 animate-pulse" /> {(views / 1000000).toFixed(2)}M
                   </div>
 
@@ -291,12 +291,12 @@ export const FloatingMenu = () => {
                     onClick={handleLike}
                     className={`flex items-center justify-center gap-2 rounded-full frosted-glass-pill py-2.5 px-3 font-bold font-mono text-xs transition-all active:scale-95 ${
                       hasLiked
-                        ? 'border-teal-400 bg-teal-500 text-black shadow-[0_0_15px_rgba(86,189,156,0.5)]'
-                        : 'text-teal-300 hover:bg-teal-500/20'
+                        ? 'border-rose-400 bg-rose-500 text-white shadow-[0_0_15px_rgba(255,48,71,0.5)]'
+                        : 'text-rose-300 hover:bg-rose-500/20'
                     }`}
                     title={hasLiked ? 'Liked!' : 'Click to Like'}
                   >
-                    <Heart className={`h-3.5 w-3.5 ${hasLiked ? 'fill-current text-black' : 'fill-teal-400/20 text-teal-300'}`} />
+                    <Heart className={`h-3.5 w-3.5 ${hasLiked ? 'fill-current text-white' : 'fill-rose-400/20 text-rose-300'}`} />
                     <span>{(likes / 1000000).toFixed(2)}M</span>
                   </button>
                 </div>
@@ -305,7 +305,7 @@ export const FloatingMenu = () => {
                   href="https://github.com/zaidkhan0997"
                   target="_blank"
                   rel="noreferrer"
-                  className="flex w-full items-center justify-center gap-2 rounded-full bg-teal-400 py-3 text-xs font-bold text-black shadow-md transition-transform hover:scale-[1.01] active:scale-[0.99]"
+                  className="flex w-full items-center justify-center gap-2 rounded-full bg-rose-500 py-3 text-xs font-bold text-white shadow-md transition-transform hover:scale-[1.01] active:scale-[0.99]"
                 >
                   <Github className="h-4 w-4" />
                   <span>GitHub Profile</span>

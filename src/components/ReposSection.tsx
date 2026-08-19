@@ -178,14 +178,14 @@ const RepoCard3D = ({ repo, index }: { repo: GitHubRepo; index: number }) => {
       <div>
         <div className="flex items-center justify-between mb-3.5">
           <div className="flex items-center gap-2.5 min-w-0 flex-1">
-            <div className="flex h-8.5 w-8.5 sm:h-9 sm:w-9 items-center justify-center rounded-2xl border border-teal-400/40 bg-white/[0.08] text-teal-300 backdrop-blur-md group-hover:bg-teal-400 group-hover:text-black transition-colors shadow-sm shrink-0">
+            <div className="flex h-8.5 w-8.5 sm:h-9 sm:w-9 items-center justify-center rounded-2xl border border-rose-400/40 bg-white/[0.08] text-rose-300 backdrop-blur-md group-hover:bg-rose-500 group-hover:text-white transition-colors shadow-sm shrink-0">
               <FolderGit2 className="h-4.5 w-4.5" />
             </div>
-            <h3 className="text-sm sm:text-base font-bold text-white group-hover:text-teal-300 transition-colors font-mono tracking-tight truncate">
+            <h3 className="text-sm sm:text-base font-bold text-white group-hover:text-rose-300 transition-colors font-mono tracking-tight truncate">
               {repo.name}
             </h3>
           </div>
-          <ExternalLink className="h-4 w-4 text-teal-300/80 opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all shrink-0" />
+          <ExternalLink className="h-4 w-4 text-rose-300/80 opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all shrink-0" />
         </div>
 
         <p className="text-xs text-white/70 line-clamp-2 mb-4 leading-relaxed font-sans">
@@ -194,14 +194,14 @@ const RepoCard3D = ({ repo, index }: { repo: GitHubRepo; index: number }) => {
       </div>
 
       <div className="flex items-center justify-between text-xs text-white/60 pt-3 border-t border-white/10 font-mono">
-        <span className="inline-flex items-center gap-1.5 font-semibold text-teal-300">
-          <span className="h-2 w-2 rounded-full bg-teal-400 animate-pulse" />
+        <span className="inline-flex items-center gap-1.5 font-semibold text-rose-300">
+          <span className="h-2 w-2 rounded-full bg-rose-500 animate-pulse shadow-[0_0_8px_rgba(255,48,71,0.8)]" />
           {repo.language || 'Source'}
         </span>
         
         <div className="flex items-center gap-3">
-          <span className="flex items-center gap-1 hover:text-teal-300 transition-colors">
-            <Star className="h-3.5 w-3.5 text-teal-300 fill-teal-300/20" /> {repo.stargazers_count}
+          <span className="flex items-center gap-1 hover:text-rose-300 transition-colors">
+            <Star className="h-3.5 w-3.5 text-rose-400 fill-rose-400/20" /> {repo.stargazers_count}
           </span>
           <span className="flex items-center gap-1 hover:text-white transition-colors">
             <GitFork className="h-3.5 w-3.5" /> {repo.forks_count}
@@ -260,8 +260,8 @@ export const ReposSection = () => {
           transition={{ duration: 0.6 }}
           className="text-center space-y-3 mb-10"
         >
-          <div className="inline-flex items-center gap-2 rounded-full bg-teal-400/20 px-3.5 py-1 text-xs font-semibold text-teal-300 border border-teal-400/40 backdrop-blur-3xl shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)]">
-            <span className={`h-2 w-2 rounded-full ${isLive ? 'bg-emerald-400 animate-pulse' : 'bg-teal-400'}`} />
+          <div className="inline-flex items-center gap-2 rounded-full bg-rose-500/20 px-3.5 py-1 text-xs font-semibold text-rose-300 border border-rose-400/40 backdrop-blur-3xl shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)]">
+            <span className={`h-2 w-2 rounded-full ${isLive ? 'bg-rose-400 animate-pulse' : 'bg-rose-500'}`} />
             {isLive ? 'LIVE GITHUB API SYNC' : 'ACTIVE REPOSITORIES'}
           </div>
           <h2 className="text-3xl font-extrabold md:text-5xl tracking-tight text-white">
@@ -279,7 +279,7 @@ export const ReposSection = () => {
               onClick={() => { setSelectedCat('all'); setShowAllRepos(false); }}
               className={`px-3.5 py-1.5 rounded-2xl text-xs font-semibold transition-all ${
                 selectedCat === 'all'
-                  ? 'bg-teal-400 text-black font-bold shadow-md'
+                  ? 'bg-rose-500 text-white font-bold shadow-md'
                   : 'frosted-glass-pill text-white/80 hover:text-white hover:bg-white/15'
               }`}
             >
@@ -289,7 +289,7 @@ export const ReposSection = () => {
               onClick={() => { setSelectedCat('android'); setShowAllRepos(false); }}
               className={`px-3.5 py-1.5 rounded-2xl text-xs font-semibold transition-all ${
                 selectedCat === 'android'
-                  ? 'bg-teal-400 text-black font-bold shadow-md'
+                  ? 'bg-rose-500 text-white font-bold shadow-md'
                   : 'frosted-glass-pill text-white/80 hover:text-white hover:bg-white/15'
               }`}
             >
@@ -299,7 +299,7 @@ export const ReposSection = () => {
               onClick={() => { setSelectedCat('c-cpp'); setShowAllRepos(false); }}
               className={`px-3.5 py-1.5 rounded-2xl text-xs font-semibold transition-all ${
                 selectedCat === 'c-cpp'
-                  ? 'bg-teal-400 text-black font-bold shadow-md'
+                  ? 'bg-rose-500 text-white font-bold shadow-md'
                   : 'frosted-glass-pill text-white/80 hover:text-white hover:bg-white/15'
               }`}
             >
@@ -309,7 +309,7 @@ export const ReposSection = () => {
               onClick={() => { setSelectedCat('shell'); setShowAllRepos(false); }}
               className={`px-3.5 py-1.5 rounded-2xl text-xs font-semibold transition-all ${
                 selectedCat === 'shell'
-                  ? 'bg-teal-400 text-black font-bold shadow-md'
+                  ? 'bg-rose-500 text-white font-bold shadow-md'
                   : 'frosted-glass-pill text-white/80 hover:text-white hover:bg-white/15'
               }`}
             >
@@ -319,9 +319,9 @@ export const ReposSection = () => {
             <button
               onClick={loadLiveRepos}
               title="Sync Latest from GitHub"
-              className="p-2 rounded-2xl frosted-glass-pill text-white/80 hover:text-teal-300 transition-colors"
+              className="p-2 rounded-2xl frosted-glass-pill text-white/80 hover:text-rose-300 transition-colors"
             >
-              <RefreshCw className={`h-3.5 w-3.5 ${loading ? 'animate-spin text-teal-300' : ''}`} />
+              <RefreshCw className={`h-3.5 w-3.5 ${loading ? 'animate-spin text-rose-400' : ''}`} />
             </button>
           </div>
 
@@ -332,7 +332,7 @@ export const ReposSection = () => {
               placeholder="Search repositories..."
               value={search}
               onChange={(e) => { setSearch(e.target.value); setShowAllRepos(false); }}
-              className="w-full rounded-2xl frosted-glass-pill pl-10 pr-4 py-2.5 text-xs text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-teal-400 resize-none"
+              className="w-full rounded-2xl frosted-glass-pill pl-10 pr-4 py-2.5 text-xs text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-rose-400 resize-none"
             />
           </div>
         </div>
@@ -355,7 +355,7 @@ export const ReposSection = () => {
           >
             <button
               onClick={() => setShowAllRepos(!showAllRepos)}
-              className="group flex items-center gap-2 rounded-full frosted-glass-pill px-6 py-3 text-xs font-bold text-teal-300 transition-all hover:border-teal-300 hover:bg-teal-400 hover:text-black hover:scale-105 shadow-md"
+              className="group flex items-center gap-2 rounded-full frosted-glass-pill px-6 py-3 text-xs font-bold text-rose-300 transition-all hover:border-rose-300 hover:bg-rose-500 hover:text-white hover:scale-105 shadow-md"
             >
               <span>
                 {showAllRepos

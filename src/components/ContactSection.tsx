@@ -98,14 +98,14 @@ export const ContactSection = () => {
           transition={{ duration: 0.6 }}
           className="text-center space-y-3 mb-12"
         >
-          <span className="inline-block rounded-full bg-teal-400/20 px-3.5 py-1 text-xs font-semibold text-teal-300 border border-teal-400/40 backdrop-blur-3xl shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)]">
+          <span className="inline-block rounded-full bg-rose-500/20 px-3.5 py-1 text-xs font-semibold text-rose-300 border border-rose-400/40 backdrop-blur-3xl shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)]">
             COLLABORATION &amp; INQUIRIES
           </span>
           <h2 className="text-3xl font-extrabold md:text-5xl tracking-tight text-white">
             Get In Touch
           </h2>
           <p className="text-sm text-white/70 max-w-2xl mx-auto">
-            Have questions or want to collaborate on Android kernels, device trees, or low-level systems programming? Send a direct email to <span className="text-teal-300 font-mono font-semibold">kzaid0997@gmail.com</span> below!
+            Have questions or want to collaborate on Android kernels, device trees, or low-level systems programming? Send a direct email to <span className="text-rose-300 font-mono font-semibold">kzaid0997@gmail.com</span> below!
           </p>
         </motion.div>
 
@@ -113,7 +113,7 @@ export const ContactSection = () => {
           {/* Left Column: Fast Info Cards */}
           <div className="lg:col-span-5 flex flex-col justify-between space-y-3.5">
             <ContactCard3D className="flex items-center gap-3.5 sm:gap-4 p-4 sm:p-4.5">
-              <div className="flex h-10 w-10 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-2xl border border-teal-400/40 bg-white/[0.08] text-teal-300 backdrop-blur-md shadow-sm">
+              <div className="flex h-10 w-10 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-2xl border border-rose-400/40 bg-white/[0.08] text-rose-300 backdrop-blur-md shadow-sm">
                 <MapPin className="h-5 w-5" />
               </div>
               <div className="min-w-0 flex-1">
@@ -123,14 +123,14 @@ export const ContactSection = () => {
             </ContactCard3D>
 
             <ContactCard3D className="flex items-center gap-3.5 sm:gap-4 p-4 sm:p-4.5">
-              <div className="flex h-10 w-10 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-2xl border border-teal-400/40 bg-white/[0.08] text-teal-300 backdrop-blur-md shadow-sm">
+              <div className="flex h-10 w-10 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-2xl border border-rose-400/40 bg-white/[0.08] text-rose-300 backdrop-blur-md shadow-sm">
                 <Mail className="h-5 w-5" />
               </div>
               <div className="min-w-0 flex-1">
                 <p className="text-[10px] sm:text-xs font-semibold text-white/60 uppercase tracking-wider">Direct Email</p>
                 <a
                   href="mailto:kzaid0997@gmail.com"
-                  className="text-xs sm:text-sm font-bold text-white hover:text-teal-300 transition-colors truncate block"
+                  className="text-xs sm:text-sm font-bold text-white hover:text-rose-300 transition-colors truncate block"
                 >
                   kzaid0997@gmail.com
                 </a>
@@ -138,12 +138,12 @@ export const ContactSection = () => {
             </ContactCard3D>
 
             <ContactCard3D className="flex items-center gap-3.5 sm:gap-4 p-4 sm:p-4.5">
-              <div className="flex h-10 w-10 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-2xl border border-teal-400/40 bg-white/[0.08] text-teal-300 backdrop-blur-md shadow-sm">
+              <div className="flex h-10 w-10 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-2xl border border-rose-400/40 bg-white/[0.08] text-rose-300 backdrop-blur-md shadow-sm">
                 <Send className="h-5 w-5" />
               </div>
               <div className="min-w-0 flex-1">
                 <p className="text-[10px] sm:text-xs font-semibold text-white/60 uppercase tracking-wider">Telegram</p>
-                <a href="https://t.me/zaidkhan0997" target="_blank" rel="noreferrer" className="text-xs sm:text-sm font-bold text-white hover:text-teal-300 transition-colors truncate block">
+                <a href="https://t.me/zaidkhan0997" target="_blank" rel="noreferrer" className="text-xs sm:text-sm font-bold text-white hover:text-rose-300 transition-colors truncate block">
                   @zaidkhan0997
                 </a>
               </div>
@@ -151,7 +151,7 @@ export const ContactSection = () => {
 
             <ContactCard3D className="p-4 sm:p-4.5">
               <div className="flex items-center gap-2 mb-1.5">
-                <ShieldCheck className="h-4 w-4 text-emerald-400 shrink-0" />
+                <ShieldCheck className="h-4 w-4 text-rose-400 shrink-0" />
                 <h4 className="text-xs font-bold text-white uppercase tracking-wider">Fast Turnaround</h4>
               </div>
               <p className="text-[11px] sm:text-xs text-white/70 leading-relaxed">
@@ -165,11 +165,11 @@ export const ContactSection = () => {
             <ContactCard3D className="flex-1 flex flex-col justify-between p-5 sm:p-7">
               <div className="mb-4">
                 <h3 className="text-base sm:text-lg font-bold text-white mb-1 flex items-center gap-2">
-                  <MessageSquare className="h-4.5 w-4.5 text-teal-300" />
+                  <MessageSquare className="h-4.5 w-4.5 text-rose-300" />
                   Send Instant Message
                 </h3>
                 <p className="text-xs text-white/70">
-                  Submitting this form delivers your message straight to <strong className="text-teal-300">kzaid0997@gmail.com</strong>.
+                  Submitting this form delivers your message straight to <strong className="text-rose-300">kzaid0997@gmail.com</strong>.
                 </p>
               </div>
 
@@ -177,62 +177,56 @@ export const ContactSection = () => {
                 <motion.div
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  className="rounded-2xl border border-emerald-400/40 bg-emerald-500/10 p-6 text-center space-y-2.5 my-auto"
+                  className="rounded-2xl border border-rose-400/40 bg-rose-500/10 p-6 text-center space-y-2.5 my-auto"
                 >
-                  <CheckCircle2 className="h-10 w-10 text-emerald-400 mx-auto animate-bounce" />
-                  <h4 className="text-base font-bold text-white">Message Delivered Successfully!</h4>
-                  <p className="text-xs text-white/80 max-w-sm mx-auto">
-                    Thank you! Your note has been delivered directly to <span className="font-mono text-emerald-300">kzaid0997@gmail.com</span>.
+                  <CheckCircle2 className="h-10 w-10 text-rose-400 mx-auto" />
+                  <h4 className="text-base font-bold text-white">Message Sent Successfully!</h4>
+                  <p className="text-xs text-white/80">
+                    Thank you! I will review your message and reply to your email address shortly.
                   </p>
-                  <button
-                    onClick={() => setSubmitted(false)}
-                    className="mt-3 text-xs font-bold text-teal-300 underline"
-                  >
-                    Send Another Message
-                  </button>
                 </motion.div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-3.5 flex-1 flex flex-col justify-between">
-                  <div className="space-y-3">
+                <form onSubmit={handleSubmit} className="space-y-4 flex-1 flex flex-col justify-between">
+                  <div className="space-y-3.5">
                     <div>
-                      <label className="text-[10px] sm:text-xs font-semibold text-white/80 uppercase tracking-wider mb-1 block">
+                      <label className="block text-xs font-semibold text-white/80 mb-1.5 uppercase tracking-wider">
                         Your Name
                       </label>
                       <input
                         type="text"
                         required
-                        placeholder="John Doe"
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        className="w-full rounded-2xl frosted-glass-pill px-4 py-2.5 text-xs text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-teal-300 resize-none"
+                        placeholder="John Doe"
+                        className="w-full rounded-2xl border border-white/20 bg-white/[0.04] px-4 py-2.5 text-xs text-white placeholder:text-white/30 backdrop-blur-md focus:border-rose-400 focus:outline-none focus:ring-1 focus:ring-rose-400/30"
                       />
                     </div>
 
                     <div>
-                      <label className="text-[10px] sm:text-xs font-semibold text-white/80 uppercase tracking-wider mb-1 block">
+                      <label className="block text-xs font-semibold text-white/80 mb-1.5 uppercase tracking-wider">
                         Email Address
                       </label>
                       <input
                         type="email"
                         required
-                        placeholder="john@example.com"
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        className="w-full rounded-2xl frosted-glass-pill px-4 py-2.5 text-xs text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-teal-300 resize-none"
+                        placeholder="john@example.com"
+                        className="w-full rounded-2xl border border-white/20 bg-white/[0.04] px-4 py-2.5 text-xs text-white placeholder:text-white/30 backdrop-blur-md focus:border-rose-400 focus:outline-none focus:ring-1 focus:ring-rose-400/30"
                       />
                     </div>
 
                     <div>
-                      <label className="text-[10px] sm:text-xs font-semibold text-white/80 uppercase tracking-wider mb-1 block">
-                        Message Content
+                      <label className="block text-xs font-semibold text-white/80 mb-1.5 uppercase tracking-wider">
+                        Message
                       </label>
                       <textarea
                         required
                         rows={4}
-                        placeholder="Hi Zaid, I'd like to talk about custom kernel compilation or AOSP bringup..."
                         value={formData.message}
                         onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                        className="w-full rounded-2xl frosted-glass-pill px-4 py-2.5 text-xs text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-teal-300 resize-none"
+                        placeholder="Inquiry about custom kernel trees, AOSP builds, or collaboration..."
+                        className="w-full rounded-2xl border border-white/20 bg-white/[0.04] px-4 py-2.5 text-xs text-white placeholder:text-white/30 backdrop-blur-md focus:border-rose-400 focus:outline-none focus:ring-1 focus:ring-rose-400/30 resize-none"
                       />
                     </div>
                   </div>
@@ -240,10 +234,10 @@ export const ContactSection = () => {
                   <button
                     type="submit"
                     disabled={submitting}
-                    className="flex w-full items-center justify-center gap-2 rounded-2xl bg-teal-400 py-3 text-xs font-bold text-black transition-transform hover:scale-[1.01] active:scale-[0.99] disabled:opacity-50 shadow-md mt-2"
+                    className="w-full flex items-center justify-center gap-2 rounded-2xl bg-rose-500 py-3 text-xs font-bold text-white shadow-md hover:bg-rose-600 active:scale-[0.99] transition-all disabled:opacity-50 mt-2"
                   >
-                    <Send className="h-3.5 w-3.5" />
-                    {submitting ? 'Transmitting Email...' : 'Transmit Message'}
+                    <Send className="h-4 w-4" />
+                    <span>{submitting ? 'Sending Message...' : 'Send Message'}</span>
                   </button>
                 </form>
               )}

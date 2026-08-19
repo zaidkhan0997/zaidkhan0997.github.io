@@ -24,7 +24,7 @@ export interface MinimalistHeroProps {
 const NavLink = ({ href, children }: { href: string; children: React.ReactNode }) => (
   <a
     href={href}
-    className="px-3.5 py-1.5 rounded-2xl text-xs font-semibold tracking-wider text-white/85 transition-all hover:text-teal-300 frosted-glass-pill hover:bg-white/15 uppercase font-ubuntu"
+    className="px-3.5 py-1.5 rounded-2xl text-xs font-semibold tracking-wider text-white/85 transition-all hover:text-rose-300 frosted-glass-pill hover:bg-white/15 uppercase font-ubuntu"
   >
     {children}
   </a>
@@ -36,7 +36,7 @@ const SocialIcon = ({ href, icon: Icon }: { href: string; icon: LucideIcon }) =>
     href={href}
     target="_blank"
     rel="noopener noreferrer"
-    className="flex h-8 w-8 sm:h-10 sm:w-10 md:h-7.5 md:w-7.5 lg:h-11 lg:w-11 items-center justify-center rounded-full frosted-glass-pill text-white/90 transition-all hover:border-teal-300 hover:bg-teal-400 hover:text-black hover:scale-110 shadow-md shrink-0 p-0 leading-none"
+    className="flex h-8 w-8 sm:h-10 sm:w-10 md:h-7.5 md:w-7.5 lg:h-11 lg:w-11 items-center justify-center rounded-full frosted-glass-pill text-white/90 transition-all hover:border-rose-300 hover:bg-rose-500 hover:text-white hover:scale-110 shadow-md shrink-0 p-0 leading-none"
   >
     <Icon className="h-4 w-4 sm:h-5 sm:w-5 md:h-3.5 md:w-3.5 lg:h-5.5 lg:w-5.5 shrink-0" />
   </a>
@@ -146,18 +146,18 @@ export const MinimalistHero = ({
                   src={imageSrc}
                   alt="MOHD ZAID"
                   className={cn(
-                    'rounded-full object-cover border border-teal-400/50 shadow-md transition-all duration-300',
+                    'rounded-full object-cover border border-rose-400/50 shadow-md transition-all duration-300',
                     isScrolled ? 'h-7 w-7 sm:h-8 sm:w-8' : 'h-8 w-8 sm:h-9 sm:w-9'
                   )}
                 />
-                <span className="absolute -bottom-0.5 -right-0.5 h-2 w-2 sm:h-2.5 sm:w-2.5 rounded-full bg-teal-400 ring-2 ring-black" />
+                <span className="absolute -bottom-0.5 -right-0.5 h-2 w-2 sm:h-2.5 sm:w-2.5 rounded-full bg-rose-500 ring-2 ring-black" />
               </div>
               <span className="whitespace-nowrap font-display font-black tracking-widest text-white uppercase text-xs sm:text-sm md:text-base">
                 {logoText}
               </span>
               <span
                 className={cn(
-                  'rounded-full border border-teal-400/30 bg-white/[0.08] px-2.5 py-0.5 text-[10px] font-mono font-medium text-teal-300 transition-all duration-300',
+                  'rounded-full border border-rose-400/30 bg-white/[0.08] px-2.5 py-0.5 text-[10px] font-mono font-medium text-rose-300 transition-all duration-300',
                   isScrolled ? 'hidden' : 'hidden xl:inline-block'
                 )}
               >
@@ -180,7 +180,7 @@ export const MinimalistHero = ({
                 target="_blank"
                 rel="noopener noreferrer"
                 className={cn(
-                  'inline-flex items-center gap-1.5 rounded-full frosted-glass-pill text-teal-300 font-semibold transition-all hover:bg-teal-400 hover:text-black hover:scale-105 shadow-sm font-ubuntu',
+                  'inline-flex items-center gap-1.5 rounded-full frosted-glass-pill text-rose-300 font-semibold transition-all hover:bg-rose-500 hover:text-white hover:scale-105 shadow-sm font-ubuntu',
                   isScrolled ? 'px-3 py-1.5 text-[11px]' : 'px-4 py-2 text-xs'
                 )}
               >
@@ -193,7 +193,7 @@ export const MinimalistHero = ({
           <button
             onClick={triggerMenu}
             className={cn(
-              'shrink-0 flex items-center justify-center rounded-3xl frosted-glass-card text-teal-300 transition-all duration-300 ease-out hover:border-teal-300/80 hover:bg-teal-400 hover:text-black hover:scale-105 focus:outline-none',
+              'shrink-0 flex items-center justify-center rounded-3xl frosted-glass-card text-rose-300 transition-all duration-300 ease-out hover:border-rose-300/80 hover:bg-rose-500 hover:text-white hover:scale-105 focus:outline-none',
               isScrolled ? 'h-11 w-11 sm:h-12 sm:w-12' : 'h-12 w-12 sm:h-14 sm:w-14'
             )}
             title="Open Navigation Menu"
@@ -216,19 +216,19 @@ export const MinimalistHero = ({
           <HeroCard3D className="space-y-4 sm:space-y-5 text-left w-full !p-6 sm:!p-7">
             {/* Top Badge Pill */}
             <div>
-              <div className="inline-flex items-center gap-2.5 rounded-full frosted-glass-pill px-4 py-1.5 text-xs font-semibold text-teal-300 font-ubuntu tracking-wide">
-                <span className="h-2 w-2 rounded-full bg-teal-400/90 shadow-[0_0_8px_rgba(86,189,156,0.8)]" />
+              <div className="inline-flex items-center gap-2.5 rounded-full frosted-glass-pill px-4 py-1.5 text-xs font-semibold text-rose-300 font-ubuntu tracking-wide">
+                <span className="h-2 w-2 rounded-full bg-rose-500 shadow-[0_0_8px_rgba(255,48,71,0.8)]" />
                 <span>{subBadge}</span>
               </div>
             </div>
 
             {/* Description Text */}
             <div className="space-y-1.5">
-              <h3 className="text-sm sm:text-base font-bold text-teal-300 leading-snug font-ubuntu">
+              <h3 className="text-sm sm:text-base font-bold text-rose-300 leading-snug font-ubuntu">
                 Android Custom ROM &amp; Linux Kernel Developer
               </h3>
               <p className="text-xs sm:text-sm text-white/80 leading-relaxed font-normal font-ubuntu">
-                specializing in <span className="text-teal-300 font-bold">Xiaomi devices (lisa &amp; sweet)</span>, AOSP bringup, C/C++, and low-level system software.
+                specializing in <span className="text-rose-300 font-bold">Xiaomi devices (lisa &amp; sweet)</span>, AOSP bringup, C/C++, and low-level system software.
               </p>
             </div>
 
@@ -237,7 +237,7 @@ export const MinimalistHero = ({
               <div>
                 <div className="inline-flex items-center rounded-full frosted-glass-pill px-4 py-2">
                   <span className="text-xs font-normal text-white/80 font-ubuntu italic">
-                    &quot;Be happy, <span className="text-teal-300 font-bold not-italic">it drives people crazy.</span>&quot;
+                    &quot;Be happy, <span className="text-rose-300 font-bold not-italic">it drives people crazy.</span>&quot;
                   </span>
                 </div>
               </div>
@@ -247,7 +247,7 @@ export const MinimalistHero = ({
             <div className="pt-1">
               <a
                 href="#skills"
-                className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-teal-300 underline decoration-teal-400 decoration-2 underline-offset-8 transition-all hover:text-teal-200 font-ubuntu"
+                className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-rose-300 underline decoration-rose-400 decoration-2 underline-offset-8 transition-all hover:text-rose-200 font-ubuntu"
               >
                 Explore Specialization &rarr;
               </a>
@@ -277,12 +277,12 @@ export const MinimalistHero = ({
           <HeroCard3D className="flex flex-col items-center justify-center text-center md:items-start md:text-left w-full min-w-0">
             <h1 className="text-xl font-black tracking-widest text-white sm:text-3xl md:text-xl lg:text-4xl xl:text-5xl leading-tight select-none uppercase font-display">
               {overlayText.part1}{' '}
-              <span className="text-teal-300 font-black drop-shadow-[0_0_12px_rgba(86,189,156,0.8)]">
+              <span className="text-rose-400 font-black drop-shadow-[0_0_14px_rgba(255,48,71,0.8)]">
                 {overlayText.part2}
               </span>
             </h1>
-            <p className="mt-1.5 sm:mt-2 text-[9px] sm:text-xs font-mono text-teal-300/80 tracking-widest uppercase flex items-center gap-1.5">
-              <span className="h-1.5 w-1.5 rounded-full bg-teal-400 animate-pulse shadow-[0_0_8px_rgba(86,189,156,0.8)] shrink-0" />
+            <p className="mt-1.5 sm:mt-2 text-[9px] sm:text-xs font-mono text-rose-300/80 tracking-widest uppercase flex items-center gap-1.5">
+              <span className="h-1.5 w-1.5 rounded-full bg-rose-500 animate-pulse shadow-[0_0_8px_rgba(255,48,71,0.8)] shrink-0" />
               <span>Xiaomi &amp; Linux Kernel Architecture</span>
             </p>
           </HeroCard3D>
@@ -305,7 +305,7 @@ export const MinimalistHero = ({
         >
           <HeroCard3D className="!p-2.5 !px-4 sm:!p-3 sm:!px-5 !rounded-full">
             <div className="flex items-center gap-2 text-xs font-semibold text-white/90 font-ubuntu">
-              <span className="h-2 w-2 rounded-full bg-teal-400 animate-pulse shadow-[0_0_8px_rgba(86,189,156,0.8)]" />
+              <span className="h-2 w-2 rounded-full bg-rose-500 animate-pulse shadow-[0_0_8px_rgba(255,48,71,0.8)]" />
               <span>{locationText}</span>
             </div>
           </HeroCard3D>

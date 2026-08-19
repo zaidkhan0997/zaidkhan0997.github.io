@@ -1,7 +1,8 @@
 import React, { useRef, useEffect, useState } from 'react';
 import * as THREE from 'three';
+import './LightPillar.css';
 
-interface LightPillarProps {
+export interface LightPillarProps {
   topColor?: string;
   bottomColor?: string;
   intensity?: number;
@@ -18,8 +19,8 @@ interface LightPillarProps {
 }
 
 export const LightPillar: React.FC<LightPillarProps> = ({
-  topColor = '#06b6d4',
-  bottomColor = '#a855f7',
+  topColor = '#5227FF',
+  bottomColor = '#FF9FFC',
   intensity = 1.0,
   rotationSpeed = 0.3,
   interactive = false,
@@ -245,14 +246,13 @@ export const LightPillar: React.FC<LightPillarProps> = ({
       mouseMoveTimeout = window.setTimeout(() => {
         mouseMoveTimeout = null;
       }, 16);
-      const rect = container.getBoundingClientRect();
-      const x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
-      const y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+      const x = (event.clientX / window.innerWidth) * 2 - 1;
+      const y = -(event.clientY / window.innerHeight) * 2 + 1;
       mouseRef.current.set(x, y);
     };
 
     if (interactive) {
-      container.addEventListener('mousemove', handleMouseMove, { passive: true });
+      window.addEventListener('mousemove', handleMouseMove, { passive: true });
     }
 
     let lastTime = performance.now();
@@ -298,7 +298,7 @@ export const LightPillar: React.FC<LightPillarProps> = ({
     return () => {
       window.removeEventListener('resize', handleResize);
       if (interactive) {
-        container.removeEventListener('mousemove', handleMouseMove);
+        window.removeEventListener('mousemove', handleMouseMove);
       }
       if (rafRef.current) {
         cancelAnimationFrame(rafRef.current);
