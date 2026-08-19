@@ -24,7 +24,7 @@ export interface MinimalistHeroProps {
 const NavLink = ({ href, children }: { href: string; children: React.ReactNode }) => (
   <a
     href={href}
-    className="px-3.5 py-1.5 rounded-2xl text-xs font-semibold tracking-wider text-white/80 transition-all hover:text-teal-300 border border-white/15 hover:border-teal-400/50 bg-white/[0.03] hover:bg-white/[0.09] [transform:translateZ(0)] uppercase font-ubuntu"
+    className="px-3.5 py-1.5 rounded-2xl text-xs font-semibold tracking-wider text-white/85 transition-all hover:text-teal-300 frosted-glass-pill hover:bg-white/15 uppercase font-ubuntu"
   >
     {children}
   </a>
@@ -36,13 +36,13 @@ const SocialIcon = ({ href, icon: Icon }: { href: string; icon: LucideIcon }) =>
     href={href}
     target="_blank"
     rel="noopener noreferrer"
-    className="flex h-8 w-8 sm:h-10 sm:w-10 md:h-7.5 md:w-7.5 lg:h-11 lg:w-11 items-center justify-center rounded-full border border-teal-400/40 bg-white/[0.08] text-white/90 backdrop-blur-md transition-all hover:border-teal-300 hover:bg-teal-400 hover:text-black hover:scale-110 shadow-md shrink-0 p-0 leading-none"
+    className="flex h-8 w-8 sm:h-10 sm:w-10 md:h-7.5 md:w-7.5 lg:h-11 lg:w-11 items-center justify-center rounded-full frosted-glass-pill text-white/90 transition-all hover:border-teal-300 hover:bg-teal-400 hover:text-black hover:scale-110 shadow-md shrink-0 p-0 leading-none"
   >
     <Icon className="h-4 w-4 sm:h-5 sm:w-5 md:h-3.5 md:w-3.5 lg:h-5.5 lg:w-5.5 shrink-0" />
   </a>
 );
 
-// Reusable 3D Translucent Glass Tilt Card for Hero (GPU hardware accelerated to prevent mobile blinking)
+// Reusable Frosted Glass 3D Card for Hero
 const HeroCard3D = ({ children, className = '' }: { children: React.ReactNode; className?: string }) => {
   const [rotateX, setRotateX] = useState(0);
   const [rotateY, setRotateY] = useState(0);
@@ -76,7 +76,7 @@ const HeroCard3D = ({ children, className = '' }: { children: React.ReactNode; c
         transform: `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`,
       }}
       className={cn(
-        'rounded-3xl border border-white/20 bg-white/[0.04] p-3.5 sm:p-5 lg:p-8 backdrop-blur-xl [transform:translateZ(0)] shadow-[inset_0_1.5px_2px_rgba(255,255,255,0.25),0_12px_32px_rgba(0,0,0,0.35)] hover:border-teal-300/80 hover:bg-white/[0.09] hover:shadow-[0_0_40px_rgba(86,189,156,0.4)] transition-all duration-300 ease-out',
+        'frosted-glass-card rounded-3xl p-3.5 sm:p-5 lg:p-8 [transform:translateZ(0)]',
         className
       )}
     >
@@ -131,12 +131,12 @@ export const MinimalistHero = ({
             isScrolled ? 'max-w-4xl' : 'max-w-7xl'
           )}
         >
-          {/* Main 3D Glass Header Bar */}
+          {/* Main Frosted Glass Header Bar */}
           <motion.header
             layout
             transition={{ type: 'spring', damping: 26, stiffness: 220 }}
             className={cn(
-              'flex-1 flex items-center justify-between rounded-3xl border border-white/20 bg-white/[0.04] backdrop-blur-xl [transform:translateZ(0)] shadow-[inset_0_1.5px_2px_rgba(255,255,255,0.25),0_8px_32px_rgba(0,0,0,0.35)] transition-all duration-300 ease-out',
+              'flex-1 flex items-center justify-between rounded-3xl frosted-glass-card transition-all duration-300 ease-out',
               isScrolled ? 'h-11 sm:h-12 px-3.5 sm:px-5' : 'h-12 sm:h-14 px-4 sm:px-6'
             )}
           >
@@ -180,7 +180,7 @@ export const MinimalistHero = ({
                 target="_blank"
                 rel="noopener noreferrer"
                 className={cn(
-                  'inline-flex items-center gap-1.5 rounded-full border border-teal-400/40 bg-white/[0.08] text-teal-300 font-semibold transition-all hover:bg-teal-400 hover:text-black hover:scale-105 shadow-sm font-ubuntu',
+                  'inline-flex items-center gap-1.5 rounded-full frosted-glass-pill text-teal-300 font-semibold transition-all hover:bg-teal-400 hover:text-black hover:scale-105 shadow-sm font-ubuntu',
                   isScrolled ? 'px-3 py-1.5 text-[11px]' : 'px-4 py-2 text-xs'
                 )}
               >
@@ -189,11 +189,11 @@ export const MinimalistHero = ({
             </div>
           </motion.header>
 
-          {/* Separate 3D Glass Menu Pill Button */}
+          {/* Separate Frosted Glass Menu Pill Button */}
           <button
             onClick={triggerMenu}
             className={cn(
-              'shrink-0 flex items-center justify-center rounded-3xl border border-white/20 bg-white/[0.04] text-teal-300 backdrop-blur-xl [transform:translateZ(0)] shadow-[inset_0_1.5px_2px_rgba(255,255,255,0.25),0_8px_32px_rgba(0,0,0,0.35)] transition-all duration-300 ease-out hover:border-teal-300/80 hover:bg-teal-400 hover:text-black hover:scale-105 focus:outline-none',
+              'shrink-0 flex items-center justify-center rounded-3xl frosted-glass-card text-teal-300 transition-all duration-300 ease-out hover:border-teal-300/80 hover:bg-teal-400 hover:text-black hover:scale-105 focus:outline-none',
               isScrolled ? 'h-11 w-11 sm:h-12 sm:w-12' : 'h-12 w-12 sm:h-14 sm:w-14'
             )}
             title="Open Navigation Menu"
@@ -206,36 +206,48 @@ export const MinimalistHero = ({
 
       {/* Main Content Area - Tuned Grid Spacing for Tablet & Desktop */}
       <div className="relative grid w-full max-w-7xl flex-grow grid-cols-1 items-center gap-4 sm:gap-6 md:gap-3 lg:gap-8 py-3 sm:py-6 md:grid-cols-3">
-        {/* Left Text Content - 3D Glass Card */}
+        {/* Left Text Content - Frosted Glass Card matching reference */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.8 }}
           className="z-20 order-2 md:order-1 flex justify-center md:justify-start min-w-0"
         >
-          <HeroCard3D className="space-y-2.5 sm:space-y-4 text-center md:text-left w-full">
-            <div className="inline-flex items-center gap-2 rounded-full border border-teal-400/40 bg-white/[0.08] px-3 py-1 text-[10px] sm:text-xs font-semibold text-teal-300 shadow-[0_0_15px_rgba(86,189,156,0.25)] font-ubuntu tracking-wide">
-              <span className="h-1.5 w-1.5 rounded-full bg-teal-400 animate-ping" />
-              {subBadge}
+          <HeroCard3D className="space-y-4 sm:space-y-5 text-left w-full !p-6 sm:!p-7">
+            {/* Top Badge Pill */}
+            <div>
+              <div className="inline-flex items-center gap-2.5 rounded-full frosted-glass-pill px-4 py-1.5 text-xs font-semibold text-teal-300 font-ubuntu tracking-wide">
+                <span className="h-2 w-2 rounded-full bg-teal-400/90 shadow-[0_0_8px_rgba(86,189,156,0.8)]" />
+                <span>{subBadge}</span>
+              </div>
             </div>
 
-            <p className="mx-auto max-w-xs text-xs sm:text-sm leading-relaxed text-white/80 md:mx-0 font-normal font-ubuntu">
-              <span className="text-teal-300 font-extrabold drop-shadow-[0_0_8px_rgba(86,189,156,0.6)]">Android Custom ROM &amp; Linux Kernel Developer</span> specializing in <span className="text-teal-300 font-bold">Xiaomi devices (lisa &amp; sweet)</span>, AOSP bringup, C/C++, and low-level system software.
-            </p>
+            {/* Description Text */}
+            <div className="space-y-1.5">
+              <h3 className="text-sm sm:text-base font-bold text-teal-300 leading-snug font-ubuntu">
+                Android Custom ROM &amp; Linux Kernel Developer
+              </h3>
+              <p className="text-xs sm:text-sm text-white/80 leading-relaxed font-normal font-ubuntu">
+                specializing in <span className="text-teal-300 font-bold">Xiaomi devices (lisa &amp; sweet)</span>, AOSP bringup, C/C++, and low-level system software.
+              </p>
+            </div>
 
-            {/* Quote with Teal Highlight */}
+            {/* Quote Pill */}
             {quote && (
-              <div className="inline-flex items-center gap-2 rounded-2xl border border-teal-400/40 bg-white/[0.08] px-3 py-1.5 sm:px-3.5 sm:py-2 shadow-[0_0_20px_rgba(86,189,156,0.3)]">
-                <span className="text-[10px] sm:text-xs font-medium text-white/90 font-ubuntu italic">
-                  &quot;Be happy, <span className="text-teal-300 font-extrabold not-italic drop-shadow-[0_0_8px_rgba(86,189,156,0.8)]">it drives people crazy.</span>&quot;
-                </span>
+              <div>
+                <div className="inline-flex items-center rounded-full frosted-glass-pill px-4 py-2">
+                  <span className="text-xs font-normal text-white/80 font-ubuntu italic">
+                    &quot;Be happy, <span className="text-teal-300 font-bold not-italic">it drives people crazy.</span>&quot;
+                  </span>
+                </div>
               </div>
             )}
 
-            <div className="pt-0.5">
+            {/* Explore Specialization Link */}
+            <div className="pt-1">
               <a
                 href="#skills"
-                className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-teal-300 underline decoration-teal-400 decoration-2 underline-offset-4 transition-all hover:text-teal-200 font-ubuntu"
+                className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-teal-300 underline decoration-teal-400 decoration-2 underline-offset-8 transition-all hover:text-teal-200 font-ubuntu"
               >
                 Explore Specialization &rarr;
               </a>
@@ -243,9 +255,9 @@ export const MinimalistHero = ({
           </HeroCard3D>
         </motion.div>
 
-        {/* Center Image - Perfectly Proportioned Aspect Square Circle Frame */}
+        {/* Center Image - Frosted Circle Frame */}
         <div className="relative order-1 md:order-2 flex justify-center items-center py-2">
-          <HeroCard3D className="!p-1.5 overflow-hidden !rounded-full border-2 border-teal-400/50 shadow-[0_0_50px_rgba(86,189,156,0.4)] bg-white/[0.04] backdrop-blur-xl shrink-0">
+          <HeroCard3D className="!p-2 overflow-hidden !rounded-full frosted-glass-card shrink-0">
             <img
               src={imageSrc}
               alt={imageAlt}
@@ -254,7 +266,7 @@ export const MinimalistHero = ({
           </HeroCard3D>
         </div>
 
-        {/* Right Column - Name Card + Separate Aligned Social Links Pill Container */}
+        {/* Right Column - Name Card + Aligned Social Links Pill Container */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -275,8 +287,8 @@ export const MinimalistHero = ({
             </p>
           </HeroCard3D>
 
-          {/* Separate Social Links Pill Container - Symmetrically even spacing guarantees 100% inner fit on tablet */}
-          <div className="flex items-center justify-evenly w-full rounded-3xl border border-white/20 bg-white/[0.04] px-1 py-2 sm:px-2.5 sm:py-2.5 backdrop-blur-xl [transform:translateZ(0)] shadow-[inset_0_1.5px_2px_rgba(255,255,255,0.25),0_8px_24px_rgba(0,0,0,0.3)]">
+          {/* Separate Social Links Pill Container */}
+          <div className="flex items-center justify-evenly w-full rounded-3xl frosted-glass-card px-1 py-2 sm:px-2.5 sm:py-2.5 [transform:translateZ(0)]">
             {socialLinks.map((link, index) => (
               <SocialIcon key={index} href={link.href} icon={link.icon} />
             ))}

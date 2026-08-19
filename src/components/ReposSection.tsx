@@ -98,39 +98,58 @@ const FALLBACK_REPOS: GitHubRepo[] = [
     description: 'Over-The-Air Update Payload Delivery Configuration & Verification Engine.',
     language: 'JSON',
     stargazers_count: 6,
-    forks_count: 1,
-    category: 'shell',
+    forks_count: 2,
+    category: 'android',
     html_url: 'https://github.com/zaidkhan0997/OTA',
     updated_at: new Date().toISOString(),
   },
   {
     id: 10,
-    name: 'zaidkhan0997.github.io',
-    description: 'Personal Developer Portfolio & Repository Showcase hosted on GitHub Pages.',
-    language: 'TypeScript',
+    name: 'android_vendor_xiaomi_lisa',
+    description: 'Xiaomi lisa proprietary blobless vendor tree for AOSP 14 & 15 QPR builds.',
+    language: 'Makefile',
+    stargazers_count: 11,
+    forks_count: 3,
+    category: 'android',
+    html_url: 'https://github.com/zaidkhan0997/android_vendor_xiaomi_lisa',
+    updated_at: new Date().toISOString(),
+  },
+  {
+    id: 11,
+    name: 'android_hardware_xiaomi',
+    description: 'Custom Hardware Abstraction Layer (HAL) implementations for Xiaomi fingerprint, vibrator, and display modes.',
+    language: 'C++',
     stargazers_count: 9,
     forks_count: 2,
-    category: 'web',
-    html_url: 'https://github.com/zaidkhan0997/zaidkhan0997.github.io',
+    category: 'android',
+    html_url: 'https://github.com/zaidkhan0997/android_hardware_xiaomi',
+    updated_at: new Date().toISOString(),
+  },
+  {
+    id: 12,
+    name: 'scripts_kernel_build',
+    description: 'Automated CI/CD build scripts with Telegram bot notification integration and artifact uploading.',
+    language: 'Shell',
+    stargazers_count: 17,
+    forks_count: 5,
+    category: 'shell',
+    html_url: 'https://github.com/zaidkhan0997/scripts_kernel_build',
     updated_at: new Date().toISOString(),
   },
 ];
 
-// Interactive 3D Translucent Glass Tilt Card Component
 const RepoCard3D = ({ repo, index }: { repo: GitHubRepo; index: number }) => {
   const [rotateX, setRotateX] = useState(0);
   const [rotateY, setRotateY] = useState(0);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    const card = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - card.left;
-    const y = e.clientY - card.top;
-    const centerX = card.width / 2;
-    const centerY = card.height / 2;
-    const rotateXVal = ((y - centerY) / centerY) * -12;
-    const rotateYVal = ((x - centerX) / centerX) * 12;
-    setRotateX(rotateXVal);
-    setRotateY(rotateYVal);
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    setRotateX(((y - centerY) / centerY) * -12);
+    setRotateY(((x - centerX) / centerX) * 12);
   };
 
   const handleMouseLeave = () => {
@@ -147,45 +166,42 @@ const RepoCard3D = ({ repo, index }: { repo: GitHubRepo; index: number }) => {
       onMouseLeave={handleMouseLeave}
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -20 }}
-      transition={{ duration: 0.4, delay: (index % 4) * 0.06 }}
+      exit={{ opacity: 0, scale: 0.95 }}
+      transition={{ duration: 0.4, delay: (index % 3) * 0.08 }}
       style={{
         transformStyle: 'preserve-3d',
         perspective: '1000px',
         transform: `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`,
       }}
-      className="group relative flex flex-col justify-between rounded-3xl border border-white/20 bg-white/[0.03] p-5 sm:p-6 backdrop-blur-3xl shadow-[inset_0_1.5px_2px_rgba(255,255,255,0.25),0_12px_32px_rgba(0,0,0,0.35)] hover:border-rose-300/80 hover:bg-white/[0.09] hover:shadow-[0_0_40px_rgba(244,63,94,0.4)] transition-all duration-300 ease-out"
+      className="group relative flex flex-col justify-between rounded-3xl frosted-glass-card p-5 sm:p-6"
     >
-      {/* Glossy Top Specular Lighting Line */}
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent rounded-t-3xl" />
-
       <div>
-        <div className="flex items-center justify-between gap-2 mb-3">
-          <div className="flex items-center gap-2.5 min-w-0">
-            <div className="flex h-8.5 w-8.5 sm:h-9 sm:w-9 items-center justify-center rounded-2xl border border-rose-400/40 bg-white/[0.08] text-rose-300 backdrop-blur-md group-hover:bg-rose-400 group-hover:text-black transition-colors shadow-sm shrink-0">
-              <FolderGit2 className="h-4 w-4 sm:h-4.5 sm:w-4.5 group-hover:scale-110 transition-transform" />
+        <div className="flex items-center justify-between mb-3.5">
+          <div className="flex items-center gap-2.5 min-w-0 flex-1">
+            <div className="flex h-8.5 w-8.5 sm:h-9 sm:w-9 items-center justify-center rounded-2xl border border-teal-400/40 bg-white/[0.08] text-teal-300 backdrop-blur-md group-hover:bg-teal-400 group-hover:text-black transition-colors shadow-sm shrink-0">
+              <FolderGit2 className="h-4.5 w-4.5" />
             </div>
-            <h3 className="text-sm sm:text-base font-bold text-white group-hover:text-rose-300 transition-colors font-mono tracking-tight truncate">
+            <h3 className="text-sm sm:text-base font-bold text-white group-hover:text-teal-300 transition-colors font-mono tracking-tight truncate">
               {repo.name}
             </h3>
           </div>
-          <ExternalLink className="h-4 w-4 text-rose-300/80 opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all shrink-0" />
+          <ExternalLink className="h-4 w-4 text-teal-300/80 opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all shrink-0" />
         </div>
 
-        <p className="text-xs text-white/75 leading-relaxed mb-5 font-normal">
-          {repo.description || 'Open source repository maintained by MOHD ZAID.'}
+        <p className="text-xs text-white/70 line-clamp-2 mb-4 leading-relaxed font-sans">
+          {repo.description || 'Custom Android Kernel / Tree repository maintained by @zaidkhan0997.'}
         </p>
       </div>
 
-      <div className="flex items-center justify-between pt-4 border-t border-white/15 text-xs text-white/75 font-mono">
-        <span className="inline-flex items-center gap-1.5 font-semibold text-rose-300">
-          <span className="h-2 w-2 rounded-full bg-rose-400 animate-pulse" />
-          {repo.language || 'Code'}
+      <div className="flex items-center justify-between text-xs text-white/60 pt-3 border-t border-white/10 font-mono">
+        <span className="inline-flex items-center gap-1.5 font-semibold text-teal-300">
+          <span className="h-2 w-2 rounded-full bg-teal-400 animate-pulse" />
+          {repo.language || 'Source'}
         </span>
-
-        <div className="flex items-center gap-4">
-          <span className="flex items-center gap-1 hover:text-rose-300 transition-colors">
-            <Star className="h-3.5 w-3.5 text-rose-300 fill-rose-300/20" /> {repo.stargazers_count}
+        
+        <div className="flex items-center gap-3">
+          <span className="flex items-center gap-1 hover:text-teal-300 transition-colors">
+            <Star className="h-3.5 w-3.5 text-teal-300 fill-teal-300/20" /> {repo.stargazers_count}
           </span>
           <span className="flex items-center gap-1 hover:text-white transition-colors">
             <GitFork className="h-3.5 w-3.5" /> {repo.forks_count}
@@ -198,17 +214,17 @@ const RepoCard3D = ({ repo, index }: { repo: GitHubRepo; index: number }) => {
 
 export const ReposSection = () => {
   const [repos, setRepos] = useState<GitHubRepo[]>(FALLBACK_REPOS);
-  const [loading, setLoading] = useState(true);
-  const [isLive, setIsLive] = useState(false);
-  const [filter, setFilter] = useState<'all' | 'android' | 'cpp' | 'shell' | 'web'>('all');
   const [search, setSearch] = useState('');
-  const [showAll, setShowAll] = useState(false);
+  const [selectedCat, setSelectedCat] = useState<'all' | 'android' | 'c-cpp' | 'shell'>('all');
+  const [loading, setLoading] = useState(false);
+  const [isLive, setIsLive] = useState(false);
+  const [showAllRepos, setShowAllRepos] = useState(false);
 
   const loadLiveRepos = async () => {
     setLoading(true);
-    const liveData = await fetchGitHubRepos();
-    if (liveData && liveData.length > 0) {
-      setRepos(liveData);
+    const live = await fetchGitHubRepos();
+    if (live && live.length > 0) {
+      setRepos(live);
       setIsLive(true);
     }
     setLoading(false);
@@ -218,17 +234,21 @@ export const ReposSection = () => {
     loadLiveRepos();
   }, []);
 
-  const filteredRepos = repos.filter((repo) => {
-    const matchesFilter = filter === 'all' || repo.category === filter;
+  const filtered = repos.filter((repo) => {
     const matchesSearch =
       repo.name.toLowerCase().includes(search.toLowerCase()) ||
-      (repo.description && repo.description.toLowerCase().includes(search.toLowerCase())) ||
-      (repo.language && repo.language.toLowerCase().includes(search.toLowerCase()));
-    return matchesFilter && matchesSearch;
+      (repo.description && repo.description.toLowerCase().includes(search.toLowerCase()));
+    
+    if (!matchesSearch) return false;
+    if (selectedCat === 'all') return true;
+    if (selectedCat === 'android') return repo.category === 'android' || repo.name.includes('xiaomi') || repo.name.includes('kernel') || repo.name.includes('device');
+    if (selectedCat === 'c-cpp') return repo.language === 'C' || repo.language === 'C++';
+    if (selectedCat === 'shell') return repo.language === 'Shell' || repo.language === 'Bash' || repo.name.includes('script');
+    return true;
   });
 
-  const displayedRepos = showAll ? filteredRepos : filteredRepos.slice(0, 4);
-  const hasMore = filteredRepos.length > 4;
+  const displayedRepos = showAllRepos ? filtered : filtered.slice(0, 3);
+  const hasMoreRepos = filtered.length > 3;
 
   return (
     <section id="projects" className="bg-transparent py-20 border-b border-white/10 overflow-hidden">
@@ -238,118 +258,111 @@ export const ReposSection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: false, amount: 0.3 }}
           transition={{ duration: 0.6 }}
-          className="text-center space-y-3 mb-12"
+          className="text-center space-y-3 mb-10"
         >
-          <div className="inline-flex items-center gap-2 rounded-full bg-rose-400/20 px-3.5 py-1 text-xs font-semibold text-rose-300 border border-rose-400/40 backdrop-blur-3xl shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)]">
-            <span className={`h-2 w-2 rounded-full ${isLive ? 'bg-emerald-400 animate-pulse' : 'bg-rose-400'}`} />
-            <span>{isLive ? 'LIVE GITHUB REST API' : 'OPEN SOURCE PROJECTS'}</span>
+          <div className="inline-flex items-center gap-2 rounded-full bg-teal-400/20 px-3.5 py-1 text-xs font-semibold text-teal-300 border border-teal-400/40 backdrop-blur-3xl shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)]">
+            <span className={`h-2 w-2 rounded-full ${isLive ? 'bg-emerald-400 animate-pulse' : 'bg-teal-400'}`} />
+            {isLive ? 'LIVE GITHUB API SYNC' : 'ACTIVE REPOSITORIES'}
           </div>
-
           <h2 className="text-3xl font-extrabold md:text-5xl tracking-tight text-white">
-            GitHub Repositories
+            Repositories &amp; Projects
           </h2>
           <p className="text-sm text-white/70 max-w-2xl mx-auto">
-            Fetched in real-time from @zaidkhan0997&apos;s GitHub profile ({repos.length} total repositories).
+            Android kernels, device trees, custom ROM sources, hardware vendor trees, and automation tools.
           </p>
         </motion.div>
 
-        {/* Filter Controls & Search */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false, amount: 0.3 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-          className="flex flex-col md:flex-row items-center justify-between gap-4 mb-10"
-        >
-          <div className="flex flex-wrap items-center justify-center gap-2">
+        {/* Filter & Search Bar */}
+        <div className="mb-10 flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="flex flex-wrap items-center gap-2">
             <button
-              onClick={() => { setFilter('all'); setShowAll(false); }}
-              className={`px-3 py-1.5 rounded-2xl text-xs font-semibold backdrop-blur-3xl transition-all shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] ${
-                filter === 'all'
-                  ? 'bg-rose-400 text-black font-bold shadow-md'
-                  : 'bg-white/[0.03] text-white/80 hover:text-white border border-white/20 hover:bg-white/10'
+              onClick={() => { setSelectedCat('all'); setShowAllRepos(false); }}
+              className={`px-3.5 py-1.5 rounded-2xl text-xs font-semibold transition-all ${
+                selectedCat === 'all'
+                  ? 'bg-teal-400 text-black font-bold shadow-md'
+                  : 'frosted-glass-pill text-white/80 hover:text-white hover:bg-white/15'
               }`}
             >
               All ({repos.length})
             </button>
             <button
-              onClick={() => { setFilter('android'); setShowAll(false); }}
-              className={`px-3 py-1.5 rounded-2xl text-xs font-semibold backdrop-blur-3xl transition-all shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] ${
-                filter === 'android'
-                  ? 'bg-rose-400 text-black font-bold shadow-md'
-                  : 'bg-white/[0.03] text-white/80 hover:text-white border border-white/20 hover:bg-white/10'
+              onClick={() => { setSelectedCat('android'); setShowAllRepos(false); }}
+              className={`px-3.5 py-1.5 rounded-2xl text-xs font-semibold transition-all ${
+                selectedCat === 'android'
+                  ? 'bg-teal-400 text-black font-bold shadow-md'
+                  : 'frosted-glass-pill text-white/80 hover:text-white hover:bg-white/15'
               }`}
             >
-              Android & Kernel
+              Android &amp; Kernel
             </button>
             <button
-              onClick={() => { setFilter('shell'); setShowAll(false); }}
-              className={`px-3 py-1.5 rounded-2xl text-xs font-semibold backdrop-blur-3xl transition-all shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] ${
-                filter === 'shell'
-                  ? 'bg-rose-400 text-black font-bold shadow-md'
-                  : 'bg-white/[0.03] text-white/80 hover:text-white border border-white/20 hover:bg-white/10'
+              onClick={() => { setSelectedCat('c-cpp'); setShowAllRepos(false); }}
+              className={`px-3.5 py-1.5 rounded-2xl text-xs font-semibold transition-all ${
+                selectedCat === 'c-cpp'
+                  ? 'bg-teal-400 text-black font-bold shadow-md'
+                  : 'frosted-glass-pill text-white/80 hover:text-white hover:bg-white/15'
               }`}
             >
-              Shell & CLI
+              C / C++
             </button>
             <button
-              onClick={() => { setFilter('web'); setShowAll(false); }}
-              className={`px-3 py-1.5 rounded-2xl text-xs font-semibold backdrop-blur-3xl transition-all shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] ${
-                filter === 'web'
-                  ? 'bg-rose-400 text-black font-bold shadow-md'
-                  : 'bg-white/[0.03] text-white/80 hover:text-white border border-white/20 hover:bg-white/10'
+              onClick={() => { setSelectedCat('shell'); setShowAllRepos(false); }}
+              className={`px-3.5 py-1.5 rounded-2xl text-xs font-semibold transition-all ${
+                selectedCat === 'shell'
+                  ? 'bg-teal-400 text-black font-bold shadow-md'
+                  : 'frosted-glass-pill text-white/80 hover:text-white hover:bg-white/15'
               }`}
             >
-              Web & Identity
+              Shell Scripts
             </button>
-
+            
             <button
               onClick={loadLiveRepos}
-              title="Refresh live GitHub data"
-              className="p-1.5 rounded-2xl bg-white/[0.03] text-white/80 hover:text-rose-300 border border-white/20 backdrop-blur-3xl transition-colors"
+              title="Sync Latest from GitHub"
+              className="p-2 rounded-2xl frosted-glass-pill text-white/80 hover:text-teal-300 transition-colors"
             >
-              <RefreshCw className={`h-3.5 w-3.5 ${loading ? 'animate-spin text-rose-300' : ''}`} />
+              <RefreshCw className={`h-3.5 w-3.5 ${loading ? 'animate-spin text-teal-300' : ''}`} />
             </button>
           </div>
 
           <div className="relative w-full md:w-72">
-            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-white/50 pointer-events-none" />
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-white/40" />
             <input
               type="text"
-              placeholder="Search live repositories..."
+              placeholder="Search repositories..."
               value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="w-full rounded-2xl border border-white/20 bg-white/[0.03] backdrop-blur-3xl pl-10 pr-4 py-2.5 text-xs text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-rose-400 shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)] resize-none"
+              onChange={(e) => { setSearch(e.target.value); setShowAllRepos(false); }}
+              className="w-full rounded-2xl frosted-glass-pill pl-10 pr-4 py-2.5 text-xs text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-teal-400 resize-none"
             />
           </div>
-        </motion.div>
+        </div>
 
         {/* Repos Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <AnimatePresence mode="popLayout">
             {displayedRepos.map((repo, index) => (
-              <RepoCard3D key={repo.id} repo={repo} index={index} />
+              <RepoCard3D key={repo.id || repo.name} repo={repo} index={index} />
             ))}
           </AnimatePresence>
         </div>
 
         {/* Show More / Show Less Button */}
-        {hasMore && (
+        {hasMoreRepos && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className="mt-10 flex justify-center"
           >
             <button
-              onClick={() => setShowAll(!showAll)}
-              className="group flex items-center gap-2 rounded-full border border-rose-400/50 bg-white/[0.05] px-6 py-3 text-xs font-bold text-rose-300 backdrop-blur-3xl shadow-[inset_0_1.5px_2px_rgba(255,255,255,0.3),0_10px_25px_rgba(0,0,0,0.4)] transition-all hover:border-rose-300 hover:bg-rose-400 hover:text-black hover:scale-105"
+              onClick={() => setShowAllRepos(!showAllRepos)}
+              className="group flex items-center gap-2 rounded-full frosted-glass-pill px-6 py-3 text-xs font-bold text-teal-300 transition-all hover:border-teal-300 hover:bg-teal-400 hover:text-black hover:scale-105 shadow-md"
             >
               <span>
-                {showAll
+                {showAllRepos
                   ? 'Show Less Repositories'
-                  : `Show All Repositories (${filteredRepos.length} Total)`}
+                  : `Show All Repositories (${filtered.length} Total)`}
               </span>
-              {showAll ? (
+              {showAllRepos ? (
                 <ChevronUp className="h-4 w-4 transition-transform group-hover:-translate-y-0.5" />
               ) : (
                 <ChevronDown className="h-4 w-4 transition-transform group-hover:translate-y-0.5" />
