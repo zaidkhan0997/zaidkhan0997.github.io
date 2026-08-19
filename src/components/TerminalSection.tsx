@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Terminal as TerminalIcon, CornerDownLeft, Sparkles, RefreshCw } from 'lucide-react';
+import { CornerDownLeft, Sparkles } from 'lucide-react';
 import { fetchCloudStats } from '@/lib/statsApi';
 
 interface HistoryItem {
@@ -8,22 +8,24 @@ interface HistoryItem {
   output: React.ReactNode;
 }
 
+const renderNeofetch = () => (
+  <div className="space-y-1 text-xs font-mono">
+    <p className="font-bold text-rose-400">
+      zaidkhan0997@android-kernel-dev (MOHD ZAID)
+    </p>
+    <p className="text-white/80">OS: Linux (Kernel Architecture &amp; Xiaomi ROM maintainer)</p>
+    <p className="text-white/60">
+      Type <span className="text-rose-400 font-bold">&apos;help&apos;</span> to see available commands or <span className="text-rose-400 font-bold">&apos;whoami&apos;</span> for profile details.
+    </p>
+  </div>
+);
+
 export const TerminalSection = () => {
   const [input, setInput] = useState('');
   const [history, setHistory] = useState<HistoryItem[]>([
     {
       command: 'neofetch',
-      output: (
-        <div className="space-y-1 text-xs font-mono">
-          <p className="font-bold text-rose-400">
-            zaidkhan0997@android-kernel-dev (MOHD ZAID)
-          </p>
-          <p className="text-white/80">OS: Linux (Kernel Architecture &amp; Xiaomi ROM maintainer)</p>
-          <p className="text-white/60">
-            Type <span className="text-rose-400 font-bold">&apos;help&apos;</span> to see available commands or <span className="text-rose-400 font-bold">&apos;whoami&apos;</span> for profile details.
-          </p>
-        </div>
-      ),
+      output: renderNeofetch(),
     },
   ]);
   const [views, setViews] = useState<number>(0);
@@ -135,15 +137,7 @@ export const TerminalSection = () => {
         break;
 
       case 'neofetch':
-        outputNode = (
-          <pre className="text-[10px] sm:text-xs text-rose-400 font-mono leading-tight">
-{`   _____      _     _   _  ___                 
-  |__  / __ _(_) __| | | |/ / |__   __ _ _ __  
-    / / / _\` | |/ _\` | | ' /| '_ \\ / _\` | '_ \\ 
-   / /_| (_| | | (_| | | . \\| | | | (_| | | | |
-  /____|\\__,_|_|\\__,_| |_|\\_\\_| |_|\\__,_|_| |_|`}
-          </pre>
-        );
+        outputNode = renderNeofetch();
         break;
 
       case 'clear':
@@ -166,7 +160,7 @@ export const TerminalSection = () => {
 
   return (
     <section id="terminal" className="bg-transparent py-20 border-b border-white/10 overflow-hidden">
-      <div className="mx-auto max-w-7xl px-6 md:px-10">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 md:px-10">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -185,46 +179,53 @@ export const TerminalSection = () => {
           </p>
         </motion.div>
 
-        {/* Terminal Window - Frosted Glass Window Frame */}
-        <div className="max-w-4xl mx-auto rounded-3xl frosted-glass-card overflow-hidden shadow-2xl">
+        {/* Terminal Window - Pure Frosted Glass Card matching reference exactly */}
+        <div className="max-w-5xl mx-auto rounded-3xl frosted-glass-card overflow-hidden flex flex-col h-[280px] sm:h-[300px]">
           {/* Header Bar */}
-          <div className="flex items-center justify-between px-5 py-3.5 border-b border-white/10 bg-white/[0.02]">
+          <div className="grid grid-cols-3 items-center px-4 sm:px-5 py-3.5 border-b border-white/10 bg-white/[0.02] shrink-0">
+            {/* Left: macOS dots */}
             <div className="flex items-center gap-2">
-              <span className="h-3 w-3 rounded-full bg-red-500/80" />
-              <span className="h-3 w-3 rounded-full bg-yellow-500/80" />
-              <span className="h-3 w-3 rounded-full bg-emerald-500/80" />
+              <span className="h-3 w-3 rounded-full bg-[#ff5f56] shadow-sm" />
+              <span className="h-3 w-3 rounded-full bg-[#ffbd2e] shadow-sm" />
+              <span className="h-3 w-3 rounded-full bg-[#27c93f] shadow-sm" />
             </div>
 
-            <div className="flex items-center gap-2 text-xs font-mono text-white/70">
-              <TerminalIcon className="h-3.5 w-3.5 text-rose-400" />
-              <span>zaidkhan0997@android-kernel-dev:~</span>
+            {/* Center: Centered command prompt title */}
+            <div className="flex items-center justify-center gap-1.5 text-xs font-mono text-white/90 truncate">
+              <span className="text-rose-400 font-bold">&gt;_</span>
+              <span className="truncate">zaidkhan0997@android-kernel-dev:~</span>
             </div>
 
-            <div className="flex items-center gap-1 text-[10px] font-mono text-rose-400">
-              <Sparkles className="h-3 w-3" />
+            {/* Right: Sparkle & Version pill */}
+            <div className="flex items-center justify-end gap-1 text-xs font-mono text-rose-300/90">
+              <Sparkles className="h-3 w-3 text-rose-400" />
               <span>v2.5</span>
             </div>
           </div>
 
-          {/* Terminal Body */}
+          {/* Terminal Body - Single seamless container with bottom input */}
           <div
             onClick={() => inputRef.current?.focus()}
-            className="p-5 md:p-6 min-h-[300px] max-h-[420px] overflow-y-auto space-y-4 font-mono text-xs cursor-text [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+            className="flex-1 p-4 sm:p-6 flex flex-col justify-between font-mono text-xs cursor-text overflow-hidden"
           >
-            {history.map((item, index) => (
-              <div key={index} className="space-y-1.5">
-                <div className="flex items-center gap-2 text-white/90">
-                  <span className="text-rose-400 font-bold">zaidkhan0997@dev:~$</span>
-                  <span>{item.command}</span>
+            {/* History Output Area */}
+            <div className="overflow-y-auto space-y-4 pr-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+              {history.map((item, index) => (
+                <div key={index} className="space-y-1.5">
+                  <div className="flex items-center gap-2 text-white/90">
+                    <span className="text-rose-400 font-bold">zaidkhan0997@dev:~$</span>
+                    <span>{item.command}</span>
+                  </div>
+                  <div className="text-white/80 pl-3 sm:pl-4 border-l-2 border-rose-500/30">
+                    {item.output}
+                  </div>
                 </div>
-                <div className="text-white/80 pl-4 border-l border-white/15">
-                  {item.output}
-                </div>
-              </div>
-            ))}
+              ))}
+              <div ref={bottomRef} />
+            </div>
 
-            {/* Prompt Input Form */}
-            <form onSubmit={handleCommand} className="flex items-center gap-2 pt-1">
+            {/* Prompt Input Form at the bottom without any divider line */}
+            <form onSubmit={handleCommand} className="flex items-center gap-2 pt-4 shrink-0">
               <span className="text-rose-400 font-bold shrink-0">zaidkhan0997@dev:~$</span>
               <input
                 ref={inputRef}
@@ -243,7 +244,6 @@ export const TerminalSection = () => {
                 <CornerDownLeft className="h-3.5 w-3.5" />
               </button>
             </form>
-            <div ref={bottomRef} />
           </div>
         </div>
       </div>
