@@ -31,8 +31,9 @@ export const TerminalSection = () => {
   const [views, setViews] = useState<number>(0);
   const [likes, setLikes] = useState<number>(0);
 
-  const bottomRef = useRef<HTMLDivElement>(null);
+  const historyContainerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const isInitialMount = useRef(true);
 
   useEffect(() => {
     fetchCloudStats().then((data) => {
@@ -52,7 +53,13 @@ export const TerminalSection = () => {
   }, []);
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
+    if (historyContainerRef.current) {
+      historyContainerRef.current.scrollTop = historyContainerRef.current.scrollHeight;
+    }
   }, [history]);
 
   const handleCommand = (e: React.FormEvent) => {
@@ -209,7 +216,10 @@ export const TerminalSection = () => {
             className="flex-1 p-4 sm:p-6 flex flex-col justify-between font-mono text-xs cursor-text overflow-hidden"
           >
             {/* History Output Area */}
-            <div className="overflow-y-auto space-y-4 pr-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+            <div
+              ref={historyContainerRef}
+              className="overflow-y-auto space-y-4 pr-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+            >
               {history.map((item, index) => (
                 <div key={index} className="space-y-1.5">
                   <div className="flex items-center gap-2 text-white/90">
@@ -221,7 +231,6 @@ export const TerminalSection = () => {
                   </div>
                 </div>
               ))}
-              <div ref={bottomRef} />
             </div>
 
             {/* Prompt Input Form at the bottom without any divider line */}
@@ -234,7 +243,6 @@ export const TerminalSection = () => {
                 onChange={(e) => setInput(e.target.value)}
                 placeholder="type 'help', 'whoami', 'skills'..."
                 className="flex-1 bg-transparent text-white placeholder:text-white/30 focus:outline-none font-mono text-xs caret-rose-400"
-                autoFocus
               />
               <button
                 type="submit"
