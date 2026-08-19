@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { LucideIcon, Menu } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -24,7 +24,7 @@ export interface MinimalistHeroProps {
 const NavLink = ({ href, children }: { href: string; children: React.ReactNode }) => (
   <a
     href={href}
-    className="px-3.5 py-1.5 rounded-2xl text-xs font-semibold tracking-wider text-white/80 transition-all hover:text-rose-300 border border-white/15 hover:border-rose-400/50 bg-white/[0.03] hover:bg-white/[0.09] [transform:translateZ(0)] uppercase font-ubuntu"
+    className="px-3.5 py-1.5 rounded-2xl text-xs font-semibold tracking-wider text-white/80 transition-all hover:text-teal-300 border border-white/15 hover:border-teal-400/50 bg-white/[0.03] hover:bg-white/[0.09] [transform:translateZ(0)] uppercase font-ubuntu"
   >
     {children}
   </a>
@@ -36,7 +36,7 @@ const SocialIcon = ({ href, icon: Icon }: { href: string; icon: LucideIcon }) =>
     href={href}
     target="_blank"
     rel="noopener noreferrer"
-    className="flex h-8 w-8 sm:h-10 sm:w-10 md:h-7.5 md:w-7.5 lg:h-11 lg:w-11 items-center justify-center rounded-full border border-rose-400/40 bg-white/[0.08] text-white/90 backdrop-blur-md transition-all hover:border-rose-300 hover:bg-rose-400 hover:text-black hover:scale-110 shadow-md shrink-0 p-0 leading-none"
+    className="flex h-8 w-8 sm:h-10 sm:w-10 md:h-7.5 md:w-7.5 lg:h-11 lg:w-11 items-center justify-center rounded-full border border-teal-400/40 bg-white/[0.08] text-white/90 backdrop-blur-md transition-all hover:border-teal-300 hover:bg-teal-400 hover:text-black hover:scale-110 shadow-md shrink-0 p-0 leading-none"
   >
     <Icon className="h-4 w-4 sm:h-5 sm:w-5 md:h-3.5 md:w-3.5 lg:h-5.5 lg:w-5.5 shrink-0" />
   </a>
@@ -48,7 +48,6 @@ const HeroCard3D = ({ children, className = '' }: { children: React.ReactNode; c
   const [rotateY, setRotateY] = useState(0);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    // Disable 3D tilt calculation on small screens to prevent GPU backdrop-filter re-paint blinking
     if (typeof window !== 'undefined' && window.innerWidth < 1024) return;
 
     const rect = e.currentTarget.getBoundingClientRect();
@@ -77,7 +76,7 @@ const HeroCard3D = ({ children, className = '' }: { children: React.ReactNode; c
         transform: `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`,
       }}
       className={cn(
-        'rounded-3xl border border-white/20 bg-white/[0.04] p-3.5 sm:p-5 lg:p-8 backdrop-blur-xl [transform:translateZ(0)] shadow-[inset_0_1.5px_2px_rgba(255,255,255,0.25),0_12px_32px_rgba(0,0,0,0.35)] hover:border-rose-300/80 hover:bg-white/[0.09] hover:shadow-[0_0_40px_rgba(244,63,94,0.4)] transition-all duration-300 ease-out',
+        'rounded-3xl border border-white/20 bg-white/[0.04] p-3.5 sm:p-5 lg:p-8 backdrop-blur-xl [transform:translateZ(0)] shadow-[inset_0_1.5px_2px_rgba(255,255,255,0.25),0_12px_32px_rgba(0,0,0,0.35)] hover:border-teal-300/80 hover:bg-white/[0.09] hover:shadow-[0_0_40px_rgba(86,189,156,0.4)] transition-all duration-300 ease-out',
         className
       )}
     >
@@ -98,6 +97,18 @@ export const MinimalistHero = ({
   subBadge = "Android Kernel & OS Developer",
   quote = '"Be happy, it drives people crazy."'
 }: MinimalistHeroProps) => {
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 35);
+    };
+
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   const triggerMenu = () => {
     window.dispatchEvent(new CustomEvent('toggle-floating-menu'));
   };
@@ -106,72 +117,91 @@ export const MinimalistHero = ({
     <div
       id="hero"
       className={cn(
-        'relative flex min-h-screen w-full flex-col items-center justify-between overflow-hidden bg-transparent p-3.5 sm:p-6 md:p-6 lg:p-10 font-sans border-b border-white/10',
+        'relative flex min-h-screen w-full flex-col items-center justify-between overflow-hidden bg-transparent p-3.5 sm:p-6 md:p-6 lg:p-10 pt-20 sm:pt-24 md:pt-28 font-sans border-b border-white/10',
         className
       )}
     >
-      {/* Top Flex Navigation Row - Header Bar + Separate Menu Pill aligned in ONE horizontal line */}
-      <div className="z-30 flex w-full max-w-7xl items-center justify-between gap-3 mb-3 sm:mb-4">
-        {/* Main 3D Glass Header Bar */}
-        <header className="flex-1 flex h-12 items-center justify-between px-3.5 sm:px-6 rounded-3xl border border-white/20 bg-white/[0.04] backdrop-blur-xl [transform:translateZ(0)] shadow-[inset_0_1.5px_2px_rgba(255,255,255,0.25),0_8px_32px_rgba(0,0,0,0.35)]">
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5 }}
-            className="flex items-center gap-2 sm:gap-2.5 text-sm sm:text-base md:text-lg lg:text-xl font-bold tracking-wider text-white min-w-0"
+      {/* Floating Animated Sticky Header Wrapper (Shrinks on Scroll) */}
+      <div className="fixed top-2.5 sm:top-4 left-0 right-0 z-40 px-3 sm:px-6 flex justify-center pointer-events-none">
+        <motion.div
+          layout
+          transition={{ type: 'spring', damping: 26, stiffness: 220 }}
+          className={cn(
+            'pointer-events-auto flex w-full items-center justify-between gap-2.5 sm:gap-3 transition-all duration-300 ease-out',
+            isScrolled ? 'max-w-4xl' : 'max-w-7xl'
+          )}
+        >
+          {/* Main 3D Glass Header Bar */}
+          <motion.header
+            layout
+            transition={{ type: 'spring', damping: 26, stiffness: 220 }}
+            className={cn(
+              'flex-1 flex items-center justify-between rounded-3xl border border-white/20 bg-white/[0.04] backdrop-blur-xl [transform:translateZ(0)] shadow-[inset_0_1.5px_2px_rgba(255,255,255,0.25),0_8px_32px_rgba(0,0,0,0.35)] transition-all duration-300 ease-out',
+              isScrolled ? 'h-11 sm:h-12 px-3.5 sm:px-5' : 'h-12 sm:h-14 px-4 sm:px-6'
+            )}
           >
-            <div className="flex items-center gap-2 min-w-0">
+            <div className="flex items-center gap-2 sm:gap-2.5 text-sm sm:text-base md:text-lg font-bold tracking-wider text-white min-w-0">
               <div className="relative shrink-0">
                 <img
                   src={imageSrc}
                   alt="MOHD ZAID"
-                  className="h-8 w-8 sm:h-9 sm:w-9 rounded-full object-cover border border-rose-400/50 shadow-md"
+                  className={cn(
+                    'rounded-full object-cover border border-teal-400/50 shadow-md transition-all duration-300',
+                    isScrolled ? 'h-7 w-7 sm:h-8 sm:w-8' : 'h-8 w-8 sm:h-9 sm:w-9'
+                  )}
                 />
-                <span className="absolute -bottom-0.5 -right-0.5 h-2 w-2 sm:h-2.5 sm:w-2.5 rounded-full bg-rose-400 ring-2 ring-black" />
+                <span className="absolute -bottom-0.5 -right-0.5 h-2 w-2 sm:h-2.5 sm:w-2.5 rounded-full bg-teal-400 ring-2 ring-black" />
               </div>
-              {/* High-Contrast Elegist Serif for MOHD ZAID name - Full display without truncation */}
-              <span className="whitespace-nowrap font-display font-black tracking-widest text-white uppercase">{logoText}</span>
+              <span className="whitespace-nowrap font-display font-black tracking-widest text-white uppercase text-xs sm:text-sm md:text-base">
+                {logoText}
+              </span>
+              <span
+                className={cn(
+                  'rounded-full border border-teal-400/30 bg-white/[0.08] px-2.5 py-0.5 text-[10px] font-mono font-medium text-teal-300 transition-all duration-300',
+                  isScrolled ? 'hidden' : 'hidden xl:inline-block'
+                )}
+              >
+                @zaidkhan0997
+              </span>
             </div>
-            <span className="hidden xl:inline-block rounded-full border border-rose-400/30 bg-white/[0.08] px-2.5 py-0.5 text-[10px] font-mono font-medium text-rose-300">
-              @zaidkhan0997
-            </span>
-          </motion.div>
-          
-          {/* Navigation Links - Hidden on Tablet (lg:flex) to leave header clean for floating drawer menu */}
-          <div className="hidden items-center space-x-2 lg:flex">
-            {navLinks.map((link) => (
-              <NavLink key={link.label} href={link.href}>
-                {link.label}
-              </NavLink>
-            ))}
-          </div>
 
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5 }}
-            className="hidden lg:flex items-center gap-3 shrink-0"
+            {/* Navigation Links */}
+            <div className="hidden items-center space-x-1.5 lg:flex">
+              {navLinks.map((link) => (
+                <NavLink key={link.label} href={link.href}>
+                  {link.label}
+                </NavLink>
+              ))}
+            </div>
+
+            <div className="hidden lg:flex items-center gap-3 shrink-0">
+              <a
+                href="https://github.com/zaidkhan0997"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={cn(
+                  'inline-flex items-center gap-1.5 rounded-full border border-teal-400/40 bg-white/[0.08] text-teal-300 font-semibold transition-all hover:bg-teal-400 hover:text-black hover:scale-105 shadow-sm font-ubuntu',
+                  isScrolled ? 'px-3 py-1.5 text-[11px]' : 'px-4 py-2 text-xs'
+                )}
+              >
+                GitHub Profile
+              </a>
+            </div>
+          </motion.header>
+
+          {/* Separate 3D Glass Menu Pill Button */}
+          <button
+            onClick={triggerMenu}
+            className={cn(
+              'shrink-0 flex items-center justify-center rounded-3xl border border-white/20 bg-white/[0.04] text-teal-300 backdrop-blur-xl [transform:translateZ(0)] shadow-[inset_0_1.5px_2px_rgba(255,255,255,0.25),0_8px_32px_rgba(0,0,0,0.35)] transition-all duration-300 ease-out hover:border-teal-300/80 hover:bg-teal-400 hover:text-black hover:scale-105 focus:outline-none',
+              isScrolled ? 'h-11 w-11 sm:h-12 sm:w-12' : 'h-12 w-12 sm:h-14 sm:w-14'
+            )}
+            title="Open Navigation Menu"
+            aria-label="Toggle Navigation Menu"
           >
-            <a
-              href="https://github.com/zaidkhan0997"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-full border border-rose-400/40 bg-white/[0.08] text-rose-300 px-4 py-2 text-xs font-semibold transition-all hover:bg-rose-400 hover:text-black hover:scale-105 shadow-sm font-ubuntu"
-            >
-              GitHub Profile
-            </a>
-          </motion.div>
-        </header>
-
-        {/* Separate 3D Glass Menu Pill Button */}
-        <button
-          onClick={triggerMenu}
-          className="shrink-0 h-12 w-12 flex items-center justify-center rounded-3xl border border-white/20 bg-white/[0.04] text-rose-300 backdrop-blur-xl [transform:translateZ(0)] shadow-[inset_0_1.5px_2px_rgba(255,255,255,0.25),0_8px_32px_rgba(0,0,0,0.35)] hover:border-rose-300/80 hover:bg-rose-400 hover:text-black hover:scale-105 transition-all focus:outline-none"
-          title="Open Navigation Menu"
-          aria-label="Toggle Navigation Menu"
-        >
-          <Menu className="h-5 w-5 stroke-[2.5]" />
-        </button>
+            <Menu className="h-5 w-5 stroke-[2.5]" />
+          </button>
+        </motion.div>
       </div>
 
       {/* Main Content Area - Tuned Grid Spacing for Tablet & Desktop */}
@@ -184,20 +214,20 @@ export const MinimalistHero = ({
           className="z-20 order-2 md:order-1 flex justify-center md:justify-start min-w-0"
         >
           <HeroCard3D className="space-y-2.5 sm:space-y-4 text-center md:text-left w-full">
-            <div className="inline-flex items-center gap-2 rounded-full border border-rose-400/40 bg-white/[0.08] px-3 py-1 text-[10px] sm:text-xs font-semibold text-rose-300 shadow-[0_0_15px_rgba(244,63,94,0.25)] font-ubuntu tracking-wide">
-              <span className="h-1.5 w-1.5 rounded-full bg-rose-400 animate-ping" />
+            <div className="inline-flex items-center gap-2 rounded-full border border-teal-400/40 bg-white/[0.08] px-3 py-1 text-[10px] sm:text-xs font-semibold text-teal-300 shadow-[0_0_15px_rgba(86,189,156,0.25)] font-ubuntu tracking-wide">
+              <span className="h-1.5 w-1.5 rounded-full bg-teal-400 animate-ping" />
               {subBadge}
             </div>
 
             <p className="mx-auto max-w-xs text-xs sm:text-sm leading-relaxed text-white/80 md:mx-0 font-normal font-ubuntu">
-              <span className="text-rose-300 font-extrabold drop-shadow-[0_0_8px_rgba(244,63,94,0.6)]">Android Custom ROM &amp; Linux Kernel Developer</span> specializing in <span className="text-rose-300 font-bold">Xiaomi devices (lisa &amp; sweet)</span>, AOSP bringup, C/C++, and low-level system software.
+              <span className="text-teal-300 font-extrabold drop-shadow-[0_0_8px_rgba(86,189,156,0.6)]">Android Custom ROM &amp; Linux Kernel Developer</span> specializing in <span className="text-teal-300 font-bold">Xiaomi devices (lisa &amp; sweet)</span>, AOSP bringup, C/C++, and low-level system software.
             </p>
 
-            {/* Quote with Rose Pink Highlight */}
+            {/* Quote with Teal Highlight */}
             {quote && (
-              <div className="inline-flex items-center gap-2 rounded-2xl border border-rose-400/40 bg-white/[0.08] px-3 py-1.5 sm:px-3.5 sm:py-2 shadow-[0_0_20px_rgba(244,63,94,0.3)]">
+              <div className="inline-flex items-center gap-2 rounded-2xl border border-teal-400/40 bg-white/[0.08] px-3 py-1.5 sm:px-3.5 sm:py-2 shadow-[0_0_20px_rgba(86,189,156,0.3)]">
                 <span className="text-[10px] sm:text-xs font-medium text-white/90 font-ubuntu italic">
-                  &quot;Be happy, <span className="text-rose-300 font-extrabold not-italic drop-shadow-[0_0_8px_rgba(244,63,94,0.8)]">it drives people crazy.</span>&quot;
+                  &quot;Be happy, <span className="text-teal-300 font-extrabold not-italic drop-shadow-[0_0_8px_rgba(86,189,156,0.8)]">it drives people crazy.</span>&quot;
                 </span>
               </div>
             )}
@@ -205,7 +235,7 @@ export const MinimalistHero = ({
             <div className="pt-0.5">
               <a
                 href="#skills"
-                className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-rose-300 underline decoration-rose-400 decoration-2 underline-offset-4 transition-all hover:text-rose-200 font-ubuntu"
+                className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-teal-300 underline decoration-teal-400 decoration-2 underline-offset-4 transition-all hover:text-teal-200 font-ubuntu"
               >
                 Explore Specialization &rarr;
               </a>
@@ -215,7 +245,7 @@ export const MinimalistHero = ({
 
         {/* Center Image - Perfectly Proportioned Aspect Square Circle Frame */}
         <div className="relative order-1 md:order-2 flex justify-center items-center py-2">
-          <HeroCard3D className="!p-1.5 overflow-hidden !rounded-full border-2 border-rose-400/50 shadow-[0_0_50px_rgba(244,63,94,0.4)] bg-white/[0.04] backdrop-blur-xl shrink-0">
+          <HeroCard3D className="!p-1.5 overflow-hidden !rounded-full border-2 border-teal-400/50 shadow-[0_0_50px_rgba(86,189,156,0.4)] bg-white/[0.04] backdrop-blur-xl shrink-0">
             <img
               src={imageSrc}
               alt={imageAlt}
@@ -235,12 +265,12 @@ export const MinimalistHero = ({
           <HeroCard3D className="flex flex-col items-center justify-center text-center md:items-start md:text-left w-full min-w-0">
             <h1 className="text-xl font-black tracking-widest text-white sm:text-3xl md:text-xl lg:text-4xl xl:text-5xl leading-tight select-none uppercase font-display">
               {overlayText.part1}{' '}
-              <span className="text-rose-300 font-black drop-shadow-[0_0_12px_rgba(244,63,94,0.8)]">
+              <span className="text-teal-300 font-black drop-shadow-[0_0_12px_rgba(86,189,156,0.8)]">
                 {overlayText.part2}
               </span>
             </h1>
-            <p className="mt-1.5 sm:mt-2 text-[9px] sm:text-xs font-mono text-rose-300/80 tracking-widest uppercase flex items-center gap-1.5">
-              <span className="h-1.5 w-1.5 rounded-full bg-rose-400 animate-pulse shadow-[0_0_8px_rgba(244,63,94,0.8)] shrink-0" />
+            <p className="mt-1.5 sm:mt-2 text-[9px] sm:text-xs font-mono text-teal-300/80 tracking-widest uppercase flex items-center gap-1.5">
+              <span className="h-1.5 w-1.5 rounded-full bg-teal-400 animate-pulse shadow-[0_0_8px_rgba(86,189,156,0.8)] shrink-0" />
               <span>Xiaomi &amp; Linux Kernel Architecture</span>
             </p>
           </HeroCard3D>
@@ -263,7 +293,7 @@ export const MinimalistHero = ({
         >
           <HeroCard3D className="!p-2.5 !px-4 sm:!p-3 sm:!px-5 !rounded-full">
             <div className="flex items-center gap-2 text-xs font-semibold text-white/90 font-ubuntu">
-              <span className="h-2 w-2 rounded-full bg-rose-400 animate-pulse shadow-[0_0_8px_rgba(244,63,94,0.8)]" />
+              <span className="h-2 w-2 rounded-full bg-teal-400 animate-pulse shadow-[0_0_8px_rgba(86,189,156,0.8)]" />
               <span>{locationText}</span>
             </div>
           </HeroCard3D>
