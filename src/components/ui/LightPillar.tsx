@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useLayoutEffect, useEffect, useState } from 'react';
 import * as THREE from 'three';
 import './LightPillar.css';
 
@@ -45,16 +45,8 @@ export const LightPillar: React.FC<LightPillarProps> = ({
   const rotationSpeedRef = useRef(rotationSpeed);
   const [webGLSupported, setWebGLSupported] = useState(true);
 
-  useEffect(() => {
-    const canvas = document.createElement('canvas');
-    const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
-    if (!gl) {
-      setWebGLSupported(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (!containerRef.current || !webGLSupported) return;
+  useLayoutEffect(() => {
+    if (!containerRef.current) return;
 
     const container = containerRef.current;
     const width = container.clientWidth || window.innerWidth;
@@ -239,6 +231,9 @@ export const LightPillar: React.FC<LightPillarProps> = ({
     const mesh = new THREE.Mesh(geometry, material);
     scene.add(mesh);
 
+    // Immediately render frame 1 synchronously before browser paints
+    renderer.render(scene, camera);
+
     let mouseMoveTimeout: number | null = null;
     const handleMouseMove = (event: MouseEvent) => {
       if (!interactive) return;
@@ -290,6 +285,7 @@ export const LightPillar: React.FC<LightPillarProps> = ({
         const newHeight = containerRef.current.clientHeight || window.innerHeight;
         rendererRef.current.setSize(newWidth, newHeight);
         materialRef.current.uniforms.uResolution.value.set(newWidth, newHeight);
+        rendererRef.current.render(scene, camera);
       }, 150);
     };
 
@@ -304,10 +300,10 @@ export const LightPillar: React.FC<LightPillarProps> = ({
         cancelAnimationFrame(rafRef.current);
       }
       if (rendererRef.current) {
+        const dom = rendererRef.current.domElement;
         rendererRef.current.dispose();
-        rendererRef.current.forceContextLoss();
-        if (container.contains(rendererRef.current.domElement)) {
-          container.removeChild(rendererRef.current.domElement);
+        if (dom && dom.parentElement) {
+          dom.parentElement.removeChild(dom);
         }
       }
       if (materialRef.current) materialRef.current.dispose();
@@ -320,7 +316,7 @@ export const LightPillar: React.FC<LightPillarProps> = ({
       geometryRef.current = null;
       rafRef.current = null;
     };
-  }, [webGLSupported, quality]);
+  }, [quality]);
 
   useEffect(() => {
     rotationSpeedRef.current = rotationSpeed;
