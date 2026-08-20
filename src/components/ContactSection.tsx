@@ -168,6 +168,11 @@ export const ContactSection = () => {
         setFormData({ name: '', email: '', message: '' });
         setAttachment(null);
         if (fileInputRef.current) fileInputRef.current.value = '';
+
+        // Automatically return form to normal after 5 seconds
+        setTimeout(() => {
+          setSubmitted(false);
+        }, 5000);
       } else {
         setErrorMessage(data?.error?.message || 'Failed to send message. Please try again or email directly.');
       }
@@ -267,13 +272,22 @@ export const ContactSection = () => {
                 <motion.div
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  className="rounded-2xl border border-rose-400/40 bg-rose-500/10 p-6 text-center space-y-2.5 my-auto"
+                  className="rounded-2xl border border-rose-400/40 bg-rose-500/10 p-6 text-center space-y-3 my-auto"
                 >
                   <CheckCircle2 className="h-10 w-10 text-rose-400 mx-auto" />
                   <h4 className="text-base font-bold text-white">Message Sent Successfully!</h4>
-                  <p className="text-xs text-white/80">
+                  <p className="text-xs text-white/80 max-w-sm mx-auto">
                     Thank you! I will review your message and reply to your email address shortly.
                   </p>
+                  <div className="pt-2">
+                    <button
+                      type="button"
+                      onClick={() => setSubmitted(false)}
+                      className="inline-flex items-center gap-1.5 rounded-full border border-rose-400/30 bg-white/10 px-4 py-1.5 text-xs font-semibold text-rose-300 hover:bg-rose-500 hover:text-white transition-all font-ubuntu"
+                    >
+                      Send Another Message &rarr;
+                    </button>
+                  </div>
                 </motion.div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-4 flex-1 flex flex-col justify-between">
