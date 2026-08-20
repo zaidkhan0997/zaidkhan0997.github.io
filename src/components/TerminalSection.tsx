@@ -187,7 +187,13 @@ export const TerminalSection = () => {
         </motion.div>
 
         {/* Terminal Window - Pure Frosted Glass Card matching reference exactly */}
-        <div className="max-w-5xl mx-auto rounded-3xl frosted-glass-card overflow-hidden flex flex-col h-[280px] sm:h-[300px]">
+        <motion.div
+          initial={{ opacity: 0, y: 45, scale: 0.95 }}
+          whileInView={{ opacity: 1, y: 0, scale: 1 }}
+          viewport={{ once: false, amount: 0.2 }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          className="max-w-5xl mx-auto rounded-3xl frosted-glass-card overflow-hidden flex flex-col h-[280px] sm:h-[300px]"
+        >
           {/* Header Bar */}
           <div className="grid grid-cols-3 items-center px-4 sm:px-5 py-3.5 border-b border-white/10 bg-white/[0.02] shrink-0">
             {/* Left: macOS dots */}
@@ -253,7 +259,7 @@ export const TerminalSection = () => {
               </button>
             </form>
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

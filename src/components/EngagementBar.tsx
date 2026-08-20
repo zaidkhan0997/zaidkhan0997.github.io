@@ -117,18 +117,32 @@ export const EngagementBar = () => {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 md:px-10">
         <div className="grid grid-cols-2 gap-2.5 sm:gap-4 sm:grid-cols-3 lg:grid-cols-5">
           {/* Views Card with Real-Time Global Views Count */}
-          <Glass3DCard className="flex items-center gap-2 sm:gap-3 border-rose-400/30">
-            <div className="flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl border border-rose-400/40 bg-white/[0.08] text-rose-300 shadow-sm backdrop-blur-md">
-              <Eye className="h-4 w-4 sm:h-5 sm:w-5 animate-pulse" />
-            </div>
-            <div className="min-w-0 flex-1">
-              <p className="text-[9px] sm:text-[10px] font-semibold tracking-wider text-rose-200/80 uppercase truncate">Total Views</p>
-              <p className="text-xs sm:text-base md:text-lg font-extrabold text-rose-300 tracking-tight truncate">{views.toLocaleString()}</p>
-            </div>
-          </Glass3DCard>
+          <motion.div
+            initial={{ opacity: 0, y: 30, scale: 0.94 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            viewport={{ once: false, amount: 0.2 }}
+            transition={{ duration: 0.5, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <Glass3DCard className="flex items-center gap-2 sm:gap-3 border-rose-400/30">
+              <div className="flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl border border-rose-400/40 bg-white/[0.08] text-rose-300 shadow-sm backdrop-blur-md">
+                <Eye className="h-4 w-4 sm:h-5 sm:w-5 animate-pulse" />
+              </div>
+              <div className="min-w-0 flex-1">
+                <p className="text-[9px] sm:text-[10px] font-semibold tracking-wider text-rose-200/80 uppercase truncate">Total Views</p>
+                <p className="text-xs sm:text-base md:text-lg font-extrabold text-rose-300 tracking-tight truncate">{views.toLocaleString()}</p>
+              </div>
+            </Glass3DCard>
+          </motion.div>
 
           {/* Persistent Real-Time Global Like Card */}
-          <motion.div onClick={handleLike} className="cursor-pointer">
+          <motion.div
+            initial={{ opacity: 0, y: 30, scale: 0.94 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            viewport={{ once: false, amount: 0.2 }}
+            transition={{ duration: 0.5, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+            onClick={handleLike}
+            className="cursor-pointer"
+          >
             <Glass3DCard className={`flex items-center gap-2 sm:gap-3 ${hasLiked ? 'border-rose-400 bg-rose-500/15 text-rose-300' : 'border-rose-400/30 text-rose-300'}`}>
               <div className={`flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl border border-rose-400/40 transition-colors backdrop-blur-md ${hasLiked ? 'bg-rose-500 text-white font-bold' : 'bg-white/[0.08] text-rose-300'}`}>
                 <Heart className={`h-4 w-4 sm:h-5 sm:w-5 ${hasLiked ? 'fill-current' : ''}`} />
@@ -145,41 +159,63 @@ export const EngagementBar = () => {
           </motion.div>
 
           {/* Repos Card */}
-          <Glass3DCard className="flex items-center gap-2 sm:gap-3">
-            <div className="flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl border border-white/30 bg-white/[0.08] text-rose-300 shadow-sm backdrop-blur-md">
-              <FolderGit2 className="h-4 w-4 sm:h-5 sm:w-5" />
-            </div>
-            <div className="min-w-0 flex-1">
-              <p className="text-[9px] sm:text-[10px] font-semibold tracking-wider text-white/70 uppercase truncate">Live Repos</p>
-              <p className="text-xs sm:text-base md:text-lg font-extrabold text-white tracking-tight truncate">
-                {userInfo ? `${userInfo.public_repos}+` : '58+'}
-              </p>
-            </div>
-          </Glass3DCard>
+          <motion.div
+            initial={{ opacity: 0, y: 30, scale: 0.94 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            viewport={{ once: false, amount: 0.2 }}
+            transition={{ duration: 0.5, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <Glass3DCard className="flex items-center gap-2 sm:gap-3">
+              <div className="flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl border border-white/30 bg-white/[0.08] text-rose-300 shadow-sm backdrop-blur-md">
+                <FolderGit2 className="h-4 w-4 sm:h-5 sm:w-5" />
+              </div>
+              <div className="min-w-0 flex-1">
+                <p className="text-[9px] sm:text-[10px] font-semibold tracking-wider text-white/70 uppercase truncate">Live Repos</p>
+                <p className="text-xs sm:text-base md:text-lg font-extrabold text-white tracking-tight truncate">
+                  {userInfo ? `${userInfo.public_repos}+` : '58+'}
+                </p>
+              </div>
+            </Glass3DCard>
+          </motion.div>
 
           {/* Followers Card */}
-          <Glass3DCard className="flex items-center gap-2 sm:gap-3">
-            <div className="flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl border border-rose-400/40 bg-white/[0.08] text-rose-300 shadow-sm backdrop-blur-md">
-              <Users className="h-4 w-4 sm:h-5 sm:w-5" />
-            </div>
-            <div className="min-w-0 flex-1">
-              <p className="text-[9px] sm:text-[10px] font-semibold tracking-wider text-white/70 uppercase truncate">Followers</p>
-              <p className="text-xs sm:text-base md:text-lg font-extrabold text-white tracking-tight truncate">
-                {userInfo ? userInfo.followers : '55'}
-              </p>
-            </div>
-          </Glass3DCard>
+          <motion.div
+            initial={{ opacity: 0, y: 30, scale: 0.94 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            viewport={{ once: false, amount: 0.2 }}
+            transition={{ duration: 0.5, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <Glass3DCard className="flex items-center gap-2 sm:gap-3">
+              <div className="flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl border border-rose-400/40 bg-white/[0.08] text-rose-300 shadow-sm backdrop-blur-md">
+                <Users className="h-4 w-4 sm:h-5 sm:w-5" />
+              </div>
+              <div className="min-w-0 flex-1">
+                <p className="text-[9px] sm:text-[10px] font-semibold tracking-wider text-white/70 uppercase truncate">Followers</p>
+                <p className="text-xs sm:text-base md:text-lg font-extrabold text-white tracking-tight truncate">
+                  {userInfo ? userInfo.followers : '55'}
+                </p>
+              </div>
+            </Glass3DCard>
+          </motion.div>
 
           {/* Commits Card */}
-          <Glass3DCard className="col-span-2 sm:col-span-1 flex items-center gap-2 sm:gap-3">
-            <div className="flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl border border-rose-400/40 bg-white/[0.08] text-rose-300 shadow-sm backdrop-blur-md">
-              <GitBranch className="h-4 w-4 sm:h-5 sm:w-5" />
-            </div>
-            <div className="min-w-0 flex-1">
-              <p className="text-[9px] sm:text-[10px] font-semibold tracking-wider text-white/70 uppercase truncate">Commits & Trees</p>
-              <p className="text-xs sm:text-base md:text-lg font-extrabold text-white tracking-tight truncate">100+</p>
-            </div>
-          </Glass3DCard>
+          <motion.div
+            initial={{ opacity: 0, y: 30, scale: 0.94 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            viewport={{ once: false, amount: 0.2 }}
+            transition={{ duration: 0.5, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
+            className="col-span-2 sm:col-span-1"
+          >
+            <Glass3DCard className="flex items-center gap-2 sm:gap-3">
+              <div className="flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl border border-rose-400/40 bg-white/[0.08] text-rose-300 shadow-sm backdrop-blur-md">
+                <GitBranch className="h-4 w-4 sm:h-5 sm:w-5" />
+              </div>
+              <div className="min-w-0 flex-1">
+                <p className="text-[9px] sm:text-[10px] font-semibold tracking-wider text-white/70 uppercase truncate">Commits & Trees</p>
+                <p className="text-xs sm:text-base md:text-lg font-extrabold text-white tracking-tight truncate">100+</p>
+              </div>
+            </Glass3DCard>
+          </motion.div>
         </div>
       </div>
     </section>

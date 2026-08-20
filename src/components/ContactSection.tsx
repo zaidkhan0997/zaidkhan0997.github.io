@@ -208,56 +208,90 @@ export const ContactSection = () => {
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 max-w-5xl mx-auto items-stretch">
           {/* Left Column: Fast Info Cards */}
           <div className="lg:col-span-5 flex flex-col justify-between space-y-3.5">
-            <ContactCard3D className="flex items-center gap-3.5 sm:gap-4 p-4 sm:p-4.5">
-              <div className="flex h-10 w-10 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-2xl border border-rose-400/40 bg-white/[0.08] text-rose-300 backdrop-blur-md shadow-sm">
-                <MapPin className="h-5 w-5" />
-              </div>
-              <div className="min-w-0 flex-1">
-                <p className="text-[10px] sm:text-xs font-semibold text-white/60 uppercase tracking-wider">Location</p>
-                <p className="text-xs sm:text-sm font-bold text-white truncate">Himachal Pradesh, India</p>
-              </div>
-            </ContactCard3D>
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: false, amount: 0.2 }}
+              transition={{ duration: 0.45, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <ContactCard3D className="flex items-center gap-3.5 sm:gap-4 p-4 sm:p-4.5">
+                <div className="flex h-10 w-10 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-2xl border border-rose-400/40 bg-white/[0.08] text-rose-300 backdrop-blur-md shadow-sm">
+                  <MapPin className="h-5 w-5" />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="text-[10px] sm:text-xs font-semibold text-white/60 uppercase tracking-wider">Location</p>
+                  <p className="text-xs sm:text-sm font-bold text-white truncate">Himachal Pradesh, India</p>
+                </div>
+              </ContactCard3D>
+            </motion.div>
 
-            <ContactCard3D className="flex items-center gap-3.5 sm:gap-4 p-4 sm:p-4.5">
-              <div className="flex h-10 w-10 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-2xl border border-rose-400/40 bg-white/[0.08] text-rose-300 backdrop-blur-md shadow-sm">
-                <Mail className="h-5 w-5" />
-              </div>
-              <div className="min-w-0 flex-1">
-                <p className="text-[10px] sm:text-xs font-semibold text-white/60 uppercase tracking-wider">Direct Email</p>
-                <a
-                  href="mailto:kzaid0997@gmail.com"
-                  className="text-xs sm:text-sm font-bold text-white hover:text-rose-300 transition-colors truncate block"
-                >
-                  kzaid0997@gmail.com
-                </a>
-              </div>
-            </ContactCard3D>
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: false, amount: 0.2 }}
+              transition={{ duration: 0.45, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <ContactCard3D className="flex items-center gap-3.5 sm:gap-4 p-4 sm:p-4.5">
+                <div className="flex h-10 w-10 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-2xl border border-rose-400/40 bg-white/[0.08] text-rose-300 backdrop-blur-md shadow-sm">
+                  <Mail className="h-5 w-5" />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="text-[10px] sm:text-xs font-semibold text-white/60 uppercase tracking-wider">Direct Email</p>
+                  <a
+                    href="mailto:kzaid0997@gmail.com"
+                    className="text-xs sm:text-sm font-bold text-white hover:text-rose-300 transition-colors truncate block"
+                  >
+                    kzaid0997@gmail.com
+                  </a>
+                </div>
+              </ContactCard3D>
+            </motion.div>
 
-            <ContactCard3D className="flex items-center gap-3.5 sm:gap-4 p-4 sm:p-4.5">
-              <div className="flex h-10 w-10 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-2xl border border-rose-400/40 bg-white/[0.08] text-rose-300 backdrop-blur-md shadow-sm">
-                <Send className="h-5 w-5" />
-              </div>
-              <div className="min-w-0 flex-1">
-                <p className="text-[10px] sm:text-xs font-semibold text-white/60 uppercase tracking-wider">Telegram</p>
-                <a href="https://t.me/zaidkhan0997" target="_blank" rel="noreferrer" className="text-xs sm:text-sm font-bold text-white hover:text-rose-300 transition-colors truncate block">
-                  @zaidkhan0997
-                </a>
-              </div>
-            </ContactCard3D>
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: false, amount: 0.2 }}
+              transition={{ duration: 0.45, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <ContactCard3D className="flex items-center gap-3.5 sm:gap-4 p-4 sm:p-4.5">
+                <div className="flex h-10 w-10 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-2xl border border-rose-400/40 bg-white/[0.08] text-rose-300 backdrop-blur-md shadow-sm">
+                  <Send className="h-5 w-5" />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="text-[10px] sm:text-xs font-semibold text-white/60 uppercase tracking-wider">Telegram</p>
+                  <a href="https://t.me/zaidkhan0997" target="_blank" rel="noreferrer" className="text-xs sm:text-sm font-bold text-white hover:text-rose-300 transition-colors truncate block">
+                    @zaidkhan0997
+                  </a>
+                </div>
+              </ContactCard3D>
+            </motion.div>
 
-            <ContactCard3D className="p-4 sm:p-4.5">
-              <div className="flex items-center gap-2 mb-1.5">
-                <ShieldCheck className="h-4 w-4 text-rose-400 shrink-0" />
-                <h4 className="text-xs font-bold text-white uppercase tracking-wider">Fast Turnaround</h4>
-              </div>
-              <p className="text-[11px] sm:text-xs text-white/70 leading-relaxed">
-                Active daily across GitHub, Telegram, and developer email channels.
-              </p>
-            </ContactCard3D>
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: false, amount: 0.2 }}
+              transition={{ duration: 0.45, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <ContactCard3D className="p-4 sm:p-4.5">
+                <div className="flex items-center gap-2 mb-1.5">
+                  <ShieldCheck className="h-4 w-4 text-rose-400 shrink-0" />
+                  <h4 className="text-xs font-bold text-white uppercase tracking-wider">Fast Turnaround</h4>
+                </div>
+                <p className="text-[11px] sm:text-xs text-white/70 leading-relaxed">
+                  Active daily across GitHub, Telegram, and developer email channels.
+                </p>
+              </ContactCard3D>
+            </motion.div>
           </div>
 
           {/* Right Column: Interactive Send Email Form */}
-          <div className="lg:col-span-7 flex flex-col">
+          <motion.div
+            initial={{ opacity: 0, x: 30, scale: 0.96 }}
+            whileInView={{ opacity: 1, x: 0, scale: 1 }}
+            viewport={{ once: false, amount: 0.2 }}
+            transition={{ duration: 0.55, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+            className="lg:col-span-7 flex flex-col"
+          >
             <ContactCard3D className="flex-1 flex flex-col justify-between p-5 sm:p-7">
               <div className="mb-4">
                 <h3 className="text-base sm:text-lg font-bold text-white mb-1 flex items-center gap-2">
@@ -437,7 +471,7 @@ export const ContactSection = () => {
                 </form>
               )}
             </ContactCard3D>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>

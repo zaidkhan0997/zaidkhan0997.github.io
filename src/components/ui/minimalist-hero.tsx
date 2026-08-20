@@ -207,11 +207,12 @@ export const MinimalistHero = ({
 
       {/* Main Content Area - Tuned Grid Spacing for Tablet & Desktop */}
       <div className="relative grid w-full max-w-7xl flex-grow grid-cols-1 items-center gap-4 sm:gap-6 lg:gap-8 py-3 sm:py-6 lg:grid-cols-3">
-        {/* Left Text Content - Frosted Glass Card matching reference (Immediate render) */}
+        {/* Left Text Content - Frosted Glass Card matching reference */}
         <motion.div
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3 }}
+          initial={{ opacity: 0, x: -35, scale: 0.96 }}
+          whileInView={{ opacity: 1, x: 0, scale: 1 }}
+          viewport={{ once: false, amount: 0.2 }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           className="z-20 order-3 lg:order-1 flex justify-center lg:justify-start w-full max-w-xl lg:max-w-none min-w-0 mx-auto lg:mx-0"
         >
           <HeroCard3D className="space-y-4 sm:space-y-5 text-left w-full !p-6 sm:!p-7">
@@ -257,7 +258,13 @@ export const MinimalistHero = ({
         </motion.div>
 
         {/* Center Image - Frosted Circle Frame */}
-        <div className="relative order-1 lg:order-2 flex justify-center items-center py-2">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.88 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: false, amount: 0.2 }}
+          transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+          className="relative order-1 lg:order-2 flex justify-center items-center py-2"
+        >
           <HeroCard3D className="!p-2 overflow-hidden !rounded-full frosted-glass-card shrink-0">
             <img
               src={imageSrc}
@@ -265,13 +272,14 @@ export const MinimalistHero = ({
               className="h-52 w-52 sm:h-64 sm:w-64 md:h-72 md:w-72 lg:h-[380px] lg:w-[380px] xl:h-[400px] xl:w-[400px] aspect-square object-cover object-[50%_12%] rounded-full transition-transform duration-700 hover:scale-105"
             />
           </HeroCard3D>
-        </div>
+        </motion.div>
 
         {/* Right Column - Name Card + Aligned Social Links Pill Container */}
         <motion.div
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3 }}
+          initial={{ opacity: 0, x: 35, scale: 0.96 }}
+          whileInView={{ opacity: 1, x: 0, scale: 1 }}
+          viewport={{ once: false, amount: 0.2 }}
+          transition={{ duration: 0.6, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
           className="z-20 order-2 lg:order-3 flex flex-col gap-2.5 sm:gap-3.5 items-center lg:items-start w-full max-w-xl lg:max-w-none min-w-0 mx-auto lg:mx-0"
         >
           {/* MOHD ZAID Name Card */}
@@ -300,9 +308,10 @@ export const MinimalistHero = ({
       {/* Footer Row */}
       <footer className="z-30 flex w-full max-w-7xl items-center justify-end gap-3 py-2">
         <motion.div
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3 }}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false, amount: 0.2 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
         >
           <HeroCard3D className="!p-2.5 !px-4 sm:!p-3 sm:!px-5 !rounded-full">
             <div className="flex items-center gap-2 text-xs font-semibold text-white/90 font-ubuntu">

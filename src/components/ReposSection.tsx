@@ -166,10 +166,11 @@ const RepoCard3D = ({ repo, index }: { repo: GitHubRepo; index: number }) => {
       rel="noopener noreferrer"
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      initial={{ opacity: 0, y: 30 }}
-      animate={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0, y: 35, scale: 0.95 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
       exit={{ opacity: 0, scale: 0.95 }}
-      transition={{ duration: 0.4, delay: (index % 3) * 0.08 }}
+      viewport={{ once: false, amount: 0.15 }}
+      transition={{ duration: 0.5, delay: (index % 3) * 0.08, ease: [0.16, 1, 0.3, 1] }}
       style={{
         transformStyle: 'preserve-3d',
         perspective: '1000px',
@@ -275,7 +276,13 @@ export const ReposSection = () => {
         </motion.div>
 
         {/* Filter & Search Bar */}
-        <div className="mb-10 flex flex-col md:flex-row items-center justify-between gap-4">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false, amount: 0.2 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="mb-10 flex flex-col md:flex-row items-center justify-between gap-4"
+        >
           <div className="flex flex-wrap items-center gap-2">
             <button
               onClick={() => { setSelectedCat('all'); setShowAllRepos(false); }}
@@ -337,7 +344,7 @@ export const ReposSection = () => {
               className="w-full rounded-2xl frosted-glass-pill pl-10 pr-4 py-2.5 text-xs text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-rose-400 resize-none"
             />
           </div>
-        </div>
+        </motion.div>
 
         {/* Repos Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
