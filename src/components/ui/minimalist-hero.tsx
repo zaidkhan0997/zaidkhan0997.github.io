@@ -6,8 +6,6 @@ import { cn } from '@/lib/utils';
 export interface MinimalistHeroProps {
   logoText: string;
   navLinks: { label: string; href: string }[];
-  mainText: string;
-  readMoreLink: string;
   imageSrc: string;
   imageAlt: string;
   overlayText: {
@@ -19,6 +17,8 @@ export interface MinimalistHeroProps {
   className?: string;
   subBadge?: string;
   quote?: string;
+  mainText?: string;
+  readMoreLink?: string;
 }
 
 const NavLink = ({ href, children }: { href: string; children: React.ReactNode }) => (
