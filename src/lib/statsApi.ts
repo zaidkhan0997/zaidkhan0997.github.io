@@ -30,6 +30,9 @@ const getInitialCachedStats = (): PortfolioStats => {
 };
 
 let cachedStats: PortfolioStats = getInitialCachedStats();
+let activeFetchPromise: Promise<PortfolioStats> | null = null;
+let lastFetchTime = 0;
+const CACHE_TTL_MS = 60 * 1000; // 1 minute in-memory cache
 
 const persistLocally = (stats: PortfolioStats) => {
   if (typeof window === 'undefined') return;
@@ -39,22 +42,42 @@ const persistLocally = (stats: PortfolioStats) => {
   } catch {}
 };
 
-export const fetchCloudStats = async (): Promise<PortfolioStats> => {
-  try {
-    const res = await fetch(CLOUD_API_URL);
-    if (!res.ok) return cachedStats;
-    const json = await res.json();
-    if (json && typeof json.views === 'number' && typeof json.likes === 'number') {
-      cachedStats = {
-        views: Math.max(BASE_VIEWS, json.views),
-        likes: Math.max(BASE_LIKES, json.likes),
-      };
-      persistLocally(cachedStats);
-    }
-  } catch {
-    // Graceful fallback to local cache
+export const fetchCloudStats = async (forceRefresh = false): Promise<PortfolioStats> => {
+  const now = Date.now();
+
+  // If cached recently and not forcing refresh, return in-memory cached stats immediately
+  if (!forceRefresh && now - lastFetchTime < CACHE_TTL_MS && cachedStats.views > BASE_VIEWS) {
+    return cachedStats;
   }
-  return cachedStats;
+
+  // If a request is already in-flight, reuse the same promise (deduplication)
+  if (activeFetchPromise) {
+    return activeFetchPromise;
+  }
+
+  activeFetchPromise = (async () => {
+    try {
+      const res = await fetch(CLOUD_API_URL);
+      if (res.ok) {
+        const json = await res.json();
+        if (json && typeof json.views === 'number' && typeof json.likes === 'number') {
+          cachedStats = {
+            views: Math.max(BASE_VIEWS, json.views),
+            likes: Math.max(BASE_LIKES, json.likes),
+          };
+          persistLocally(cachedStats);
+          lastFetchTime = Date.now();
+        }
+      }
+    } catch {
+      // Graceful fallback to local cache
+    } finally {
+      activeFetchPromise = null;
+    }
+    return cachedStats;
+  })();
+
+  return activeFetchPromise;
 };
 
 export const updateCloudStats = async (newStats: PortfolioStats): Promise<PortfolioStats> => {
@@ -63,6 +86,7 @@ export const updateCloudStats = async (newStats: PortfolioStats): Promise<Portfo
     likes: Math.max(BASE_LIKES, newStats.likes),
   };
   persistLocally(cachedStats);
+  lastFetchTime = Date.now();
 
   try {
     const res = await fetch(CLOUD_API_URL, {
@@ -78,6 +102,7 @@ export const updateCloudStats = async (newStats: PortfolioStats): Promise<Portfo
           likes: Math.max(BASE_LIKES, json.likes),
         };
         persistLocally(cachedStats);
+        lastFetchTime = Date.now();
       }
     }
   } catch {
