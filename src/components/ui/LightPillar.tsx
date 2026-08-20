@@ -57,22 +57,48 @@ export const LightPillar: React.FC<LightPillarProps> = ({
     const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
     cameraRef.current = camera;
 
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    const isLowEndDevice = isMobile || (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4);
+    const isTouchDevice =
+      typeof window !== 'undefined' &&
+      (('ontouchstart' in window) ||
+        (navigator.maxTouchPoints > 0) ||
+        window.matchMedia('(pointer: coarse)').matches);
+
+    const isMobileUA = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+      navigator.userAgent
+    );
+
+    const isLowEndDevice =
+      isTouchDevice ||
+      isMobileUA ||
+      (navigator.hardwareConcurrency ? navigator.hardwareConcurrency <= 4 : false);
 
     let effectiveQuality = quality;
-    if (isLowEndDevice && quality === 'high') effectiveQuality = 'medium';
+    if (isLowEndDevice) {
+      effectiveQuality = quality === 'high' ? 'medium' : quality;
+    }
 
     const qualitySettings = {
-      low: { iterations: 36, waveIterations: 2, pixelRatio: Math.min(window.devicePixelRatio, 1.2), precision: 'mediump', stepMultiplier: 1.0 },
-      medium: { iterations: 56, waveIterations: 3, pixelRatio: Math.min(window.devicePixelRatio, 1.5), precision: 'mediump', stepMultiplier: 1.0 },
+      low: {
+        iterations: 36,
+        waveIterations: 2,
+        pixelRatio: Math.min(window.devicePixelRatio || 1, 1.0),
+        precision: 'mediump',
+        stepMultiplier: 1.0,
+      },
+      medium: {
+        iterations: 48,
+        waveIterations: 3,
+        pixelRatio: Math.min(window.devicePixelRatio || 1, 1.0),
+        precision: 'mediump',
+        stepMultiplier: 1.0,
+      },
       high: {
-        iterations: 80,
-        waveIterations: 4,
-        pixelRatio: Math.min(window.devicePixelRatio, 2),
-        precision: 'highp',
-        stepMultiplier: 1.0
-      }
+        iterations: 64,
+        waveIterations: 3,
+        pixelRatio: Math.min(window.devicePixelRatio || 1, 1.25),
+        precision: 'mediump',
+        stepMultiplier: 1.0,
+      },
     };
 
     const settings = qualitySettings[effectiveQuality] || qualitySettings.medium;
@@ -85,8 +111,23 @@ export const LightPillar: React.FC<LightPillarProps> = ({
         powerPreference: effectiveQuality === 'high' ? 'high-performance' : 'low-power',
         precision: settings.precision as 'highp' | 'mediump' | 'lowp',
         stencil: false,
-        depth: false
+        depth: false,
+        preserveDrawingBuffer: false,
       });
+
+      // Additional GPU string inspection
+      const gl = renderer.getContext();
+      const dbgRenderInfo = gl?.getExtension('WEBGL_debug_renderer_info');
+      if (dbgRenderInfo && gl) {
+        const rendererString = gl.getParameter(dbgRenderInfo.UNMASKED_RENDERER_WEBGL) || '';
+        if (/Mali|Adreno|PowerVR|Apple GPU|IMG|Vivante|Tegra/i.test(rendererString)) {
+          // Mobile GPU detected (e.g. Android phone in desktop mode)
+          if (settings.iterations > 32) {
+            settings.iterations = 32;
+          }
+          settings.pixelRatio = Math.min(settings.pixelRatio, 1.0);
+        }
+      }
     } catch {
       setWebGLSupported(false);
       return;
@@ -185,7 +226,8 @@ export const LightPillar: React.FC<LightPillarProps> = ({
         }
 
         float widthNorm = uPillarWidth / 3.0;
-        col = tanh(col * uGlowAmount / widthNorm);
+        float iterNorm = 80.0 / float(MAX_ITER);
+        col = tanh(col * iterNorm * uGlowAmount / widthNorm);
         
         col -= fract(sin(dot(gl_FragCoord.xy, vec2(12.9898, 78.233))) * 43758.5453) / 15.0 * uNoiseIntensity;
         
@@ -250,10 +292,15 @@ export const LightPillar: React.FC<LightPillarProps> = ({
     }
 
     let lastTime = performance.now();
-    const targetFPS = effectiveQuality === 'low' ? 30 : 60;
+    const targetFPS = effectiveQuality === 'low' || isLowEndDevice ? 30 : 60;
     const frameTime = 1000 / targetFPS;
 
     const animate = (currentTime: number) => {
+      if (document.hidden) {
+        rafRef.current = requestAnimationFrame(animate);
+        return;
+      }
+
       if (!materialRef.current || !rendererRef.current || !sceneRef.current || !cameraRef.current) return;
 
       const deltaTime = currentTime - lastTime;

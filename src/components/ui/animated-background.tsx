@@ -15,15 +15,15 @@ export const AuroraBackground = ({
       {/* 3D LightPillar Background */}
       <div className="fixed inset-0 pointer-events-none z-0">
         <LightPillar
-          topColor="#2d1200"
-          bottomColor="#ff3047"
-          intensity={0.5}
-          rotationSpeed={0.1}
-          glowAmount={0.003}
+          topColor="#ff0000"
+          bottomColor="#050000"
+          intensity={1}
+          rotationSpeed={0.3}
+          glowAmount={0.002}
           pillarWidth={10}
-          pillarHeight={0.3}
+          pillarHeight={1.8}
           noiseIntensity={0}
-          pillarRotation={90}
+          pillarRotation={198}
           interactive={false}
           mixBlendMode="screen"
           quality="high"
