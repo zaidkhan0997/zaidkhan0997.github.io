@@ -36,9 +36,9 @@ const SocialIcon = ({ href, icon: Icon }: { href: string; icon: LucideIcon }) =>
     href={href}
     target="_blank"
     rel="noopener noreferrer"
-    className="flex h-8 w-8 sm:h-10 sm:w-10 md:h-7.5 md:w-7.5 lg:h-11 lg:w-11 items-center justify-center rounded-full frosted-glass-pill text-white/90 transition-all hover:border-rose-300 hover:bg-rose-500 hover:text-white hover:scale-110 shadow-md shrink-0 p-0 leading-none"
+    className="flex h-8 w-8 sm:h-10 sm:w-10 lg:h-11 lg:w-11 items-center justify-center rounded-full frosted-glass-pill text-white/90 transition-all hover:border-rose-300 hover:bg-rose-500 hover:text-white hover:scale-110 shadow-md shrink-0 p-0 leading-none"
   >
-    <Icon className="h-4 w-4 sm:h-5 sm:w-5 md:h-3.5 md:w-3.5 lg:h-5.5 lg:w-5.5 shrink-0" />
+    <Icon className="h-4 w-4 sm:h-5 sm:w-5 lg:h-5.5 lg:w-5.5 shrink-0" />
   </a>
 );
 
@@ -205,13 +205,13 @@ export const MinimalistHero = ({
       </div>
 
       {/* Main Content Area - Tuned Grid Spacing for Tablet & Desktop */}
-      <div className="relative grid w-full max-w-7xl flex-grow grid-cols-1 items-center gap-4 sm:gap-6 md:gap-3 lg:gap-8 py-3 sm:py-6 md:grid-cols-3">
+      <div className="relative grid w-full max-w-7xl flex-grow grid-cols-1 items-center gap-4 sm:gap-6 lg:gap-8 py-3 sm:py-6 lg:grid-cols-3">
         {/* Left Text Content - Frosted Glass Card matching reference (Immediate render) */}
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
-          className="z-20 order-2 md:order-1 flex justify-center md:justify-start min-w-0"
+          className="z-20 order-3 lg:order-1 flex justify-center lg:justify-start w-full max-w-xl lg:max-w-none min-w-0 mx-auto lg:mx-0"
         >
           <HeroCard3D className="space-y-4 sm:space-y-5 text-left w-full !p-6 sm:!p-7">
             {/* Top Badge Pill */}
@@ -256,12 +256,12 @@ export const MinimalistHero = ({
         </motion.div>
 
         {/* Center Image - Frosted Circle Frame */}
-        <div className="relative order-1 md:order-2 flex justify-center items-center py-2">
+        <div className="relative order-1 lg:order-2 flex justify-center items-center py-2">
           <HeroCard3D className="!p-2 overflow-hidden !rounded-full frosted-glass-card shrink-0">
             <img
               src={imageSrc}
               alt={imageAlt}
-              className="h-52 w-52 sm:h-64 sm:w-64 md:h-48 md:w-48 lg:h-[380px] lg:w-[380px] xl:h-[400px] xl:w-[400px] aspect-square object-cover object-[50%_12%] rounded-full transition-transform duration-700 hover:scale-105"
+              className="h-52 w-52 sm:h-64 sm:w-64 md:h-72 md:w-72 lg:h-[380px] lg:w-[380px] xl:h-[400px] xl:w-[400px] aspect-square object-cover object-[50%_12%] rounded-full transition-transform duration-700 hover:scale-105"
             />
           </HeroCard3D>
         </div>
@@ -271,11 +271,11 @@ export const MinimalistHero = ({
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
-          className="z-20 order-3 flex flex-col gap-2.5 sm:gap-3.5 items-center md:items-start w-full min-w-0"
+          className="z-20 order-2 lg:order-3 flex flex-col gap-2.5 sm:gap-3.5 items-center lg:items-start w-full max-w-xl lg:max-w-none min-w-0 mx-auto lg:mx-0"
         >
           {/* MOHD ZAID Name Card */}
-          <HeroCard3D className="flex flex-col items-center justify-center text-center md:items-start md:text-left w-full min-w-0">
-            <h1 className="text-xl font-black tracking-widest text-white sm:text-3xl md:text-xl lg:text-4xl xl:text-5xl leading-tight select-none uppercase font-display">
+          <HeroCard3D className="flex flex-col items-center justify-center text-center lg:items-start lg:text-left w-full min-w-0">
+            <h1 className="text-xl font-black tracking-widest text-white sm:text-3xl md:text-3xl lg:text-4xl xl:text-5xl leading-tight select-none uppercase font-display">
               {overlayText.part1}{' '}
               <span className="text-rose-400 font-black drop-shadow-[0_0_14px_rgba(255,48,71,0.8)]">
                 {overlayText.part2}
