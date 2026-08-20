@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Mail, Send, CheckCircle2, MessageSquare, ShieldCheck, MapPin } from 'lucide-react';
+import React, { useState, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Mail, Send, CheckCircle2, MessageSquare, ShieldCheck, MapPin, UploadCloud, X, FileCode2, Paperclip } from 'lucide-react';
 
 const ContactCard3D = ({
   children,
@@ -52,37 +52,127 @@ export const ContactSection = () => {
     email: '',
     message: '',
   });
+  const [attachment, setAttachment] = useState<{
+    name: string;
+    content: string; // base64 string
+    size: number;
+  } | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const processFile = (file: File) => {
+    // Max 8MB file size limit
+    const MAX_SIZE_BYTES = 8 * 1024 * 1024;
+    if (file.size > MAX_SIZE_BYTES) {
+      setErrorMessage('File size exceeds 8MB limit. Please attach a smaller file.');
+      if (fileInputRef.current) fileInputRef.current.value = '';
+      return;
+    }
+
+    setErrorMessage('');
+    const reader = new FileReader();
+    reader.onload = () => {
+      const result = reader.result as string;
+      const base64Content = result.includes(',') ? result.split(',')[1] : result;
+      setAttachment({
+        name: file.name,
+        content: base64Content,
+        size: file.size,
+      });
+    };
+    reader.onerror = () => {
+      setErrorMessage('Failed to read file. Please try again.');
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      processFile(file);
+    }
+  };
+
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+  };
+
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+    const file = e.dataTransfer.files?.[0];
+    if (file) {
+      processFile(file);
+    }
+  };
+
+  const removeAttachment = () => {
+    setAttachment(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
+
+  const formatFileSize = (bytes: number) => {
+    if (bytes < 1024) return `${bytes} B`;
+    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+    return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+  };
+
+  const getFileExtension = (filename: string) => {
+    const ext = filename.split('.').pop();
+    return ext ? ext.toUpperCase().slice(0, 4) : 'FILE';
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
+    setErrorMessage('');
 
     try {
-      // Direct Web3Forms submission to kzaid0997@gmail.com
-      const res = await fetch('https://api.web3forms.com/submit', {
+      // Secure Cloudflare Worker endpoint connected to Brevo
+      const res = await fetch('https://portfolio-contact-api.zaidkhan0997.workers.dev', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Accept: 'application/json',
         },
         body: JSON.stringify({
-          access_key: '64687595-5c1d-40aa-9a57-7977461877f0',
-          name: formData.name,
-          email: formData.email,
-          message: formData.message,
-          from_name: 'Portfolio Contact Form (@zaidkhan0997)',
-          subject: `New Message from ${formData.name} via Portfolio`,
+          name: formData.name.trim(),
+          email: formData.email.trim(),
+          message: formData.message.trim(),
+          attachment: attachment
+            ? {
+                name: attachment.name,
+                content: attachment.content,
+              }
+            : undefined,
         }),
       });
 
-      if (res.ok) {
+      const data = await res.json();
+
+      if (res.ok && data.success) {
         setSubmitted(true);
         setFormData({ name: '', email: '', message: '' });
+        setAttachment(null);
+        if (fileInputRef.current) fileInputRef.current.value = '';
+      } else {
+        setErrorMessage(data?.error?.message || 'Failed to send message. Please try again or email directly.');
       }
     } catch {
-      // Fallback
+      setErrorMessage('Network error occurred. Please try again or email directly.');
     } finally {
       setSubmitting(false);
     }
@@ -222,14 +312,104 @@ export const ContactSection = () => {
                       </label>
                       <textarea
                         required
-                        rows={4}
+                        rows={3}
                         value={formData.message}
                         onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                         placeholder="Inquiry about custom kernel trees, AOSP builds, or collaboration..."
                         className="w-full rounded-2xl border border-white/20 bg-white/[0.04] px-4 py-2.5 text-xs text-white placeholder:text-white/30 backdrop-blur-md focus:border-rose-400 focus:outline-none focus:ring-1 focus:ring-rose-400/30 resize-none"
                       />
                     </div>
+
+                    {/* Modern Drag & Drop File Upload Zone */}
+                    <div>
+                      <label className="block text-[11px] font-semibold text-white/80 mb-1.5 uppercase tracking-wider flex items-center justify-between">
+                        <span>Attach File / Logs (Optional)</span>
+                        <span className="text-[10px] text-rose-300/80 font-mono lowercase">max 8mb</span>
+                      </label>
+
+                      <input
+                        type="file"
+                        ref={fileInputRef}
+                        onChange={handleFileChange}
+                        className="hidden"
+                        accept=".log,.txt,.patch,.diff,.zip,.tar,.gz,.pdf,.png,.jpg,.jpeg,.json,.xml"
+                      />
+
+                      <AnimatePresence mode="wait">
+                        {attachment ? (
+                          /* Attached File Badge Card */
+                          <motion.div
+                            key="attached"
+                            initial={{ opacity: 0, y: 5 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -5 }}
+                            className="flex items-center justify-between gap-3 rounded-2xl border border-rose-400/50 bg-rose-500/10 p-3 text-xs text-white backdrop-blur-md shadow-sm"
+                          >
+                            <div className="flex items-center gap-2.5 min-w-0">
+                              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-rose-500/20 border border-rose-400/40 text-rose-300">
+                                <FileCode2 className="h-4 w-4" />
+                              </div>
+                              <div className="min-w-0">
+                                <div className="flex items-center gap-1.5">
+                                  <span className="rounded bg-rose-400/20 px-1.5 py-0.2 text-[9px] font-mono font-bold text-rose-300 uppercase">
+                                    {getFileExtension(attachment.name)}
+                                  </span>
+                                  <p className="font-semibold truncate text-xs text-white">
+                                    {attachment.name}
+                                  </p>
+                                </div>
+                                <p className="text-[10px] text-white/60 font-mono mt-0.5">
+                                  {formatFileSize(attachment.size)} &bull; <span className="text-emerald-400">Ready to send</span>
+                                </p>
+                              </div>
+                            </div>
+
+                            <button
+                              type="button"
+                              onClick={removeAttachment}
+                              className="flex h-7 w-7 items-center justify-center rounded-full text-white/70 hover:text-white hover:bg-white/15 transition-all shrink-0"
+                              title="Remove file"
+                            >
+                              <X className="h-4 w-4" />
+                            </button>
+                          </motion.div>
+                        ) : (
+                          /* Drag & Drop Upload Zone */
+                          <motion.div
+                            key="dropper"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            onDragOver={handleDragOver}
+                            onDragLeave={handleDragLeave}
+                            onDrop={handleDrop}
+                            onClick={() => fileInputRef.current?.click()}
+                            className={`group relative flex flex-col items-center justify-center rounded-2xl border-2 border-dashed p-4 text-center cursor-pointer transition-all duration-200 ${
+                              isDragging
+                                ? 'border-rose-400 bg-rose-500/20 scale-[1.01] shadow-[0_0_20px_rgba(255,48,71,0.3)]'
+                                : 'border-white/20 bg-white/[0.02] hover:border-rose-400/60 hover:bg-white/[0.05]'
+                            }`}
+                          >
+                            <div className="flex items-center gap-2 text-white/80 group-hover:text-rose-300 transition-colors">
+                              <UploadCloud className={`h-5 w-5 text-rose-400 transition-transform duration-200 group-hover:-translate-y-0.5 ${isDragging ? 'scale-125' : ''}`} />
+                              <span className="text-xs font-semibold">
+                                {isDragging ? 'Drop file here to attach' : 'Drag & drop file or log here, or click to browse'}
+                              </span>
+                            </div>
+                            <p className="mt-1 text-[10px] text-white/50 group-hover:text-white/70 transition-colors">
+                              Supports .log, .patch, .zip, .tar, .pdf, images (Max 8MB)
+                            </p>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
                   </div>
+
+                  {errorMessage && (
+                    <p className="text-xs font-semibold text-rose-400 bg-rose-500/10 border border-rose-500/20 rounded-xl p-2.5 text-center">
+                      {errorMessage}
+                    </p>
+                  )}
 
                   <button
                     type="submit"
