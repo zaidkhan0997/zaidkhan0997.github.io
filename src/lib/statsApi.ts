@@ -1,4 +1,5 @@
-const CLOUD_API_URL = 'https://api.restful-api.dev/objects/ff8081819ff5b11001a015b9a168453a';
+// Cloudflare Worker Persistent Stats Endpoint (100,000 requests/day)
+const CLOUD_API_URL = 'https://portfolio-contact-api.zaidkhan0997.workers.dev/stats';
 
 export const BASE_VIEWS = 1753127;
 export const BASE_LIKES = 1518437;
@@ -8,47 +9,79 @@ export interface PortfolioStats {
   likes: number;
 }
 
-let cachedStats: PortfolioStats = { views: BASE_VIEWS, likes: BASE_LIKES };
+// Local cache keys
+const CACHE_KEY_VIEWS = 'portfolio_cached_views_v2';
+const CACHE_KEY_LIKES = 'portfolio_cached_likes_v2';
+
+const getInitialCachedStats = (): PortfolioStats => {
+  if (typeof window === 'undefined') {
+    return { views: BASE_VIEWS, likes: BASE_LIKES };
+  }
+  try {
+    const savedViews = parseInt(localStorage.getItem(CACHE_KEY_VIEWS) || '0', 10);
+    const savedLikes = parseInt(localStorage.getItem(CACHE_KEY_LIKES) || '0', 10);
+    return {
+      views: Math.max(BASE_VIEWS, isNaN(savedViews) ? BASE_VIEWS : savedViews),
+      likes: Math.max(BASE_LIKES, isNaN(savedLikes) ? BASE_LIKES : savedLikes),
+    };
+  } catch {
+    return { views: BASE_VIEWS, likes: BASE_LIKES };
+  }
+};
+
+let cachedStats: PortfolioStats = getInitialCachedStats();
+
+const persistLocally = (stats: PortfolioStats) => {
+  if (typeof window === 'undefined') return;
+  try {
+    localStorage.setItem(CACHE_KEY_VIEWS, stats.views.toString());
+    localStorage.setItem(CACHE_KEY_LIKES, stats.likes.toString());
+  } catch {}
+};
 
 export const fetchCloudStats = async (): Promise<PortfolioStats> => {
   try {
     const res = await fetch(CLOUD_API_URL);
     if (!res.ok) return cachedStats;
     const json = await res.json();
-    if (json && json.data && typeof json.data.views === 'number' && typeof json.data.likes === 'number') {
+    if (json && typeof json.views === 'number' && typeof json.likes === 'number') {
       cachedStats = {
-        views: Math.max(BASE_VIEWS, json.data.views),
-        likes: Math.max(BASE_LIKES, json.data.likes),
+        views: Math.max(BASE_VIEWS, json.views),
+        likes: Math.max(BASE_LIKES, json.likes),
       };
+      persistLocally(cachedStats);
     }
-  } catch (err) {
-    console.warn('Failed to fetch cloud stats:', err);
+  } catch {
+    // Graceful fallback to local cache
   }
   return cachedStats;
 };
 
 export const updateCloudStats = async (newStats: PortfolioStats): Promise<PortfolioStats> => {
-  cachedStats = newStats;
+  cachedStats = {
+    views: Math.max(BASE_VIEWS, newStats.views),
+    likes: Math.max(BASE_LIKES, newStats.likes),
+  };
+  persistLocally(cachedStats);
+
   try {
     const res = await fetch(CLOUD_API_URL, {
-      method: 'PUT',
+      method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        name: 'zaidkhan0997_portfolio_stats',
-        data: newStats,
-      }),
+      body: JSON.stringify(cachedStats),
     });
     if (res.ok) {
       const json = await res.json();
-      if (json && json.data) {
+      if (json && typeof json.views === 'number' && typeof json.likes === 'number') {
         cachedStats = {
-          views: Math.max(BASE_VIEWS, json.data.views),
-          likes: Math.max(BASE_LIKES, json.data.likes),
+          views: Math.max(BASE_VIEWS, json.views),
+          likes: Math.max(BASE_LIKES, json.likes),
         };
+        persistLocally(cachedStats);
       }
     }
-  } catch (err) {
-    console.warn('Failed to update cloud stats:', err);
+  } catch {
+    // Saved locally
   }
   return cachedStats;
 };
