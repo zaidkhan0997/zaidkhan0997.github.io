@@ -125,12 +125,12 @@ export const MinimalistHero = ({
     <div
       id="hero"
       className={cn(
-        'relative flex min-h-screen w-full flex-col items-center justify-between overflow-hidden bg-transparent p-3.5 sm:p-6 md:p-6 lg:p-10 pt-20 sm:pt-24 md:pt-28 font-sans border-b border-white/10',
+        'relative flex min-h-screen w-full flex-col items-center justify-between overflow-x-clip bg-transparent p-3.5 sm:p-6 md:p-6 lg:p-10 pt-20 sm:pt-24 md:pt-28 font-sans border-b border-white/10',
         className
       )}
     >
       {/* Floating Animated Sticky Header Wrapper (Shrinks on Scroll) */}
-      <div className="fixed top-2.5 sm:top-4 left-0 right-0 z-40 px-3 sm:px-6 flex justify-center pointer-events-none">
+      <div className="fixed top-2.5 sm:top-4 left-0 right-0 z-[60] px-3 sm:px-6 flex justify-center pointer-events-none">
         <motion.div
           layout
           transition={{ type: 'spring', damping: 26, stiffness: 220 }}
