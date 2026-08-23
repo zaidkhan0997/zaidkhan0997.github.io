@@ -169,7 +169,7 @@ const RepoCard3D = ({ repo, index }: { repo: GitHubRepo; index: number }) => {
       initial={{ opacity: 0, y: 35, scale: 0.95 }}
       whileInView={{ opacity: 1, y: 0, scale: 1 }}
       exit={{ opacity: 0, scale: 0.95 }}
-      viewport={{ once: false, amount: 0.15 }}
+      viewport={{ once: true, amount: 0.1 }}
       transition={{ duration: 0.5, delay: (index % 3) * 0.08, ease: [0.16, 1, 0.3, 1] }}
       style={{
         transformStyle: 'preserve-3d',
@@ -259,7 +259,7 @@ export const ReposSection = () => {
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false, amount: 0.3 }}
+          viewport={{ once: true, amount: 0.15 }}
           transition={{ duration: 0.6 }}
           className="text-center space-y-3 mb-10"
         >
@@ -279,7 +279,7 @@ export const ReposSection = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false, amount: 0.2 }}
+          viewport={{ once: true, amount: 0.15 }}
           transition={{ duration: 0.5, delay: 0.1 }}
           className="mb-10 flex flex-col md:flex-row items-center justify-between gap-4"
         >

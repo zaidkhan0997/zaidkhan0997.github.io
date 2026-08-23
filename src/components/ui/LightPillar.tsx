@@ -74,28 +74,28 @@ export const LightPillar: React.FC<LightPillarProps> = ({
 
     let effectiveQuality = quality;
     if (isLowEndDevice) {
-      effectiveQuality = quality === 'high' ? 'medium' : quality;
+      effectiveQuality = 'low';
     }
 
     const qualitySettings = {
       low: {
-        iterations: 36,
+        iterations: 24,
         waveIterations: 2,
-        pixelRatio: Math.min(window.devicePixelRatio || 1, 1.0),
+        pixelRatio: Math.min(window.devicePixelRatio || 1, 0.75),
         precision: 'mediump',
-        stepMultiplier: 1.0,
+        stepMultiplier: 1.2,
       },
       medium: {
-        iterations: 48,
-        waveIterations: 3,
-        pixelRatio: Math.min(window.devicePixelRatio || 1, 1.0),
+        iterations: 32,
+        waveIterations: 2,
+        pixelRatio: Math.min(window.devicePixelRatio || 1, 0.9),
         precision: 'mediump',
         stepMultiplier: 1.0,
       },
       high: {
-        iterations: 64,
+        iterations: 42,
         waveIterations: 3,
-        pixelRatio: Math.min(window.devicePixelRatio || 1, 1.25),
+        pixelRatio: Math.min(window.devicePixelRatio || 1, 1.0),
         precision: 'mediump',
         stepMultiplier: 1.0,
       },
@@ -108,7 +108,7 @@ export const LightPillar: React.FC<LightPillarProps> = ({
       renderer = new THREE.WebGLRenderer({
         antialias: false,
         alpha: true,
-        powerPreference: effectiveQuality === 'high' ? 'high-performance' : 'low-power',
+        powerPreference: 'low-power',
         precision: settings.precision as 'highp' | 'mediump' | 'lowp',
         stencil: false,
         depth: false,
@@ -120,12 +120,12 @@ export const LightPillar: React.FC<LightPillarProps> = ({
       const dbgRenderInfo = gl?.getExtension('WEBGL_debug_renderer_info');
       if (dbgRenderInfo && gl) {
         const rendererString = gl.getParameter(dbgRenderInfo.UNMASKED_RENDERER_WEBGL) || '';
-        if (/Mali|Adreno|PowerVR|Apple GPU|IMG|Vivante|Tegra/i.test(rendererString)) {
-          // Mobile GPU detected (e.g. Android phone in desktop mode)
-          if (settings.iterations > 32) {
-            settings.iterations = 32;
+        if (/Mali|Adreno|PowerVR|Apple GPU|IMG|Vivante|Tegra|Intel/i.test(rendererString)) {
+          // Integrated or Mobile GPU detected
+          if (settings.iterations > 28) {
+            settings.iterations = 28;
           }
-          settings.pixelRatio = Math.min(settings.pixelRatio, 1.0);
+          settings.pixelRatio = Math.min(settings.pixelRatio, 0.85);
         }
       }
     } catch {
@@ -291,8 +291,22 @@ export const LightPillar: React.FC<LightPillarProps> = ({
       window.addEventListener('mousemove', handleMouseMove, { passive: true });
     }
 
+    let isScrolling = false;
+    let scrollTimeout: number | null = null;
+    const handleScroll = () => {
+      isScrolling = true;
+      if (scrollTimeout !== null) {
+        window.clearTimeout(scrollTimeout);
+      }
+      scrollTimeout = window.setTimeout(() => {
+        isScrolling = false;
+        scrollTimeout = null;
+      }, 100);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
     let lastTime = performance.now();
-    const targetFPS = effectiveQuality === 'low' || isLowEndDevice ? 30 : 60;
+    const targetFPS = isLowEndDevice ? 30 : 60;
     const frameTime = 1000 / targetFPS;
 
     const animate = (currentTime: number) => {
@@ -303,16 +317,18 @@ export const LightPillar: React.FC<LightPillarProps> = ({
 
       if (!materialRef.current || !rendererRef.current || !sceneRef.current || !cameraRef.current) return;
 
+      // Throttle render frame during active scrolling on low-end devices
+      const effectiveFrameTime = isScrolling ? (isLowEndDevice ? frameTime * 3 : frameTime * 1.5) : frameTime;
       const deltaTime = currentTime - lastTime;
 
-      if (deltaTime >= frameTime) {
+      if (deltaTime >= effectiveFrameTime) {
         timeRef.current += 0.016 * rotationSpeedRef.current;
         const t = timeRef.current;
         materialRef.current.uniforms.uTime.value = t;
         materialRef.current.uniforms.uRotCos.value = Math.cos(t * 0.3);
         materialRef.current.uniforms.uRotSin.value = Math.sin(t * 0.3);
         rendererRef.current.render(sceneRef.current, cameraRef.current);
-        lastTime = currentTime - (deltaTime % frameTime);
+        lastTime = currentTime - (deltaTime % effectiveFrameTime);
       }
 
       rafRef.current = requestAnimationFrame(animate);
@@ -338,6 +354,10 @@ export const LightPillar: React.FC<LightPillarProps> = ({
     window.addEventListener('resize', handleResize, { passive: true });
 
     return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (scrollTimeout !== null) {
+        window.clearTimeout(scrollTimeout);
+      }
       window.removeEventListener('resize', handleResize);
       if (interactive) {
         window.removeEventListener('mousemove', handleMouseMove);

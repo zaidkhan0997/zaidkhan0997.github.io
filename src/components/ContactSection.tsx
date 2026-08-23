@@ -190,7 +190,7 @@ export const ContactSection = () => {
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false, amount: 0.3 }}
+          viewport={{ once: true, amount: 0.15 }}
           transition={{ duration: 0.6 }}
           className="text-center space-y-3 mb-12"
         >
@@ -211,7 +211,7 @@ export const ContactSection = () => {
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: false, amount: 0.2 }}
+              viewport={{ once: true, amount: 0.15 }}
               transition={{ duration: 0.45, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
             >
               <ContactCard3D className="flex items-center gap-3.5 sm:gap-4 p-4 sm:p-4.5">
@@ -228,7 +228,7 @@ export const ContactSection = () => {
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: false, amount: 0.2 }}
+              viewport={{ once: true, amount: 0.15 }}
               transition={{ duration: 0.45, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
             >
               <ContactCard3D className="flex items-center gap-3.5 sm:gap-4 p-4 sm:p-4.5">
@@ -250,7 +250,7 @@ export const ContactSection = () => {
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: false, amount: 0.2 }}
+              viewport={{ once: true, amount: 0.15 }}
               transition={{ duration: 0.45, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
             >
               <ContactCard3D className="flex items-center gap-3.5 sm:gap-4 p-4 sm:p-4.5">
@@ -269,7 +269,7 @@ export const ContactSection = () => {
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: false, amount: 0.2 }}
+              viewport={{ once: true, amount: 0.15 }}
               transition={{ duration: 0.45, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
             >
               <ContactCard3D className="p-4 sm:p-4.5">
@@ -288,7 +288,7 @@ export const ContactSection = () => {
           <motion.div
             initial={{ opacity: 0, x: 30, scale: 0.96 }}
             whileInView={{ opacity: 1, x: 0, scale: 1 }}
-            viewport={{ once: false, amount: 0.2 }}
+            viewport={{ once: true, amount: 0.15 }}
             transition={{ duration: 0.55, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
             className="lg:col-span-7 flex flex-col"
           >

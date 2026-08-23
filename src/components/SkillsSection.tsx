@@ -64,7 +64,7 @@ const SkillCard3D = ({ skill, index }: { skill: SkillItem; index: number }) => {
       initial={{ opacity: 0, y: 35, scale: 0.95 }}
       whileInView={{ opacity: 1, y: 0, scale: 1 }}
       exit={{ opacity: 0, scale: 0.95 }}
-      viewport={{ once: false, amount: 0.15 }}
+      viewport={{ once: true, amount: 0.1 }}
       transition={{ duration: 0.5, delay: (index % 3) * 0.08, ease: [0.16, 1, 0.3, 1] }}
       style={{
         transformStyle: 'preserve-3d',
@@ -94,7 +94,7 @@ const SkillCard3D = ({ skill, index }: { skill: SkillItem; index: number }) => {
         <motion.div
           initial={{ width: 0 }}
           whileInView={{ width: `${skill.level}%` }}
-          viewport={{ once: false, amount: 0.2 }}
+          viewport={{ once: true, amount: 0.1 }}
           transition={{ duration: 0.85, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
           className="h-full rounded-full bg-gradient-to-r from-rose-500 to-red-500 shadow-md"
         />
@@ -120,7 +120,7 @@ export const SkillsSection = () => {
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false, amount: 0.3 }}
+          viewport={{ once: true, amount: 0.15 }}
           transition={{ duration: 0.6 }}
           className="text-center space-y-3 mb-12"
         >
@@ -139,7 +139,7 @@ export const SkillsSection = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false, amount: 0.3 }}
+          viewport={{ once: true, amount: 0.15 }}
           transition={{ duration: 0.5, delay: 0.1 }}
           className="flex flex-wrap items-center justify-center gap-2.5 mb-12"
         >

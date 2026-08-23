@@ -26,7 +26,7 @@ export const AuroraBackground = ({
           pillarRotation={198}
           interactive={false}
           mixBlendMode="screen"
-          quality="high"
+          quality="medium"
         />
       </div>
 

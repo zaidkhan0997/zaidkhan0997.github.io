@@ -33,11 +33,14 @@
   }
   html {
     background-color: #05020a;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
   }
   body {
     background-color: #05020a;
     @apply text-foreground font-sans antialiased selection:bg-rose-500 selection:text-white;
     font-family: 'Ubuntu', 'Ubuntu Sans', -apple-system, system-ui, sans-serif;
+    overflow-x: hidden;
   }
 
   code, pre, .font-mono {

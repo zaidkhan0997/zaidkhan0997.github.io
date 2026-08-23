@@ -101,8 +101,15 @@ export const MinimalistHero = ({
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
+    let ticking = false;
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 35);
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          setIsScrolled(window.scrollY > 35);
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
 
     handleScroll();
@@ -211,7 +218,7 @@ export const MinimalistHero = ({
         <motion.div
           initial={{ opacity: 0, x: -35, scale: 0.96 }}
           whileInView={{ opacity: 1, x: 0, scale: 1 }}
-          viewport={{ once: false, amount: 0.2 }}
+          viewport={{ once: true, amount: 0.15 }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           className="z-20 order-3 lg:order-1 flex justify-center lg:justify-start w-full max-w-xl lg:max-w-none min-w-0 mx-auto lg:mx-0"
         >
@@ -261,7 +268,7 @@ export const MinimalistHero = ({
         <motion.div
           initial={{ opacity: 0, scale: 0.88 }}
           whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: false, amount: 0.2 }}
+          viewport={{ once: true, amount: 0.15 }}
           transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
           className="relative order-1 lg:order-2 flex justify-center items-center py-2"
         >
@@ -278,7 +285,7 @@ export const MinimalistHero = ({
         <motion.div
           initial={{ opacity: 0, x: 35, scale: 0.96 }}
           whileInView={{ opacity: 1, x: 0, scale: 1 }}
-          viewport={{ once: false, amount: 0.2 }}
+          viewport={{ once: true, amount: 0.15 }}
           transition={{ duration: 0.6, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
           className="z-20 order-2 lg:order-3 flex flex-col gap-2.5 sm:gap-3.5 items-center lg:items-start w-full max-w-xl lg:max-w-none min-w-0 mx-auto lg:mx-0"
         >
@@ -310,7 +317,7 @@ export const MinimalistHero = ({
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false, amount: 0.2 }}
+          viewport={{ once: true, amount: 0.15 }}
           transition={{ duration: 0.5, delay: 0.2 }}
         >
           <HeroCard3D className="!p-2.5 !px-4 sm:!p-3 sm:!px-5 !rounded-full">

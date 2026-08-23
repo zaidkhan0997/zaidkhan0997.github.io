@@ -120,7 +120,7 @@ export const EngagementBar = () => {
           <motion.div
             initial={{ opacity: 0, y: 30, scale: 0.94 }}
             whileInView={{ opacity: 1, y: 0, scale: 1 }}
-            viewport={{ once: false, amount: 0.2 }}
+            viewport={{ once: true, amount: 0.15 }}
             transition={{ duration: 0.5, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
           >
             <Glass3DCard className="flex items-center gap-2 sm:gap-3 border-rose-400/30">
@@ -138,7 +138,7 @@ export const EngagementBar = () => {
           <motion.div
             initial={{ opacity: 0, y: 30, scale: 0.94 }}
             whileInView={{ opacity: 1, y: 0, scale: 1 }}
-            viewport={{ once: false, amount: 0.2 }}
+            viewport={{ once: true, amount: 0.15 }}
             transition={{ duration: 0.5, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
             onClick={handleLike}
             className="cursor-pointer"
@@ -162,7 +162,7 @@ export const EngagementBar = () => {
           <motion.div
             initial={{ opacity: 0, y: 30, scale: 0.94 }}
             whileInView={{ opacity: 1, y: 0, scale: 1 }}
-            viewport={{ once: false, amount: 0.2 }}
+            viewport={{ once: true, amount: 0.15 }}
             transition={{ duration: 0.5, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
           >
             <Glass3DCard className="flex items-center gap-2 sm:gap-3">
@@ -182,7 +182,7 @@ export const EngagementBar = () => {
           <motion.div
             initial={{ opacity: 0, y: 30, scale: 0.94 }}
             whileInView={{ opacity: 1, y: 0, scale: 1 }}
-            viewport={{ once: false, amount: 0.2 }}
+            viewport={{ once: true, amount: 0.15 }}
             transition={{ duration: 0.5, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
           >
             <Glass3DCard className="flex items-center gap-2 sm:gap-3">
@@ -202,7 +202,7 @@ export const EngagementBar = () => {
           <motion.div
             initial={{ opacity: 0, y: 30, scale: 0.94 }}
             whileInView={{ opacity: 1, y: 0, scale: 1 }}
-            viewport={{ once: false, amount: 0.2 }}
+            viewport={{ once: true, amount: 0.15 }}
             transition={{ duration: 0.5, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
             className="col-span-2 sm:col-span-1"
           >
