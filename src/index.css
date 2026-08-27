@@ -35,16 +35,18 @@
     background-color: #05020a;
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
+    font-family: "JetBrains Mono", monospace;
   }
   body {
     background-color: #05020a;
     @apply text-foreground font-sans antialiased selection:bg-rose-500 selection:text-white;
-    font-family: 'Ubuntu', 'Ubuntu Sans', -apple-system, system-ui, sans-serif;
+    font-family: "JetBrains Mono", monospace;
+    font-weight: 400;
     overflow-x: hidden;
   }
 
   code, pre, .font-mono {
-    font-family: 'Ubuntu Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-family: "JetBrains Mono", monospace;
   }
 
   /* High-Contrast Elegist Display Serif for MOHD ZAID name */
@@ -53,9 +55,20 @@
   }
 
   .font-ubuntu {
-    font-family: 'Ubuntu', 'Ubuntu Sans', sans-serif;
+    font-family: "JetBrains Mono", monospace;
   }
 }
+
+.code-text {
+  font-family: "JetBrains Mono", monospace;
+  font-weight: 400; /* Regular */
+}
+
+.code-bold {
+  font-family: "JetBrains Mono", monospace;
+  font-weight: 700; /* Bold */
+}
+
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
