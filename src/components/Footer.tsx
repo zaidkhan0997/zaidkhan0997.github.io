@@ -61,7 +61,7 @@ export const Footer = () => {
               <div>
                 <p className="font-bold text-white text-sm mb-1 flex items-center gap-2">
                   <span>MOHD ZAID</span>
-                  <span className="rounded-full border border-rose-400/30 bg-white/[0.08] px-2.5 py-0.5 text-[10px] font-mono text-rose-300 backdrop-blur-md">
+                  <span className="rounded-full border border-cyan-400/30 bg-white/[0.08] px-2.5 py-0.5 text-[10px] font-mono text-cyan-300 backdrop-blur-md">
                     zaidkhan0997
                   </span>
                 </p>
@@ -76,7 +76,7 @@ export const Footer = () => {
                   href="https://github.com/zaidkhan0997"
                   target="_blank"
                   rel="noreferrer"
-                  className="flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full border border-white/15 bg-white/[0.06] text-white/90 hover:border-rose-300 hover:bg-rose-500 hover:text-white transition-all hover:scale-110 shadow-sm"
+                  className="flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full border border-white/15 bg-white/[0.06] text-white/90 hover:border-cyan-300 hover:bg-gradient-to-r hover:from-violet-600 hover:to-cyan-500 hover:text-white transition-all hover:scale-110 shadow-sm"
                   title="GitHub"
                 >
                   <Github className="h-5 w-5 sm:h-5.5 sm:w-5.5" />
@@ -85,7 +85,7 @@ export const Footer = () => {
                   href="https://www.instagram.com/zaidkhan0997"
                   target="_blank"
                   rel="noreferrer"
-                  className="flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full border border-white/15 bg-white/[0.06] text-white/90 hover:border-rose-300 hover:bg-rose-500 hover:text-white transition-all hover:scale-110 shadow-sm"
+                  className="flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full border border-white/15 bg-white/[0.06] text-white/90 hover:border-cyan-300 hover:bg-gradient-to-r hover:from-violet-600 hover:to-cyan-500 hover:text-white transition-all hover:scale-110 shadow-sm"
                   title="Instagram"
                 >
                   <Instagram className="h-5 w-5 sm:h-5.5 sm:w-5.5" />
@@ -94,7 +94,7 @@ export const Footer = () => {
                   href="https://t.me/zaidkhan0997"
                   target="_blank"
                   rel="noreferrer"
-                  className="flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full border border-white/15 bg-white/[0.06] text-white/90 hover:border-rose-300 hover:bg-rose-500 hover:text-white transition-all hover:scale-110 shadow-sm"
+                  className="flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full border border-white/15 bg-white/[0.06] text-white/90 hover:border-cyan-300 hover:bg-gradient-to-r hover:from-violet-600 hover:to-cyan-500 hover:text-white transition-all hover:scale-110 shadow-sm"
                   title="Telegram"
                 >
                   <Send className="h-5 w-5 sm:h-5.5 sm:w-5.5" />
@@ -103,14 +103,14 @@ export const Footer = () => {
                   href="https://www.linkedin.com/in/zaid-khan-a74948212/"
                   target="_blank"
                   rel="noreferrer"
-                  className="flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full border border-white/15 bg-white/[0.06] text-white/90 hover:border-rose-300 hover:bg-rose-500 hover:text-white transition-all hover:scale-110 shadow-sm"
+                  className="flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full border border-white/15 bg-white/[0.06] text-white/90 hover:border-cyan-300 hover:bg-gradient-to-r hover:from-violet-600 hover:to-cyan-500 hover:text-white transition-all hover:scale-110 shadow-sm"
                   title="LinkedIn"
                 >
                   <Linkedin className="h-5 w-5 sm:h-5.5 sm:w-5.5" />
                 </a>
                 <a
                   href="mailto:kzaid0997@gmail.com"
-                  className="flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full border border-white/15 bg-white/[0.06] text-white/90 hover:border-rose-300 hover:bg-rose-500 hover:text-white transition-all hover:scale-110 shadow-sm"
+                  className="flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full border border-white/15 bg-white/[0.06] text-white/90 hover:border-cyan-300 hover:bg-gradient-to-r hover:from-violet-600 hover:to-cyan-500 hover:text-white transition-all hover:scale-110 shadow-sm"
                   title="Email"
                 >
                   <Mail className="h-5 w-5 sm:h-5.5 sm:w-5.5" />
@@ -120,18 +120,15 @@ export const Footer = () => {
               {/* Back to Top */}
               <button
                 onClick={scrollToTop}
-                className="flex items-center space-x-2 rounded-full border border-white/15 bg-white/[0.06] px-4 py-2 text-white/80 hover:border-rose-300 hover:bg-rose-500 hover:text-white transition-all hover:scale-105 shadow-sm"
+                className="flex items-center space-x-2 rounded-full border border-white/15 bg-white/[0.06] px-4 py-2 text-white/80 hover:border-cyan-300 hover:bg-gradient-to-r hover:from-violet-600 hover:to-cyan-500 hover:text-white transition-all hover:scale-105 shadow-sm"
               >
                 <span>Back to top</span>
                 <ArrowUp className="h-3.5 w-3.5" />
               </button>
             </div>
 
-            <div className="mt-6 pt-4 border-t border-white/10 flex flex-col md:flex-row items-center justify-between text-[11px] text-white/50">
+            <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-center text-[11px] text-white/50">
               <p>&copy; 2026 MOHD ZAID (zaidkhan0997). All rights reserved.</p>
-              <p className="mt-2 md:mt-0 font-mono text-rose-300/80">
-                Built with React, Tailwind CSS, Framer Motion &amp; Three.js
-              </p>
             </div>
           </FooterGlassCard3D>
         </motion.div>

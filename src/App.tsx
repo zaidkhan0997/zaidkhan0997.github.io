@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import AuroraBackground from '@/components/ui/animated-background';
+import { InteractiveNeuralVortex } from '@/components/ui/interactive-neural-vortex-background';
 import { MinimalistHero } from '@/components/ui/minimalist-hero';
 import { EngagementBar } from '@/components/EngagementBar';
 import { SkillsSection } from '@/components/SkillsSection';
@@ -16,7 +16,7 @@ export default function App() {
   }, []);
 
   return (
-    <AuroraBackground>
+    <InteractiveNeuralVortex>
       {/* 3D Glass Hero Section */}
       <MinimalistHero
         logoText="MOHD ZAID"
@@ -66,6 +66,6 @@ export default function App() {
 
       {/* Navigation Drawer Menu */}
       <FloatingMenu />
-    </AuroraBackground>
+    </InteractiveNeuralVortex>
   );
 }

@@ -75,12 +75,12 @@ const SkillCard3D = ({ skill, index }: { skill: SkillItem; index: number }) => {
     >
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2.5">
-          <CheckCircle2 className="h-4.5 w-4.5 text-rose-400" />
-          <h3 className="text-base font-bold text-white group-hover:text-rose-300 transition-colors">
+          <CheckCircle2 className="h-4.5 w-4.5 text-cyan-400" />
+          <h3 className="text-base font-bold text-white group-hover:text-cyan-300 transition-colors">
             {skill.name}
           </h3>
         </div>
-        <span className="text-xs font-mono font-bold text-rose-400">
+        <span className="text-xs font-mono font-bold text-cyan-400">
           {skill.level}%
         </span>
       </div>
@@ -89,14 +89,14 @@ const SkillCard3D = ({ skill, index }: { skill: SkillItem; index: number }) => {
         {skill.desc}
       </p>
 
-      {/* Solid Clean Rose/Crimson Progress bar */}
+      {/* Solid Clean Violet to Cyan Progress bar matching background */}
       <div className="h-2 w-full rounded-full bg-white/20 overflow-hidden shadow-inner">
         <motion.div
           initial={{ width: 0 }}
           whileInView={{ width: `${skill.level}%` }}
           viewport={{ once: true, amount: 0.1 }}
           transition={{ duration: 0.85, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          className="h-full rounded-full bg-gradient-to-r from-rose-500 to-red-500 shadow-md"
+          className="h-full rounded-full bg-gradient-to-r from-violet-600 via-purple-500 to-cyan-400 shadow-[0_0_10px_rgba(6,182,212,0.5)]"
         />
       </div>
     </motion.div>
@@ -124,7 +124,7 @@ export const SkillsSection = () => {
           transition={{ duration: 0.6 }}
           className="text-center space-y-3 mb-12"
         >
-          <span className="inline-block rounded-full bg-rose-500/20 px-3.5 py-1 text-xs font-semibold text-rose-300 border border-rose-400/40 backdrop-blur-3xl shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)]">
+          <span className="inline-block rounded-full bg-cyan-500/15 px-3.5 py-1 text-xs font-semibold text-cyan-300 border border-cyan-400/40 backdrop-blur-3xl shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)]">
             TECHNICAL MASTERY
           </span>
           <h2 className="text-3xl font-extrabold md:text-5xl tracking-tight text-white">
@@ -147,7 +147,7 @@ export const SkillsSection = () => {
             onClick={() => { setActiveTab('all'); setShowAllSkills(false); }}
             className={`px-4 py-2 rounded-2xl text-xs font-semibold transition-all ${
               activeTab === 'all'
-                ? 'bg-rose-500 text-white font-bold shadow-md'
+                ? 'bg-gradient-to-r from-violet-600 to-cyan-500 text-white font-bold shadow-[0_0_15px_rgba(6,182,212,0.4)]'
                 : 'frosted-glass-pill text-white/80 hover:text-white hover:bg-white/15'
             }`}
           >
@@ -158,7 +158,7 @@ export const SkillsSection = () => {
             onClick={() => { setActiveTab('languages'); setShowAllSkills(false); }}
             className={`flex items-center gap-1.5 px-4 py-2 rounded-2xl text-xs font-semibold transition-all ${
               activeTab === 'languages'
-                ? 'bg-rose-500 text-white font-bold shadow-md'
+                ? 'bg-gradient-to-r from-violet-600 to-cyan-500 text-white font-bold shadow-[0_0_15px_rgba(6,182,212,0.4)]'
                 : 'frosted-glass-pill text-white/80 hover:text-white hover:bg-white/15'
             }`}
           >
@@ -169,7 +169,7 @@ export const SkillsSection = () => {
             onClick={() => { setActiveTab('android'); setShowAllSkills(false); }}
             className={`flex items-center gap-1.5 px-4 py-2 rounded-2xl text-xs font-semibold transition-all ${
               activeTab === 'android'
-                ? 'bg-rose-500 text-white font-bold shadow-md'
+                ? 'bg-gradient-to-r from-violet-600 to-cyan-500 text-white font-bold shadow-[0_0_15px_rgba(6,182,212,0.4)]'
                 : 'frosted-glass-pill text-white/80 hover:text-white hover:bg-white/15'
             }`}
           >
@@ -180,7 +180,7 @@ export const SkillsSection = () => {
             onClick={() => { setActiveTab('tools'); setShowAllSkills(false); }}
             className={`flex items-center gap-1.5 px-4 py-2 rounded-2xl text-xs font-semibold transition-all ${
               activeTab === 'tools'
-                ? 'bg-rose-500 text-white font-bold shadow-md'
+                ? 'bg-gradient-to-r from-violet-600 to-cyan-500 text-white font-bold shadow-[0_0_15px_rgba(6,182,212,0.4)]'
                 : 'frosted-glass-pill text-white/80 hover:text-white hover:bg-white/15'
             }`}
           >
@@ -191,7 +191,7 @@ export const SkillsSection = () => {
             onClick={() => { setActiveTab('devices'); setShowAllSkills(false); }}
             className={`flex items-center gap-1.5 px-4 py-2 rounded-2xl text-xs font-semibold transition-all ${
               activeTab === 'devices'
-                ? 'bg-rose-500 text-white font-bold shadow-md'
+                ? 'bg-gradient-to-r from-violet-600 to-cyan-500 text-white font-bold shadow-[0_0_15px_rgba(6,182,212,0.4)]'
                 : 'frosted-glass-pill text-white/80 hover:text-white hover:bg-white/15'
             }`}
           >
@@ -217,7 +217,7 @@ export const SkillsSection = () => {
           >
             <button
               onClick={() => setShowAllSkills(!showAllSkills)}
-              className="group flex items-center gap-2 rounded-full frosted-glass-pill px-6 py-3 text-xs font-bold text-rose-300 transition-all hover:border-rose-300 hover:bg-rose-500 hover:text-white hover:scale-105 shadow-md"
+              className="group flex items-center gap-2 rounded-full frosted-glass-pill px-6 py-3 text-xs font-bold text-cyan-300 transition-all hover:border-cyan-300 hover:bg-gradient-to-r hover:from-violet-600 hover:to-cyan-500 hover:text-white hover:scale-105 shadow-md"
             >
               <span>
                 {showAllSkills

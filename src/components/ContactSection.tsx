@@ -194,14 +194,14 @@ export const ContactSection = () => {
           transition={{ duration: 0.6 }}
           className="text-center space-y-3 mb-12"
         >
-          <span className="inline-block rounded-full bg-rose-500/20 px-3.5 py-1 text-xs font-semibold text-rose-300 border border-rose-400/40 backdrop-blur-3xl shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)]">
+          <span className="inline-block rounded-full bg-cyan-500/15 px-3.5 py-1 text-xs font-semibold text-cyan-300 border border-cyan-400/40 backdrop-blur-3xl shadow-[inset_0_1px_1px_rgba(255,255,255,0.3)]">
             COLLABORATION &amp; INQUIRIES
           </span>
           <h2 className="text-3xl font-extrabold md:text-5xl tracking-tight text-white">
             Get In Touch
           </h2>
           <p className="text-sm text-white/70 max-w-2xl mx-auto">
-            Have questions or want to collaborate on Android kernels, device trees, or low-level systems programming? Send a direct email to <span className="text-rose-300 font-mono font-semibold">kzaid0997@gmail.com</span> below!
+            Have questions or want to collaborate on Android kernels, device trees, or low-level systems programming? Send a direct email to <span className="text-cyan-300 font-mono font-semibold">kzaid0997@gmail.com</span> below!
           </p>
         </motion.div>
 
@@ -215,7 +215,7 @@ export const ContactSection = () => {
               transition={{ duration: 0.45, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
             >
               <ContactCard3D className="flex items-center gap-3.5 sm:gap-4 p-4 sm:p-4.5">
-                <div className="flex h-10 w-10 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-2xl border border-rose-400/40 bg-white/[0.08] text-rose-300 backdrop-blur-md shadow-sm">
+                <div className="flex h-10 w-10 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-2xl border border-cyan-400/40 bg-white/[0.08] text-cyan-300 backdrop-blur-md shadow-sm">
                   <MapPin className="h-5 w-5" />
                 </div>
                 <div className="min-w-0 flex-1">
@@ -232,14 +232,14 @@ export const ContactSection = () => {
               transition={{ duration: 0.45, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
             >
               <ContactCard3D className="flex items-center gap-3.5 sm:gap-4 p-4 sm:p-4.5">
-                <div className="flex h-10 w-10 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-2xl border border-rose-400/40 bg-white/[0.08] text-rose-300 backdrop-blur-md shadow-sm">
+                <div className="flex h-10 w-10 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-2xl border border-cyan-400/40 bg-white/[0.08] text-cyan-300 backdrop-blur-md shadow-sm">
                   <Mail className="h-5 w-5" />
                 </div>
                 <div className="min-w-0 flex-1">
                   <p className="text-[10px] sm:text-xs font-semibold text-white/60 uppercase tracking-wider">Direct Email</p>
                   <a
                     href="mailto:kzaid0997@gmail.com"
-                    className="text-xs sm:text-sm font-bold text-white hover:text-rose-300 transition-colors truncate block"
+                    className="text-xs sm:text-sm font-bold text-white hover:text-cyan-300 transition-colors truncate block"
                   >
                     kzaid0997@gmail.com
                   </a>
@@ -254,12 +254,12 @@ export const ContactSection = () => {
               transition={{ duration: 0.45, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
             >
               <ContactCard3D className="flex items-center gap-3.5 sm:gap-4 p-4 sm:p-4.5">
-                <div className="flex h-10 w-10 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-2xl border border-rose-400/40 bg-white/[0.08] text-rose-300 backdrop-blur-md shadow-sm">
+                <div className="flex h-10 w-10 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-2xl border border-cyan-400/40 bg-white/[0.08] text-cyan-300 backdrop-blur-md shadow-sm">
                   <Send className="h-5 w-5" />
                 </div>
                 <div className="min-w-0 flex-1">
                   <p className="text-[10px] sm:text-xs font-semibold text-white/60 uppercase tracking-wider">Telegram</p>
-                  <a href="https://t.me/zaidkhan0997" target="_blank" rel="noreferrer" className="text-xs sm:text-sm font-bold text-white hover:text-rose-300 transition-colors truncate block">
+                  <a href="https://t.me/zaidkhan0997" target="_blank" rel="noreferrer" className="text-xs sm:text-sm font-bold text-white hover:text-cyan-300 transition-colors truncate block">
                     @zaidkhan0997
                   </a>
                 </div>
@@ -274,7 +274,7 @@ export const ContactSection = () => {
             >
               <ContactCard3D className="p-4 sm:p-4.5">
                 <div className="flex items-center gap-2 mb-1.5">
-                  <ShieldCheck className="h-4 w-4 text-rose-400 shrink-0" />
+                  <ShieldCheck className="h-4 w-4 text-cyan-400 shrink-0" />
                   <h4 className="text-xs font-bold text-white uppercase tracking-wider">Fast Turnaround</h4>
                 </div>
                 <p className="text-[11px] sm:text-xs text-white/70 leading-relaxed">
@@ -295,11 +295,11 @@ export const ContactSection = () => {
             <ContactCard3D className="flex-1 flex flex-col justify-between p-5 sm:p-7">
               <div className="mb-4">
                 <h3 className="text-base sm:text-lg font-bold text-white mb-1 flex items-center gap-2">
-                  <MessageSquare className="h-4.5 w-4.5 text-rose-300" />
+                  <MessageSquare className="h-4.5 w-4.5 text-cyan-300" />
                   Send Instant Message
                 </h3>
                 <p className="text-xs text-white/70">
-                  Submitting this form delivers your message straight to <strong className="text-rose-300">kzaid0997@gmail.com</strong>.
+                  Submitting this form delivers your message straight to <strong className="text-cyan-300">kzaid0997@gmail.com</strong>.
                 </p>
               </div>
 
@@ -307,9 +307,9 @@ export const ContactSection = () => {
                 <motion.div
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  className="rounded-2xl border border-rose-400/40 bg-rose-500/10 p-6 text-center space-y-3 my-auto"
+                  className="rounded-2xl border border-cyan-400/40 bg-cyan-500/10 p-6 text-center space-y-3 my-auto"
                 >
-                  <CheckCircle2 className="h-10 w-10 text-rose-400 mx-auto" />
+                  <CheckCircle2 className="h-10 w-10 text-cyan-400 mx-auto" />
                   <h4 className="text-base font-bold text-white">Message Sent Successfully!</h4>
                   <p className="text-xs text-white/80 max-w-sm mx-auto">
                     Thank you! I will review your message and reply to your email address shortly.
@@ -318,7 +318,7 @@ export const ContactSection = () => {
                     <button
                       type="button"
                       onClick={() => setSubmitted(false)}
-                      className="inline-flex items-center gap-1.5 rounded-full border border-rose-400/30 bg-white/10 px-4 py-1.5 text-xs font-semibold text-rose-300 hover:bg-rose-500 hover:text-white transition-all font-ubuntu"
+                      className="inline-flex items-center gap-1.5 rounded-full border border-cyan-400/30 bg-white/10 px-4 py-1.5 text-xs font-semibold text-cyan-300 hover:bg-gradient-to-r hover:from-violet-600 hover:to-cyan-500 hover:text-white transition-all font-ubuntu"
                     >
                       Send Another Message &rarr;
                     </button>
@@ -337,7 +337,7 @@ export const ContactSection = () => {
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                         placeholder="John Doe"
-                        className="w-full rounded-2xl border border-white/20 bg-white/[0.04] px-4 py-2.5 text-xs text-white placeholder:text-white/30 backdrop-blur-md focus:border-rose-400 focus:outline-none focus:ring-1 focus:ring-rose-400/30"
+                        className="w-full rounded-2xl border border-white/20 bg-white/[0.04] px-4 py-2.5 text-xs text-white placeholder:text-white/30 backdrop-blur-md focus:border-cyan-400 focus:outline-none focus:ring-1 focus:ring-cyan-400/30"
                       />
                     </div>
 
@@ -351,7 +351,7 @@ export const ContactSection = () => {
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                         placeholder="john@example.com"
-                        className="w-full rounded-2xl border border-white/20 bg-white/[0.04] px-4 py-2.5 text-xs text-white placeholder:text-white/30 backdrop-blur-md focus:border-rose-400 focus:outline-none focus:ring-1 focus:ring-rose-400/30"
+                        className="w-full rounded-2xl border border-white/20 bg-white/[0.04] px-4 py-2.5 text-xs text-white placeholder:text-white/30 backdrop-blur-md focus:border-cyan-400 focus:outline-none focus:ring-1 focus:ring-cyan-400/30"
                       />
                     </div>
 
@@ -365,7 +365,7 @@ export const ContactSection = () => {
                         value={formData.message}
                         onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                         placeholder="Inquiry about custom kernel trees, AOSP builds, or collaboration..."
-                        className="w-full rounded-2xl border border-white/20 bg-white/[0.04] px-4 py-2.5 text-xs text-white placeholder:text-white/30 backdrop-blur-md focus:border-rose-400 focus:outline-none focus:ring-1 focus:ring-rose-400/30 resize-none"
+                        className="w-full rounded-2xl border border-white/20 bg-white/[0.04] px-4 py-2.5 text-xs text-white placeholder:text-white/30 backdrop-blur-md focus:border-cyan-400 focus:outline-none focus:ring-1 focus:ring-cyan-400/30 resize-none"
                       />
                     </div>
 
@@ -373,7 +373,7 @@ export const ContactSection = () => {
                     <div>
                       <label className="block text-[11px] font-semibold text-white/80 mb-1.5 uppercase tracking-wider flex items-center justify-between">
                         <span>Attach File / Logs (Optional)</span>
-                        <span className="text-[10px] text-rose-300/80 font-mono lowercase">max 8mb</span>
+                        <span className="text-[10px] text-cyan-300/80 font-mono lowercase">max 8mb</span>
                       </label>
 
                       <input
@@ -392,15 +392,15 @@ export const ContactSection = () => {
                             initial={{ opacity: 0, y: 5 }}
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: -5 }}
-                            className="flex items-center justify-between gap-3 rounded-2xl border border-rose-400/50 bg-rose-500/10 p-3 text-xs text-white backdrop-blur-md shadow-sm"
+                            className="flex items-center justify-between gap-3 rounded-2xl border border-cyan-400/50 bg-cyan-500/10 p-3 text-xs text-white backdrop-blur-md shadow-sm"
                           >
                             <div className="flex items-center gap-2.5 min-w-0">
-                              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-rose-500/20 border border-rose-400/40 text-rose-300">
+                              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-cyan-500/20 border border-cyan-400/40 text-cyan-300">
                                 <FileCode2 className="h-4 w-4" />
                               </div>
                               <div className="min-w-0">
                                 <div className="flex items-center gap-1.5">
-                                  <span className="rounded bg-rose-400/20 px-1.5 py-0.2 text-[9px] font-mono font-bold text-rose-300 uppercase">
+                                  <span className="rounded bg-cyan-400/20 px-1.5 py-0.2 text-[9px] font-mono font-bold text-cyan-300 uppercase">
                                     {getFileExtension(attachment.name)}
                                   </span>
                                   <p className="font-semibold truncate text-xs text-white">
@@ -435,12 +435,12 @@ export const ContactSection = () => {
                             onClick={() => fileInputRef.current?.click()}
                             className={`group relative flex flex-col items-center justify-center rounded-2xl border-2 border-dashed p-4 text-center cursor-pointer transition-all duration-200 ${
                               isDragging
-                                ? 'border-rose-400 bg-rose-500/20 scale-[1.01] shadow-[0_0_20px_rgba(255,48,71,0.3)]'
-                                : 'border-white/20 bg-white/[0.02] hover:border-rose-400/60 hover:bg-white/[0.05]'
+                                ? 'border-cyan-400 bg-cyan-500/20 scale-[1.01] shadow-[0_0_20px_rgba(6,182,212,0.3)]'
+                                : 'border-white/20 bg-white/[0.02] hover:border-cyan-400/60 hover:bg-white/[0.05]'
                             }`}
                           >
-                            <div className="flex items-center gap-2 text-white/80 group-hover:text-rose-300 transition-colors">
-                              <UploadCloud className={`h-5 w-5 text-rose-400 transition-transform duration-200 group-hover:-translate-y-0.5 ${isDragging ? 'scale-125' : ''}`} />
+                            <div className="flex items-center gap-2 text-white/80 group-hover:text-cyan-300 transition-colors">
+                              <UploadCloud className={`h-5 w-5 text-cyan-400 transition-transform duration-200 group-hover:-translate-y-0.5 ${isDragging ? 'scale-125' : ''}`} />
                               <span className="text-xs font-semibold">
                                 {isDragging ? 'Drop file here to attach' : 'Drag & drop file or log here, or click to browse'}
                               </span>
@@ -455,7 +455,7 @@ export const ContactSection = () => {
                   </div>
 
                   {errorMessage && (
-                    <p className="text-xs font-semibold text-rose-400 bg-rose-500/10 border border-rose-500/20 rounded-xl p-2.5 text-center">
+                    <p className="text-xs font-semibold text-amber-300 bg-amber-500/10 border border-amber-500/20 rounded-xl p-2.5 text-center">
                       {errorMessage}
                     </p>
                   )}
@@ -463,7 +463,7 @@ export const ContactSection = () => {
                   <button
                     type="submit"
                     disabled={submitting}
-                    className="w-full flex items-center justify-center gap-2 rounded-2xl bg-rose-500 py-3 text-xs font-bold text-white shadow-md hover:bg-rose-600 active:scale-[0.99] transition-all disabled:opacity-50 mt-2"
+                    className="w-full flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-violet-600 via-purple-600 to-cyan-500 py-3 text-xs font-bold text-white shadow-[0_0_20px_rgba(6,182,212,0.35)] hover:opacity-95 active:scale-[0.99] transition-all disabled:opacity-50 mt-2"
                   >
                     <Send className="h-4 w-4" />
                     <span>{submitting ? 'Sending Message...' : 'Send Message'}</span>

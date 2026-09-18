@@ -123,13 +123,13 @@ export const EngagementBar = () => {
             viewport={{ once: true, amount: 0.15 }}
             transition={{ duration: 0.5, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
           >
-            <Glass3DCard className="flex items-center gap-2 sm:gap-3 border-rose-400/30">
-              <div className="flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl border border-rose-400/40 bg-white/[0.08] text-rose-300 shadow-sm backdrop-blur-md">
+            <Glass3DCard className="flex items-center gap-2 sm:gap-3 border-cyan-400/30">
+              <div className="flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl border border-cyan-400/40 bg-white/[0.08] text-cyan-300 shadow-sm backdrop-blur-md">
                 <Eye className="h-4 w-4 sm:h-5 sm:w-5 animate-pulse" />
               </div>
               <div className="min-w-0 flex-1">
-                <p className="text-[9px] sm:text-[10px] font-semibold tracking-wider text-rose-200/80 uppercase truncate">Total Views</p>
-                <p className="text-xs sm:text-base md:text-lg font-extrabold text-rose-300 tracking-tight truncate">{views.toLocaleString()}</p>
+                <p className="text-[9px] sm:text-[10px] font-semibold tracking-wider text-cyan-200/80 uppercase truncate">Total Views</p>
+                <p className="text-xs sm:text-base md:text-lg font-extrabold text-cyan-300 tracking-tight truncate">{views.toLocaleString()}</p>
               </div>
             </Glass3DCard>
           </motion.div>
@@ -143,15 +143,15 @@ export const EngagementBar = () => {
             onClick={handleLike}
             className="cursor-pointer"
           >
-            <Glass3DCard className={`flex items-center gap-2 sm:gap-3 ${hasLiked ? 'border-rose-400 bg-rose-500/15 text-rose-300' : 'border-rose-400/30 text-rose-300'}`}>
-              <div className={`flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl border border-rose-400/40 transition-colors backdrop-blur-md ${hasLiked ? 'bg-rose-500 text-white font-bold' : 'bg-white/[0.08] text-rose-300'}`}>
+            <Glass3DCard className={`flex items-center gap-2 sm:gap-3 ${hasLiked ? 'border-cyan-400 bg-cyan-500/15 text-cyan-300' : 'border-cyan-400/30 text-cyan-300'}`}>
+              <div className={`flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl border border-cyan-400/40 transition-colors backdrop-blur-md ${hasLiked ? 'bg-gradient-to-r from-violet-600 to-cyan-500 text-white font-bold' : 'bg-white/[0.08] text-cyan-300'}`}>
                 <Heart className={`h-4 w-4 sm:h-5 sm:w-5 ${hasLiked ? 'fill-current' : ''}`} />
               </div>
               <div className="min-w-0 flex-1">
-                <p className="text-[9px] sm:text-[10px] font-semibold tracking-wider text-rose-200/80 uppercase truncate">
+                <p className="text-[9px] sm:text-[10px] font-semibold tracking-wider text-cyan-200/80 uppercase truncate">
                   {hasLiked ? 'Liked!' : 'Click to Like'}
                 </p>
-                <p className="text-xs sm:text-base md:text-lg font-extrabold text-rose-300 tracking-tight truncate">
+                <p className="text-xs sm:text-base md:text-lg font-extrabold text-cyan-300 tracking-tight truncate">
                   {likes.toLocaleString()}
                 </p>
               </div>
@@ -166,7 +166,7 @@ export const EngagementBar = () => {
             transition={{ duration: 0.5, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
           >
             <Glass3DCard className="flex items-center gap-2 sm:gap-3">
-              <div className="flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl border border-white/30 bg-white/[0.08] text-rose-300 shadow-sm backdrop-blur-md">
+              <div className="flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl border border-white/30 bg-white/[0.08] text-cyan-300 shadow-sm backdrop-blur-md">
                 <FolderGit2 className="h-4 w-4 sm:h-5 sm:w-5" />
               </div>
               <div className="min-w-0 flex-1">
@@ -186,7 +186,7 @@ export const EngagementBar = () => {
             transition={{ duration: 0.5, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
           >
             <Glass3DCard className="flex items-center gap-2 sm:gap-3">
-              <div className="flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl border border-rose-400/40 bg-white/[0.08] text-rose-300 shadow-sm backdrop-blur-md">
+              <div className="flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl border border-cyan-400/40 bg-white/[0.08] text-cyan-300 shadow-sm backdrop-blur-md">
                 <Users className="h-4 w-4 sm:h-5 sm:w-5" />
               </div>
               <div className="min-w-0 flex-1">
@@ -207,7 +207,7 @@ export const EngagementBar = () => {
             className="col-span-2 sm:col-span-1"
           >
             <Glass3DCard className="flex items-center gap-2 sm:gap-3">
-              <div className="flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl border border-rose-400/40 bg-white/[0.08] text-rose-300 shadow-sm backdrop-blur-md">
+              <div className="flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl border border-cyan-400/40 bg-white/[0.08] text-cyan-300 shadow-sm backdrop-blur-md">
                 <GitBranch className="h-4 w-4 sm:h-5 sm:w-5" />
               </div>
               <div className="min-w-0 flex-1">
