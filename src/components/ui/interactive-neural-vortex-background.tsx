@@ -40,9 +40,13 @@ export const InteractiveNeuralVortex: React.FC<InteractiveNeuralVortexProps> = (
       return;
     }
 
-    // Shader sources
+    // Shader sources with highp float precision support to prevent float truncation
     const vsSource = `
+      #ifdef GL_FRAGMENT_PRECISION_HIGH
+      precision highp float;
+      #else
       precision mediump float;
+      #endif
       attribute vec2 a_position;
       varying vec2 vUv;
       void main() {
@@ -52,7 +56,11 @@ export const InteractiveNeuralVortex: React.FC<InteractiveNeuralVortexProps> = (
     `;
 
     const fsSource = `
+      #ifdef GL_FRAGMENT_PRECISION_HIGH
+      precision highp float;
+      #else
       precision mediump float;
+      #endif
       varying vec2 vUv;
       uniform float u_time;
       uniform float u_ratio;
@@ -85,14 +93,13 @@ export const InteractiveNeuralVortex: React.FC<InteractiveNeuralVortexProps> = (
         pointer.x *= u_ratio;
         float p = clamp(length(pointer), 0., 1.);
         p = .5 * pow(1. - p, 2.);
-        float t = .001 * u_time;
-        vec3 color = vec3(0.);
+        float t = u_time;
+        vec3 color = vec3(0.5, 0.15, 0.65);
         float noise = neuro_shape(uv, t, p);
         noise = 1.2 * pow(noise, 3.);
         noise += pow(noise, 10.);
         noise = max(.0, noise - .5);
         noise *= (1. - length(vUv - .5));
-        color = vec3(0.5, 0.15, 0.65);
         color = mix(color, vec3(0.02, 0.7, 0.9), 0.48);
         color += vec3(0.15, 0.0, 0.6);
         color = color * noise;
@@ -170,8 +177,17 @@ export const InteractiveNeuralVortex: React.FC<InteractiveNeuralVortexProps> = (
     window.addEventListener('resize', resizeCanvas);
 
     // Animation loop
+    const startTime = performance.now();
+    // Wrap time at 200*PI (~628.32s = 10.47min).
+    // Because neuro_shape is strictly 2*PI periodic, wrapping at an exact multiple of 2*PI
+    // is mathematically continuous and seamless, preventing floating point overflow/freezing forever.
+    const TIME_CYCLE = Math.PI * 200.0;
+
     const render = () => {
+      if (gl.isContextLost()) return;
+
       const currentTime = performance.now();
+      const elapsedSec = ((currentTime - startTime) * 0.001) % TIME_CYCLE;
 
       // Smooth pointer movement
       pointer.current.x += (pointer.current.tX - pointer.current.x) * 0.2;
@@ -181,7 +197,7 @@ export const InteractiveNeuralVortex: React.FC<InteractiveNeuralVortexProps> = (
       const h = window.innerHeight || 1;
       const scrollY = window.pageYOffset || window.scrollY || 0;
 
-      if (uTime) gl.uniform1f(uTime, currentTime);
+      if (uTime) gl.uniform1f(uTime, elapsedSec);
       if (uPointerPosition) {
         gl.uniform2f(
           uPointerPosition,
@@ -212,14 +228,23 @@ export const InteractiveNeuralVortex: React.FC<InteractiveNeuralVortexProps> = (
       }
     };
 
+    const handleContextLost = (e: Event) => {
+      e.preventDefault();
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
+    };
+
     window.addEventListener('pointermove', handleMouseMove, { passive: true });
     window.addEventListener('touchmove', handleTouchMove, { passive: true });
+    canvasEl.addEventListener('webglcontextlost', handleContextLost, false);
 
     // Cleanup
     return () => {
       window.removeEventListener('resize', resizeCanvas);
       window.removeEventListener('pointermove', handleMouseMove);
       window.removeEventListener('touchmove', handleTouchMove);
+      canvasEl.removeEventListener('webglcontextlost', handleContextLost);
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current);
       }
@@ -234,9 +259,9 @@ export const InteractiveNeuralVortex: React.FC<InteractiveNeuralVortexProps> = (
 
   return (
     <div
-      className={`relative min-h-screen w-full bg-[#060d24] overflow-x-hidden text-white ${className}`}
+      className={`relative min-h-screen w-full bg-[#02040a] overflow-x-hidden text-white ${className}`}
       style={{
-        background: 'radial-gradient(ellipse at 50% 30%, #0d1a45 0%, #070e28 55%, #040817 100%)',
+        background: 'radial-gradient(ellipse at 50% 30%, #050a1c 0%, #02040a 60%, #010206 100%)',
       }}
     >
       {/* Canvas Background */}
