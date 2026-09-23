@@ -138,30 +138,32 @@ const FALLBACK_REPOS: GitHubRepo[] = [
   },
 ];
 
-const RepoCard3D = ({ repo, index }: { repo: GitHubRepo; index: number }) => {
-  const [rotateX, setRotateX] = useState(0);
-  const [rotateY, setRotateY] = useState(0);
+const RepoCard3D = React.forwardRef<HTMLAnchorElement, { repo: GitHubRepo; index: number }>(
+  ({ repo, index }, ref) => {
+    const [rotateX, setRotateX] = useState(0);
+    const [rotateY, setRotateY] = useState(0);
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    if (typeof window === 'undefined') return;
-    if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches || window.innerWidth < 768) return;
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-    setRotateX(((y - centerY) / centerY) * -12);
-    setRotateY(((x - centerX) / centerX) * 12);
-  };
+    const handleMouseMove = (e: React.MouseEvent<HTMLAnchorElement>) => {
+      if (typeof window === 'undefined') return;
+      if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches || window.innerWidth < 768) return;
+      const rect = e.currentTarget.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      setRotateX(((y - centerY) / centerY) * -12);
+      setRotateY(((x - centerX) / centerX) * 12);
+    };
 
-  const handleMouseLeave = () => {
-    setRotateX(0);
-    setRotateY(0);
-  };
+    const handleMouseLeave = () => {
+      setRotateX(0);
+      setRotateY(0);
+    };
 
-  return (
-    <motion.a
-      href={repo.html_url}
+    return (
+      <motion.a
+        ref={ref}
+        href={repo.html_url}
       target="_blank"
       rel="noopener noreferrer"
       onMouseMove={handleMouseMove}
@@ -213,7 +215,9 @@ const RepoCard3D = ({ repo, index }: { repo: GitHubRepo; index: number }) => {
       </div>
     </motion.a>
   );
-};
+});
+
+RepoCard3D.displayName = 'RepoCard3D';
 
 export const ReposSection = () => {
   const [repos, setRepos] = useState<GitHubRepo[]>(FALLBACK_REPOS);
@@ -335,9 +339,17 @@ export const ReposSection = () => {
           </div>
 
           <div className="relative w-full md:w-72">
-            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-white/40" />
+            <label htmlFor="repo-search" className="sr-only">
+              Search repositories
+            </label>
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-white/40 pointer-events-none" />
             <input
+              id="repo-search"
+              name="repo-search"
               type="text"
+              autoComplete="off"
+              spellCheck={false}
+              aria-label="Search repositories"
               placeholder="Search repositories..."
               value={search}
               onChange={(e) => { setSearch(e.target.value); setShowAllRepos(false); }}

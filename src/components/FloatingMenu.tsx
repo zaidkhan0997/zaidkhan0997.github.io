@@ -107,6 +107,17 @@ export const FloatingMenu = () => {
       icon: Terminal,
     },
     {
+      label: 'Boot Sequence',
+      desc: 'Replay cinematic Android boot',
+      href: '#',
+      onClick: (e: React.MouseEvent) => {
+        e.preventDefault();
+        setIsOpen(false);
+        window.dispatchEvent(new CustomEvent('trigger-boot-sequence'));
+      },
+      icon: Cpu,
+    },
+    {
       label: 'Contact & Socials',
       desc: 'Email, Instagram & GitHub links',
       href: '#contact',
@@ -184,7 +195,13 @@ export const FloatingMenu = () => {
                         initial={{ opacity: 0, x: 10 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: index * 0.05 }}
-                        onClick={() => setIsOpen(false)}
+                        onClick={(e) => {
+                          if (item.onClick) {
+                            item.onClick(e);
+                          } else {
+                            setIsOpen(false);
+                          }
+                        }}
                         className="flex items-center justify-between rounded-full frosted-glass-pill p-2 sm:p-2.5 transition-all hover:border-cyan-400/80 group"
                       >
                         <div className="flex items-center gap-2.5 min-w-0">

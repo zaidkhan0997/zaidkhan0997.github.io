@@ -77,7 +77,7 @@ const HeroCard3D = ({ children, className = '' }: { children: React.ReactNode; c
         transform: `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`,
       }}
       className={cn(
-        'frosted-glass-card rounded-3xl p-3.5 sm:p-5 lg:p-8 [transform:translateZ(0)]',
+        'frosted-glass-card rounded-3xl p-6 sm:p-7',
         className
       )}
     >
@@ -99,8 +99,12 @@ export const MinimalistHero = ({
   quote = '"Be happy, it drives people crazy."'
 }: MinimalistHeroProps) => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 1024);
+    checkMobile();
+
     let ticking = false;
     const handleScroll = () => {
       if (!ticking) {
@@ -114,7 +118,11 @@ export const MinimalistHero = ({
 
     handleScroll();
     window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener('resize', checkMobile);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', checkMobile);
+    };
   }, []);
 
   const triggerMenu = () => {
@@ -218,7 +226,7 @@ export const MinimalistHero = ({
         <motion.div
           initial={{ opacity: 0, x: -35, scale: 0.96 }}
           whileInView={{ opacity: 1, x: 0, scale: 1 }}
-          viewport={{ once: false, amount: 0.15 }}
+          viewport={{ once: true, amount: 0.15 }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           className="z-20 order-3 lg:order-1 flex justify-center lg:justify-start w-full max-w-xl lg:max-w-none min-w-0 mx-auto lg:mx-0"
         >
@@ -237,7 +245,7 @@ export const MinimalistHero = ({
                 Android Custom ROM &amp; Linux Kernel Developer
               </h3>
               <p className="text-xs sm:text-sm text-white/80 leading-relaxed font-normal font-ubuntu">
-                specializing in <span className="text-cyan-300 font-bold">Xiaomi devices (lisa &amp; sweet)</span>, AOSP bringup, C/C++, and low-level system software.
+                specializing in <span className="text-cyan-300 font-bold">Xiaomi devices (Lisa &amp; sweet)</span>, AOSP bringup, C/C++, and low-level system software.
               </p>
             </div>
 
@@ -268,24 +276,24 @@ export const MinimalistHero = ({
         <motion.div
           initial={{ opacity: 0, scale: 0.88 }}
           whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: false, amount: 0.15 }}
+          viewport={{ once: true, amount: 0.15 }}
           transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
           className="relative order-1 lg:order-2 flex justify-center items-center py-2"
         >
-          <HeroCard3D className="!p-2 overflow-hidden !rounded-full frosted-glass-card shrink-0">
+          <div className="p-1.5 sm:p-2 rounded-full border border-white/20 bg-white/[0.035] backdrop-blur-[3px] shadow-2xl shrink-0 overflow-hidden group">
             <img
               src={imageSrc}
               alt={imageAlt}
-              className="h-52 w-52 sm:h-64 sm:w-64 md:h-72 md:w-72 lg:h-[380px] lg:w-[380px] xl:h-[400px] xl:w-[400px] aspect-square object-cover object-[50%_12%] rounded-full transition-transform duration-700 hover:scale-105"
+              className="h-48 w-48 sm:h-56 sm:w-56 md:h-64 md:w-64 lg:h-[380px] lg:w-[380px] xl:h-[400px] xl:w-[400px] aspect-square object-cover object-[50%_12%] rounded-full transition-transform duration-700 ease-out group-hover:scale-105 will-change-transform"
             />
-          </HeroCard3D>
+          </div>
         </motion.div>
 
         {/* Right Column - Name Card + Aligned Social Links Pill Container */}
         <motion.div
           initial={{ opacity: 0, x: 35, scale: 0.96 }}
           whileInView={{ opacity: 1, x: 0, scale: 1 }}
-          viewport={{ once: false, amount: 0.15 }}
+          viewport={{ once: true, amount: 0.15 }}
           transition={{ duration: 0.6, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
           className="z-20 order-2 lg:order-3 flex flex-col gap-2.5 sm:gap-3.5 items-center lg:items-start w-full max-w-xl lg:max-w-none min-w-0 mx-auto lg:mx-0"
         >
@@ -297,14 +305,14 @@ export const MinimalistHero = ({
                 {overlayText.part2}
               </span>
             </h1>
-            <p className="mt-1.5 sm:mt-2 text-[9px] sm:text-xs font-mono text-cyan-300/80 tracking-widest uppercase flex items-center gap-1.5">
+            <p className="mt-1.5 sm:mt-2 text-[9px] sm:text-xs font-mono text-cyan-300/80 tracking-widest uppercase flex items-center gap-1.5 font-semibold">
               <span className="h-1.5 w-1.5 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_8px_rgba(6,182,212,0.8)] shrink-0" />
-              <span>Xiaomi &amp; Linux Kernel Architecture</span>
+              <span>Android Custom ROM &amp; Linux Kernel Developer</span>
             </p>
           </HeroCard3D>
 
           {/* Separate Social Links Pill Container */}
-          <div className="flex items-center justify-evenly w-full rounded-3xl frosted-glass-card px-1 py-2 sm:px-2.5 sm:py-2.5 [transform:translateZ(0)]">
+          <div className="flex items-center justify-evenly w-full rounded-3xl frosted-glass-card px-1 py-2 sm:px-2.5 sm:py-2.5">
             {socialLinks.map((link, index) => (
               <SocialIcon key={index} href={link.href} icon={link.icon} />
             ))}
@@ -315,10 +323,9 @@ export const MinimalistHero = ({
       {/* Footer Row */}
       <footer className="z-30 flex w-full max-w-7xl items-center justify-end gap-3 py-2">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false, amount: 0.15 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
+          initial={{ opacity: 0, y: 25, scale: 0.9 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ duration: 0.6, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
         >
           <HeroCard3D className="!p-2.5 !px-4 sm:!p-3 sm:!px-5 !rounded-full">
             <div className="flex items-center gap-2 text-xs font-semibold text-white/90 font-ubuntu">

@@ -328,11 +328,14 @@ export const ContactSection = () => {
                 <form onSubmit={handleSubmit} className="space-y-4 flex-1 flex flex-col justify-between">
                   <div className="space-y-3.5">
                     <div>
-                      <label className="block text-xs font-semibold text-white/80 mb-1.5 uppercase tracking-wider">
+                      <label htmlFor="contact-name" className="block text-xs font-semibold text-white/80 mb-1.5 uppercase tracking-wider">
                         Your Name
                       </label>
                       <input
+                        id="contact-name"
+                        name="name"
                         type="text"
+                        autoComplete="name"
                         required
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
@@ -342,11 +345,14 @@ export const ContactSection = () => {
                     </div>
 
                     <div>
-                      <label className="block text-xs font-semibold text-white/80 mb-1.5 uppercase tracking-wider">
+                      <label htmlFor="contact-email" className="block text-xs font-semibold text-white/80 mb-1.5 uppercase tracking-wider">
                         Email Address
                       </label>
                       <input
+                        id="contact-email"
+                        name="email"
                         type="email"
+                        autoComplete="email"
                         required
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
@@ -356,10 +362,13 @@ export const ContactSection = () => {
                     </div>
 
                     <div>
-                      <label className="block text-xs font-semibold text-white/80 mb-1.5 uppercase tracking-wider">
+                      <label htmlFor="contact-message" className="block text-xs font-semibold text-white/80 mb-1.5 uppercase tracking-wider">
                         Message
                       </label>
                       <textarea
+                        id="contact-message"
+                        name="message"
+                        autoComplete="off"
                         required
                         rows={3}
                         value={formData.message}
@@ -371,12 +380,14 @@ export const ContactSection = () => {
 
                     {/* Modern Drag & Drop File Upload Zone */}
                     <div>
-                      <label className="block text-[11px] font-semibold text-white/80 mb-1.5 uppercase tracking-wider flex items-center justify-between">
+                      <label htmlFor="contact-file" className="block text-[11px] font-semibold text-white/80 mb-1.5 uppercase tracking-wider flex items-center justify-between">
                         <span>Attach File / Logs (Optional)</span>
                         <span className="text-[10px] text-cyan-300/80 font-mono lowercase">max 8mb</span>
                       </label>
 
                       <input
+                        id="contact-file"
+                        name="attachment"
                         type="file"
                         ref={fileInputRef}
                         onChange={handleFileChange}
