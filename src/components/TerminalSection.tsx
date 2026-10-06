@@ -119,13 +119,11 @@ const DMESG_SAMPLE = [
 interface TerminalSectionProps {
   onTriggerMatrix?: () => void;
   onTriggerKernelPanic?: () => void;
-  onTriggerReboot?: () => void;
 }
 
 export const TerminalSection: React.FC<TerminalSectionProps> = ({
   onTriggerMatrix,
   onTriggerKernelPanic,
-  onTriggerReboot,
 }) => {
   const [input, setInput] = useState('');
   const [isFlashing, setIsFlashing] = useState(false);
@@ -270,14 +268,21 @@ export const TerminalSection: React.FC<TerminalSectionProps> = ({
       return;
     }
 
-    // 3. Reboot (Boot Sequence)
+    // 3. Reboot / Reset terminal
     if (lower === 'reboot' || lower === 'fastboot reboot' || lower === 'boot') {
-      if (onTriggerReboot) onTriggerReboot();
-      setHistory((prev) => [
-        ...prev,
+      setHistory([
         {
-          command: cmd,
-          output: <p className="text-cyan-400 font-mono text-xs">Rebooting system into Boot Sequence...</p>,
+          command: 'neofetch',
+          output: (
+            <div className="space-y-1 text-xs font-mono">
+              <pre className="text-cyan-400 font-bold overflow-x-auto text-[10px] sm:text-xs leading-tight">
+                {ASCII_ANDROID}
+              </pre>
+              <p className="text-white/70 pt-1">
+                Type <span className="text-cyan-400 font-bold">&apos;help&apos;</span> to explore interactive kernel commands, or run <span className="text-emerald-400 font-bold">&apos;flash lisa&apos;</span>.
+              </p>
+            </div>
+          ),
         },
       ]);
       setInput('');
@@ -327,7 +332,7 @@ export const TerminalSection: React.FC<TerminalSectionProps> = ({
               <div>
                 <p className="text-cyan-300 font-semibold mb-1">🎮 Visual FX &amp; System</p>
                 <p><span className="text-white font-bold">matrix</span> - Full-screen digital rain</p>
-                <p><span className="text-white font-bold">reboot</span> - Re-trigger cinematic boot sequence</p>
+                <p><span className="text-white font-bold">reboot</span> - Reset terminal session</p>
                 <p><span className="text-white font-bold">neofetch</span> - System specs &amp; ASCII art</p>
                 <p><span className="text-white font-bold">clear</span> - Clear current terminal buffer</p>
               </div>
@@ -518,7 +523,7 @@ export const TerminalSection: React.FC<TerminalSectionProps> = ({
     }
   };
 
-  const quickCommands = ['help', 'neofetch', 'flash lisa', 'dmesg', 'matrix', 'kernel panic', 'reboot'];
+  const quickCommands = ['help', 'neofetch', 'flash lisa', 'dmesg', 'matrix', 'kernel panic', 'clear'];
 
   return (
     <section id="terminal" className="bg-transparent py-20 border-b border-white/10 overflow-hidden">
@@ -554,7 +559,7 @@ export const TerminalSection: React.FC<TerminalSectionProps> = ({
             {/* Left: macOS dots */}
             <div className="flex items-center gap-2">
               <span className="h-3 w-3 rounded-full bg-[#ff5f56] shadow-sm cursor-pointer" onClick={() => executeCommandString('kernel panic')} title="Simulate Panic" />
-              <span className="h-3 w-3 rounded-full bg-[#ffbd2e] shadow-sm cursor-pointer" onClick={() => executeCommandString('reboot')} title="Reboot Sequence" />
+              <span className="h-3 w-3 rounded-full bg-[#ffbd2e] shadow-sm cursor-pointer" onClick={() => executeCommandString('clear')} title="Clear Terminal" />
               <span className="h-3 w-3 rounded-full bg-[#27c93f] shadow-sm cursor-pointer" onClick={() => executeCommandString('matrix')} title="Matrix Rain" />
             </div>
 

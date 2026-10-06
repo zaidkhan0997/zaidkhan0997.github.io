@@ -81,7 +81,15 @@ export const FloatingMenu = () => {
     );
   };
 
-  const navItems = [
+  interface NavItem {
+    label: string;
+    desc: string;
+    href: string;
+    icon: React.ElementType;
+    onClick?: (e: React.MouseEvent) => void;
+  }
+
+  const navItems: NavItem[] = [
     {
       label: 'Home',
       desc: 'Intro, hero & metrics showcase',
@@ -105,17 +113,6 @@ export const FloatingMenu = () => {
       desc: 'Interactive developer prompt',
       href: '#terminal',
       icon: Terminal,
-    },
-    {
-      label: 'Boot Sequence',
-      desc: 'Replay cinematic Android boot',
-      href: '#',
-      onClick: (e: React.MouseEvent) => {
-        e.preventDefault();
-        setIsOpen(false);
-        window.dispatchEvent(new CustomEvent('trigger-boot-sequence'));
-      },
-      icon: Cpu,
     },
     {
       label: 'Contact & Socials',
