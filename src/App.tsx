@@ -10,6 +10,7 @@ import { Footer } from '@/components/Footer';
 import { FloatingMenu } from '@/components/FloatingMenu';
 import { MatrixRain } from '@/components/MatrixRain';
 import { KernelPanicOverlay } from '@/components/KernelPanicOverlay';
+import { CinematicIntro } from '@/components/CinematicIntro';
 import { Instagram, Github, Send, Linkedin, Mail } from 'lucide-react';
 
 export default function App() {
@@ -34,8 +35,12 @@ export default function App() {
         onComplete={() => setShowPanic(false)}
       />
 
+      {/* Cinematic Workstation Recon Intro */}
+      <CinematicIntro />
+
       {/* Main Portfolio Content */}
       <div
+        id="portfolio-content"
         key="portfolio-content"
         className="relative z-10 w-full transition-opacity duration-700 ease-out"
       >
