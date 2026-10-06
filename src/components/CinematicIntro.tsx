@@ -1,62 +1,43 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Terminal, ShieldAlert, Cpu, ArrowDown, FastForward, CheckCircle2 } from 'lucide-react';
-
-gsap.registerPlugin(ScrollTrigger);
+import { FastForward, ChevronDown } from 'lucide-react';
 
 const TOTAL_FRAMES = 240;
 const FRAME_PATH = (index: number) =>
   `/cinematic/frames/frame_${String(index).padStart(4, '0')}.jpg`;
 
-interface TerminalLog {
-  time: string;
-  type: 'info' | 'warn' | 'error' | 'success';
-  text: string;
-}
-
-const TERMINAL_LOGS: TerminalLog[] = [
-  { time: '00:00:01', type: 'info', text: 'BOOTING VISUAL RECON KERNEL v6.8.0...' },
-  { time: '00:00:02', type: 'info', text: 'INITIALIZING MULTI-HEAD DISPLAY PROBE...' },
-  { time: '00:00:03', type: 'info', text: 'TARGETING PRIMARY WORKSTATION DISPLAY [DELL U2723QE]...' },
-  { time: '00:00:04', type: 'info', text: 'CORRELATING AOSP / LINUX KERNEL MODULES...' },
-  { time: '00:00:05', type: 'warn', text: '[WARN] SYNTHETIC TIMEOUT: NODE 125.108.1.25 UNRESPONSIVE' },
-  { time: '00:00:06', type: 'error', text: '[ERROR 0x7A1D] PACKET DESTABILIZATION IN RECON LAYER' },
-  { time: '00:00:07', type: 'info', text: '[RETRY] DEPLOYING AUTO-RECOVERY PROTOCOL...' },
-  { time: '00:00:08', type: 'success', text: '[OK] WORKSPACE NODE SYNCHRONIZED // ID: MOHD ZAID' },
-  { time: '00:00:09', type: 'success', text: 'NODE VERIFIED: zaidkhan0997.github.io' },
-];
-
 export const CinematicIntro: React.FC = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [currentProgress, setCurrentProgress] = useState<number>(0);
-  const [loadedCount, setLoadedCount] = useState<number>(0);
-  const [isReady, setIsReady] = useState<boolean>(false);
-  const [visibleLogs, setVisibleLogs] = useState<TerminalLog[]>([]);
-  const [glitchActive, setGlitchActive] = useState<boolean>(false);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const spacerRef = useRef<HTMLDivElement | null>(null);
 
-  // Cached frame images
+  const [scrollProgress, setScrollProgress] = useState<number>(0);
+  const [isPastIntro, setIsPastIntro] = useState<boolean>(false);
+  const [framesLoaded, setFramesLoaded] = useState<number>(0);
+  const [hasScrolled, setHasScrolled] = useState<boolean>(false);
+
+  // Frame cache
   const framesRef = useRef<(HTMLImageElement | null)[]>(new Array(TOTAL_FRAMES + 1).fill(null));
-  const activeFrameIndexRef = useRef<number>(1);
+  const currentRenderedFrameRef = useRef<number>(1);
+  const targetFrameRef = useRef<number>(1);
+  const animFrameIdRef = useRef<number | null>(null);
 
-  // Draw a frame to canvas keeping 16:9 cover ratio
-  const renderFrame = useCallback((frameIndex: number) => {
+  // Render a specific frame onto canvas keeping 16:9 cover
+  const drawFrame = useCallback((frameIdx: number) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d', { alpha: false });
     if (!ctx) return;
 
-    let img = framesRef.current[frameIndex];
-    // Fallback to nearest loaded frame if current isn't ready
+    let img = framesRef.current[frameIdx];
+
+    // Find closest loaded frame if requested frame isn't ready yet
     if (!img || !img.complete || img.naturalWidth === 0) {
       for (let offset = 1; offset < TOTAL_FRAMES; offset++) {
-        const prev = framesRef.current[frameIndex - offset];
+        const prev = framesRef.current[frameIdx - offset];
         if (prev && prev.complete && prev.naturalWidth > 0) {
           img = prev;
           break;
         }
-        const next = framesRef.current[frameIndex + offset];
+        const next = framesRef.current[frameIdx + offset];
         if (next && next.complete && next.naturalWidth > 0) {
           img = next;
           break;
@@ -71,7 +52,6 @@ export const CinematicIntro: React.FC = () => {
     const iw = img.naturalWidth;
     const ih = img.naturalHeight;
 
-    // Cover math
     const scale = Math.max(cw / iw, ch / ih);
     const nw = iw * scale;
     const nh = ih * scale;
@@ -81,325 +61,270 @@ export const CinematicIntro: React.FC = () => {
     ctx.drawImage(img, nx, ny, nw, nh);
   }, []);
 
-  // Update canvas dimensions on resize
+  // Canvas size sync
   useEffect(() => {
-    const updateSize = () => {
+    const resizeCanvas = () => {
       const canvas = canvasRef.current;
       if (!canvas) return;
       const dpr = Math.min(window.devicePixelRatio || 1, window.innerWidth < 768 ? 1.25 : 2);
       canvas.width = window.innerWidth * dpr;
       canvas.height = window.innerHeight * dpr;
-      renderFrame(activeFrameIndexRef.current);
+      drawFrame(currentRenderedFrameRef.current);
     };
 
-    updateSize();
-    window.addEventListener('resize', updateSize);
-    return () => window.removeEventListener('resize', updateSize);
-  }, [renderFrame]);
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+    return () => window.removeEventListener('resize', resizeCanvas);
+  }, [drawFrame]);
 
-  // Progressive frame loader
+  // Preload all frames progressively
   useEffect(() => {
-    let isCancelled = false;
+    let cancelled = false;
 
-    // 1. Immediately load frame 1 for instant first paint
+    // Load Frame 1 immediately
     const firstImg = new Image();
     firstImg.src = FRAME_PATH(1);
     firstImg.onload = () => {
-      if (isCancelled) return;
+      if (cancelled) return;
       framesRef.current[1] = firstImg;
-      setLoadedCount(1);
-      setIsReady(true);
-      renderFrame(1);
+      setFramesLoaded(1);
+      drawFrame(1);
 
-      // 2. Load keyframes (every 4th frame: 5, 9, 13...) for fast scrub responsiveness
+      // Priority 1: Keyframes (every 4th frame for instant scrub response)
       const keyframes: number[] = [];
       for (let i = 5; i <= TOTAL_FRAMES; i += 4) {
         keyframes.push(i);
       }
 
-      let loadedSoFar = 1;
+      let loadedCount = 1;
+      const loadBatch = (list: number[], onDone: () => void) => {
+        let remaining = list.length;
+        if (remaining === 0) return onDone();
 
-      const loadBatch = (indices: number[], onDone: () => void) => {
-        let remaining = indices.length;
-        if (remaining === 0) {
-          onDone();
-          return;
-        }
-        indices.forEach((idx) => {
+        list.forEach((idx) => {
           const img = new Image();
           img.src = FRAME_PATH(idx);
           img.onload = () => {
-            if (isCancelled) return;
+            if (cancelled) return;
             framesRef.current[idx] = img;
-            loadedSoFar++;
-            setLoadedCount(loadedSoFar);
+            loadedCount++;
+            setFramesLoaded(loadedCount);
             remaining--;
             if (remaining === 0) onDone();
           };
           img.onerror = () => {
-            if (isCancelled) return;
+            if (cancelled) return;
             remaining--;
             if (remaining === 0) onDone();
           };
         });
       };
 
-      // Load keyframes first
       loadBatch(keyframes, () => {
-        if (isCancelled) return;
-        // 3. Load remaining intermediate frames
+        if (cancelled) return;
+        // Priority 2: Rest of frames
         const remainingFrames: number[] = [];
         for (let i = 2; i <= TOTAL_FRAMES; i++) {
-          if (!framesRef.current[i]) {
-            remainingFrames.push(i);
-          }
+          if (!framesRef.current[i]) remainingFrames.push(i);
         }
-        loadBatch(remainingFrames, () => {
-          // All frames loaded
-        });
+        loadBatch(remainingFrames, () => {});
       });
     };
 
     return () => {
-      isCancelled = true;
+      cancelled = true;
     };
-  }, [renderFrame]);
+  }, [drawFrame]);
 
-  // ScrollTrigger Setup
+  // Smooth scroll listener (Fixed position + Spacer pattern like chahalarsh.in)
   useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
+    let ticking = false;
 
-    // Check prefers-reduced-motion
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReducedMotion) {
-      renderFrame(1);
-      return;
-    }
+    // Smooth frame lerp loop
+    const lerpLoop = () => {
+      const current = currentRenderedFrameRef.current;
+      const target = targetFrameRef.current;
 
-    const st = ScrollTrigger.create({
-      trigger: container,
-      start: 'top top',
-      end: 'bottom bottom',
-      scrub: 0.6,
-      onUpdate: (self) => {
-        const progress = self.progress;
-        setCurrentProgress(progress);
+      if (Math.abs(current - target) > 0.05) {
+        // Fast responsive lerp towards target frame
+        const next = current + (target - current) * 0.35;
+        const rounded = Math.round(next);
+        currentRenderedFrameRef.current = next;
+        drawFrame(Math.min(TOTAL_FRAMES, Math.max(1, rounded)));
+      }
 
-        // Frame selection
-        const frameIdx = Math.min(
-          TOTAL_FRAMES,
-          Math.max(1, Math.floor(progress * (TOTAL_FRAMES - 1)) + 1)
-        );
-        activeFrameIndexRef.current = frameIdx;
-        renderFrame(frameIdx);
-
-        // Terminal logs timeline (progress 0.65 -> 0.95)
-        if (progress >= 0.65) {
-          const logProgress = Math.min(1, (progress - 0.65) / 0.30);
-          const numLogsToShow = Math.floor(logProgress * TERMINAL_LOGS.length);
-          setVisibleLogs(TERMINAL_LOGS.slice(0, numLogsToShow));
-
-          // Simulated glitch on error (progress ~0.78 to ~0.83)
-          if (progress >= 0.77 && progress <= 0.83) {
-            setGlitchActive(true);
-          } else {
-            setGlitchActive(false);
-          }
-        } else {
-          setVisibleLogs([]);
-          setGlitchActive(false);
-        }
-      },
-    });
-
-    return () => {
-      st.kill();
+      animFrameIdRef.current = requestAnimationFrame(lerpLoop);
     };
-  }, [renderFrame]);
+
+    animFrameIdRef.current = requestAnimationFrame(lerpLoop);
+
+    const onScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const spacer = spacerRef.current;
+          if (spacer) {
+            const spacerHeight = spacer.offsetHeight;
+            const scrollY = window.scrollY;
+            const maxScroll = spacerHeight - window.innerHeight;
+
+            if (scrollY > 40) {
+              setHasScrolled(true);
+            } else {
+              setHasScrolled(false);
+            }
+
+            if (maxScroll > 0) {
+              const progress = Math.min(1, Math.max(0, scrollY / maxScroll));
+              setScrollProgress(progress);
+
+              // Map progress directly to frame 1 -> 240
+              const calcTarget = Math.min(
+                TOTAL_FRAMES,
+                Math.max(1, Math.floor(progress * (TOTAL_FRAMES - 1)) + 1)
+              );
+              targetFrameRef.current = calcTarget;
+
+              // Hide fixed intro layer completely when past intro
+              setIsPastIntro(scrollY >= spacerHeight - 50);
+            }
+          }
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      if (animFrameIdRef.current) cancelAnimationFrame(animFrameIdRef.current);
+    };
+  }, [drawFrame]);
 
   const handleSkip = () => {
-    const portfolio = document.getElementById('portfolio-content');
-    if (portfolio) {
-      portfolio.scrollIntoView({ behavior: 'smooth' });
+    const spacer = spacerRef.current;
+    if (spacer) {
+      window.scrollTo({
+        top: spacer.offsetHeight,
+        behavior: 'smooth',
+      });
     }
   };
 
-  const currentStage =
-    currentProgress < 0.3
-      ? '01 // APPROACH'
-      : currentProgress < 0.65
-      ? '02 // MONITOR LOCK'
-      : currentProgress < 0.9
-      ? '03 // RECON SIMULATION'
-      : '04 // NODE DISCOVERED';
+  // Monitor immersion bezel scale (scale 1.5 -> scale 1.0 as progress hits 0.70 -> 1.0)
+  const isImmersionActive = scrollProgress >= 0.7;
+  const immersionScale = isImmersionActive
+    ? Math.max(1, 1.4 - ((scrollProgress - 0.7) / 0.3) * 0.4)
+    : 1.4;
 
   return (
-    <div
-      ref={containerRef}
-      className="relative w-full h-[380vh] bg-black selection:bg-cyan-500/30 select-none"
-    >
-      {/* Sticky Fullscreen Cinematic Viewport */}
-      <div className="sticky top-0 left-0 w-full h-[100dvh] overflow-hidden bg-black">
-        {/* Canvas Frame Renderer */}
+    <>
+      {/* 1. FIXED BACKGROUND CANVAS & HUD LAYER (like #office on chahalarsh.in) */}
+      <div
+        className={`fixed inset-0 w-full h-[100dvh] z-20 pointer-events-none transition-opacity duration-500 overflow-hidden bg-black ${
+          isPastIntro ? 'opacity-0' : 'opacity-100'
+        }`}
+      >
+        {/* Hardware Canvas Scrub Renderer */}
         <canvas
           ref={canvasRef}
-          className={`absolute inset-0 w-full h-full object-cover transition-filter duration-100 ${
-            glitchActive ? 'invert-[0.15] hue-rotate-90 saturate-200 contrast-125' : ''
-          }`}
+          className="absolute inset-0 w-full h-full object-cover select-none"
         />
 
-        {/* Subtle Scanlines & CRT Mesh Overlay */}
+        {/* Subtle Scanlines Overlay */}
         <div
-          className="pointer-events-none absolute inset-0 z-10 opacity-30 mix-blend-overlay"
+          className="absolute inset-0 pointer-events-none opacity-25 mix-blend-overlay"
           style={{
             backgroundImage:
-              'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 0, 0, 0.4) 3px, rgba(0, 0, 0, 0.4) 4px)',
+              'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 0, 0, 0.5) 3px, rgba(0, 0, 0, 0.5) 4px)',
           }}
         />
 
-        {/* Ambient Dark Vignette & Cyber Radial Glow */}
-        <div className="pointer-events-none absolute inset-0 z-10 bg-radial-[ellipse_at_center,transparent_40%,rgba(0,0,0,0.85)_100%]" />
+        {/* Cinematic Vignette */}
+        <div className="absolute inset-0 pointer-events-none bg-radial-[ellipse_at_center,transparent_45%,rgba(0,0,0,0.85)_100%]" />
 
-        {/* Glitch Distortion Slice */}
-        {glitchActive && (
+        {/* 2. MONITOR IMMERSION BEZEL (like #macImmersion on chahalarsh.in) */}
+        <div
+          className={`absolute inset-0 pointer-events-none transition-opacity duration-700 ease-out flex items-center justify-center ${
+            isImmersionActive && !isPastIntro ? 'opacity-100' : 'opacity-0'
+          }`}
+        >
           <div
-            className="pointer-events-none absolute inset-x-0 h-16 z-20 bg-cyan-500/20 mix-blend-color-dodge animate-pulse"
-            style={{ top: '48%' }}
-          />
-        )}
+            className="w-[98%] h-[96%] border-[12px] sm:border-[20px] border-zinc-950/90 rounded-[28px] sm:rounded-[36px] shadow-[0_0_80px_rgba(0,0,0,0.9)] transition-transform duration-300 ease-out flex flex-col justify-between"
+            style={{
+              transform: `scale(${immersionScale})`,
+            }}
+          >
+            {/* Top Monitor Webcam/Sensor Pill */}
+            <div className="w-full flex justify-center pt-1.5">
+              <div className="h-1.5 w-16 rounded-full bg-zinc-800/80" />
+            </div>
 
-        {/* --- Top HUD Header --- */}
-        <div className="absolute top-0 inset-x-0 z-30 flex items-center justify-between p-4 sm:p-6 text-xs font-mono backdrop-blur-[2px] bg-gradient-to-b from-black/80 to-transparent border-b border-white/5">
-          {/* Identity & Status */}
+            {/* Bottom Monitor Chin Dell Logo */}
+            <div className="w-full flex justify-center pb-1 text-[9px] font-mono tracking-widest text-zinc-600 font-bold uppercase">
+              DELL ULTRASHARP
+            </div>
+          </div>
+        </div>
+
+        {/* 3. TOP HUD BAR */}
+        <div className="absolute top-0 inset-x-0 p-4 sm:p-6 flex items-center justify-between text-xs font-mono backdrop-blur-[2px] bg-gradient-to-b from-black/80 to-transparent border-b border-white/5">
           <div className="flex items-center gap-3">
             <span className="relative flex h-2.5 w-2.5">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75" />
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-cyan-500" />
             </span>
             <div className="flex flex-col">
-              <span className="font-bold tracking-wider text-white">ZAID // WORKSPACE RECON</span>
-              <span className="text-[10px] text-zinc-400">TARGET: DELL 4K IPS [CENTER]</span>
+              <span className="font-bold tracking-wider text-white">MOHD ZAID // WORKSPACE</span>
+              <span className="text-[10px] text-zinc-400">FRAME RECON SYSTEM</span>
             </div>
           </div>
 
-          {/* Center Stage Tracker */}
-          <div className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-cyan-400 font-semibold tracking-wider text-[11px]">
-            <Cpu className="w-3.5 h-3.5 text-cyan-400 animate-spin" style={{ animationDuration: '6s' }} />
-            <span>{currentStage}</span>
-          </div>
-
-          {/* Simulation Mode Badge */}
-          <div className="flex items-center gap-2">
-            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded bg-amber-500/10 border border-amber-500/30 text-amber-400 text-[10px] uppercase tracking-wider font-semibold">
-              <ShieldAlert className="w-3 h-3 text-amber-400" />
-              <span>Simulation Mode</span>
-            </div>
+          <div className="flex items-center gap-2 pointer-events-auto">
             <button
               onClick={handleSkip}
-              className="group flex items-center gap-1.5 px-3 py-1 rounded bg-white/10 hover:bg-white/20 border border-white/15 text-white text-[11px] font-mono transition-colors cursor-pointer"
-              title="Skip intro directly to portfolio"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 text-white text-[11px] font-mono transition-all cursor-pointer backdrop-blur-md active:scale-95"
             >
               <span>Skip Intro</span>
-              <FastForward className="w-3 h-3 text-zinc-400 group-hover:text-white transition-colors" />
+              <FastForward className="w-3 h-3 text-cyan-400" />
             </button>
           </div>
         </div>
 
-        {/* --- In-Monitor Fictional Terminal Simulation (Progress 0.65 -> 0.95) --- */}
-        {currentProgress >= 0.65 && (
-          <div
-            className={`absolute inset-x-4 sm:inset-x-auto sm:left-1/2 sm:-translate-x-1/2 bottom-24 sm:bottom-28 z-20 w-auto sm:w-[540px] max-w-full p-4 rounded-lg bg-black/85 border border-cyan-500/30 backdrop-blur-md shadow-2xl font-mono text-[11px] sm:text-xs transition-opacity duration-300 ${
-              glitchActive ? 'border-red-500/50 shadow-red-500/20' : ''
-            }`}
-          >
-            {/* Terminal Titlebar */}
-            <div className="flex items-center justify-between pb-2 mb-2 border-b border-white/10 text-zinc-400 text-[10px]">
-              <div className="flex items-center gap-1.5">
-                <Terminal className="w-3.5 h-3.5 text-cyan-400" />
-                <span className="text-zinc-200 font-bold">tty1 // synthetic-kernel.sh</span>
-              </div>
-              <span className="text-emerald-400 flex items-center gap-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 inline-block"></span>
-                ACTIVE
-              </span>
-            </div>
-
-            {/* Log Stream */}
-            <div className="flex flex-col gap-1 max-h-36 overflow-hidden">
-              {visibleLogs.map((log, i) => (
-                <div
-                  key={i}
-                  className={`flex items-start gap-2 leading-relaxed ${
-                    log.type === 'error'
-                      ? 'text-red-400'
-                      : log.type === 'warn'
-                      ? 'text-amber-400'
-                      : log.type === 'success'
-                      ? 'text-emerald-300 font-semibold'
-                      : 'text-zinc-300'
-                  }`}
-                >
-                  <span className="text-zinc-500 shrink-0 select-none">[{log.time}]</span>
-                  <span>{log.text}</span>
-                </div>
-              ))}
-              {visibleLogs.length === 0 && (
-                <div className="text-zinc-500 italic">Connecting synthetic console session...</div>
-              )}
-            </div>
-
-            {/* Terminal Prompt Bar */}
-            <div className="mt-2.5 pt-2 border-t border-white/5 flex items-center justify-between text-[10px]">
-              <div className="flex items-center gap-1.5 text-cyan-400">
-                <span>root@zaid-workstation:~$</span>
-                <span className="inline-block w-1.5 h-3 bg-cyan-400 animate-pulse" />
-              </div>
-              {currentProgress >= 0.88 && (
-                <div className="flex items-center gap-1 text-emerald-400 font-semibold">
-                  <CheckCircle2 className="w-3 h-3" />
-                  <span>IDENTITY LOADED</span>
-                </div>
-              )}
-            </div>
-          </div>
-        )}
-
-        {/* --- Bottom Telemetry & Scroll Prompt --- */}
-        <div className="absolute bottom-0 inset-x-0 z-30 p-4 sm:p-6 flex items-end justify-between font-mono text-[11px] text-zinc-400 bg-gradient-to-t from-black/80 to-transparent pointer-events-none">
-          {/* Left Telemetry */}
-          <div className="flex flex-col gap-0.5">
+        {/* 4. BOTTOM TELEMETRY */}
+        <div className="absolute bottom-0 inset-x-0 p-4 sm:p-6 flex items-end justify-between font-mono text-[10px] text-zinc-400 bg-gradient-to-t from-black/80 to-transparent">
+          <div className="flex flex-col">
             <span className="text-white font-semibold">
-              FRAME: {String(activeFrameIndexRef.current).padStart(3, '0')} / {TOTAL_FRAMES}
+              FRAME {String(Math.round(currentRenderedFrameRef.current)).padStart(3, '0')} / {TOTAL_FRAMES}
             </span>
-            <span className="text-[10px] text-zinc-400">
-              BUFFER: {loadedCount} / {TOTAL_FRAMES} ({Math.round((loadedCount / TOTAL_FRAMES) * 100)}%)
-            </span>
+            <span>BUFFERED: {framesLoaded}/{TOTAL_FRAMES}</span>
           </div>
-
-          {/* Center Scroll Prompt */}
-          <div className="flex flex-col items-center gap-1 text-center">
-            <span className="tracking-widest uppercase text-white font-bold text-[10px] sm:text-xs animate-pulse">
-              {currentProgress < 0.9 ? 'Scroll Down To Travel Inside' : 'Node Reached // Enter Portfolio'}
-            </span>
-            <ArrowDown className="w-4 h-4 text-cyan-400 animate-bounce" />
-          </div>
-
-          {/* Right Disclaimer */}
-          <div className="hidden sm:flex flex-col text-right text-[10px] text-zinc-400">
-            <span>STATIC VISUAL SIMULATION</span>
-            <span>ZERO DATA HARVESTING</span>
+          <div className="hidden sm:block text-zinc-500 tracking-widest uppercase">
+            PHYSICAL CAMERA TRAVEL
           </div>
         </div>
-
-        {/* --- Light Bloom Transition at End (Progress > 0.94) --- */}
-        <div
-          className="pointer-events-none absolute inset-0 z-40 bg-gradient-to-t from-black via-cyan-950/20 to-transparent transition-opacity duration-300"
-          style={{
-            opacity: currentProgress >= 0.92 ? (currentProgress - 0.92) / 0.08 : 0,
-          }}
-        />
       </div>
-    </div>
+
+      {/* 5. VIRTUAL SCROLL SPACER (like #office2 & #office3 on chahalarsh.in) */}
+      <div
+        ref={spacerRef}
+        className="relative w-full h-[280vh] pointer-events-none select-none"
+      >
+        {/* Floating "Scroll down" guide (Visible only at the top of the track) */}
+        <div
+          className={`fixed bottom-12 sm:bottom-16 inset-x-0 z-30 flex flex-col items-center justify-center gap-2 text-white transition-all duration-500 ease-out pointer-events-none ${
+            hasScrolled ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0 animate-bounce'
+          }`}
+        >
+          <span className="font-mono text-xs sm:text-sm tracking-widest uppercase text-white font-bold drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]">
+            Scroll down to enter
+          </span>
+          <div className="flex items-center justify-center w-8 h-8 rounded-full bg-black/60 border border-white/20 text-cyan-400 backdrop-blur-md shadow-lg">
+            <ChevronDown className="w-4 h-4 animate-pulse" />
+          </div>
+        </div>
+      </div>
+    </>
   );
 };
