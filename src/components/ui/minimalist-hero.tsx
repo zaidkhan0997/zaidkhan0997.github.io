@@ -100,6 +100,7 @@ export const MinimalistHero = ({
 }: MinimalistHeroProps) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [showNavbar, setShowNavbar] = useState(false);
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 1024);
@@ -110,6 +111,12 @@ export const MinimalistHero = ({
       if (!ticking) {
         window.requestAnimationFrame(() => {
           setIsScrolled(window.scrollY > 35);
+          const portfolioEl = document.getElementById('portfolio-content');
+          if (portfolioEl) {
+            setShowNavbar(portfolioEl.getBoundingClientRect().top <= 120);
+          } else {
+            setShowNavbar(true);
+          }
           ticking = false;
         });
         ticking = true;
@@ -137,8 +144,13 @@ export const MinimalistHero = ({
         className
       )}
     >
-      {/* Floating Animated Sticky Header Wrapper (Shrinks on Scroll) */}
-      <div className="fixed top-2.5 sm:top-4 left-0 right-0 z-[60] px-3 sm:px-6 flex justify-center pointer-events-none">
+      {/* Floating Animated Sticky Header Wrapper (Reveals once scrolled past intro) */}
+      <div
+        className={cn(
+          'fixed top-2.5 sm:top-4 left-0 right-0 z-[60] px-3 sm:px-6 flex justify-center pointer-events-none transition-all duration-500 ease-out',
+          showNavbar ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-8 pointer-events-none'
+        )}
+      >
         <motion.div
           layout
           transition={{ type: 'spring', damping: 26, stiffness: 220 }}
