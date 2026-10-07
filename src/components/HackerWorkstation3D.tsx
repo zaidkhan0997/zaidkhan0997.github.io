@@ -516,24 +516,32 @@ const LaptopScene: React.FC<LaptopSceneProps> = ({
     const aspect = size.width / size.height;
     const config = getResponsiveCameraConfig(aspect);
 
-    // 1. Update live streaming terminal canvas on laptop screen every 4 frames
-    if (terminalCanvas && terminalTexture && frameRef.current % 4 === 0) {
-      const logOffset = Math.floor(frameRef.current / 6);
+    const isMobile = aspect < 1.0 || (typeof window !== 'undefined' && window.innerWidth < 768);
+
+    // 1. Update live streaming terminal canvas on laptop screen (staggered on mobile)
+    const terminalInterval = isMobile ? 8 : 4;
+    if (terminalCanvas && terminalTexture && frameRef.current % terminalInterval === 0) {
+      const logOffset = Math.floor(frameRef.current / (isMobile ? 10 : 6));
       const cursorBlink = (frameRef.current % 30) < 15;
       updateLaptopTerminalCanvas(terminalCanvas, logOffset, cursorBlink);
       terminalTexture.needsUpdate = true;
     }
 
-    // 2. Animate Left Hacker Monitor (Wireshark Packet Sniffer + Decrypting Target cracking)
-    if (leftCanvas && leftWallpaperTexture && frameRef.current % 3 === 0) {
-      updateLeftHackerMonitorCanvas(leftCanvas, frameRef.current);
-      leftWallpaperTexture.needsUpdate = true;
-    }
+    // Only update desktop monitors when they are in view (p <= 0.55) to conserve mobile GPU
+    if (p <= 0.55) {
+      // 2. Animate Left Hacker Monitor (Wireshark Packet Sniffer + Decrypting Target cracking)
+      const leftInterval = isMobile ? 10 : 5;
+      if (leftCanvas && leftWallpaperTexture && frameRef.current % leftInterval === (isMobile ? 2 : 0)) {
+        updateLeftHackerMonitorCanvas(leftCanvas, frameRef.current);
+        leftWallpaperTexture.needsUpdate = true;
+      }
 
-    // 3. Animate Right Hacker Monitor (Kali Global Cyber Attack Map + Infrastructure Topology)
-    if (rightCanvas && rightWallpaperTexture && frameRef.current % 3 === 0) {
-      updateRightHackerMonitorCanvas(rightCanvas, frameRef.current);
-      rightWallpaperTexture.needsUpdate = true;
+      // 3. Animate Right Hacker Monitor (Kali Global Cyber Attack Map + Infrastructure Topology)
+      const rightInterval = isMobile ? 10 : 5;
+      if (rightCanvas && rightWallpaperTexture && frameRef.current % rightInterval === (isMobile ? 6 : 2)) {
+        updateRightHackerMonitorCanvas(rightCanvas, frameRef.current);
+        rightWallpaperTexture.needsUpdate = true;
+      }
     }
 
     // 4. Sync laptop lid opening animation clip with scroll
@@ -657,7 +665,7 @@ const LaptopScene: React.FC<LaptopSceneProps> = ({
 
       {/* Floating Cyber Particle Embers */}
       <Sparkles
-        count={75}
+        count={typeof window !== 'undefined' && window.innerWidth < 768 ? 35 : 75}
         scale={[7, 4, 6]}
         position={[0.5, 2.8, -1.5]}
         size={2.2}
@@ -703,17 +711,34 @@ export const HackerWorkstation3D: React.FC = () => {
     };
   }, []);
 
+  const lastProgressRef = useRef(0);
+
   // GSAP ScrollTrigger to scrub progress smoothly
   useEffect(() => {
+    ScrollTrigger.config({ ignoreMobileResize: true });
+
     const st = ScrollTrigger.create({
       trigger: '#hacker-workstation-intro',
       endTrigger: '#hacker-workstation-spacer',
       start: 'top top',
       end: 'bottom top',
-      scrub: 0.8,
+      scrub: 0.6,
       onUpdate: (self) => {
         scrollProgressRef.current = self.progress;
-        setScrollProgressState(self.progress);
+        const p = self.progress;
+        // Throttle React state updates on mobile to prevent 120Hz thread starvation and stutter
+        if (
+          Math.abs(p - lastProgressRef.current) > 0.02 ||
+          (p < 0.15 && lastProgressRef.current >= 0.15) ||
+          (p >= 0.15 && lastProgressRef.current < 0.15) ||
+          (p < 0.82 && lastProgressRef.current >= 0.82) ||
+          (p >= 0.82 && lastProgressRef.current < 0.82) ||
+          (p < 0.98 && lastProgressRef.current >= 0.98) ||
+          (p >= 0.98 && lastProgressRef.current < 0.98)
+        ) {
+          lastProgressRef.current = p;
+          setScrollProgressState(p);
+        }
       },
     });
 
@@ -746,21 +771,33 @@ export const HackerWorkstation3D: React.FC = () => {
 
   const isIntroHidden = scrollProgressState >= 0.98;
 
+  const isMobile =
+    typeof window !== 'undefined' &&
+    (window.innerWidth < 768 || 'ontouchstart' in window);
+
   return (
     <div id="hacker-workstation-intro" className="relative w-full">
       {/* 3D WebGL Background Canvas (Fixed at z-40 so it stays ON TOP of portfolio until transition finishes) */}
       <div
         ref={canvasWrapperRef}
         id="hacker-workstation-canvas-wrapper"
-        className="fixed inset-0 z-40 w-full h-[100dvh] bg-[#02050e] pointer-events-none transition-opacity duration-300"
+        className="fixed inset-0 z-40 w-full pointer-events-none transition-opacity duration-300"
         style={{
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: '-120px', // Overscan extends 120px past the screen bottom, eliminating any gap when mobile address bar hides or on bounce
+          height: 'calc(100% + 120px)',
+          minHeight: 'calc(100vh + 120px)',
+          backgroundColor: '#02050e',
           opacity: introOpacity,
           display: isIntroHidden ? 'none' : 'block',
         }}
       >
         <Cyber3DLoader />
         <Canvas
-          dpr={[1, Math.min(typeof window !== 'undefined' ? window.devicePixelRatio : 2, 2)]}
+          style={{ width: '100%', height: '100%', position: 'absolute', top: 0, left: 0 }}
+          dpr={[1, isMobile ? 1.5 : 2]}
           gl={{
             antialias: true,
             powerPreference: 'high-performance',

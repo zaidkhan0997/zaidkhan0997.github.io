@@ -209,6 +209,12 @@ export const InteractiveNeuralVortex: React.FC<InteractiveNeuralVortexProps> = (
         gl.uniform1f(uScrollProgress, scrollY / (2 * h));
       }
 
+      // On mobile devices, pause background shader while 3D intro covers the screen to prevent two concurrent WebGL contexts
+      if (typeof window !== 'undefined' && window.scrollY < window.innerHeight * 1.1) {
+        animationRef.current = requestAnimationFrame(render);
+        return;
+      }
+
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
       animationRef.current = requestAnimationFrame(render);
     };
