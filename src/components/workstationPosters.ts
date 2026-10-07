@@ -1,0 +1,480 @@
+/**
+ * Procedural High-Definition Canvas Textures for Cyberpunk Workstation Wall Posters
+ * - Poster 1: "Hacker Thoughts" (Philosophical hacker axioms & cybernetic circuit HUD)
+ * - Poster 2: "Anonymous Mask" (Iconic Guy Fawkes hacker mask with Matrix rain & manifesto)
+ */
+
+export function createHackerThoughtsCanvas(): HTMLCanvasElement {
+  const canvas = document.createElement('canvas');
+  canvas.width = 1024;
+  canvas.height = 1536;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return canvas;
+
+  // 1. Deep Obsidian Cyber Background with Subtle Neon Gradient
+  const bgGrad = ctx.createLinearGradient(0, 0, 0, 1536);
+  bgGrad.addColorStop(0, '#030712');
+  bgGrad.addColorStop(0.35, '#040d21');
+  bgGrad.addColorStop(0.7, '#020617');
+  bgGrad.addColorStop(1, '#050c1f');
+  ctx.fillStyle = bgGrad;
+  ctx.fillRect(0, 0, 1024, 1536);
+
+  // 2. Faint Cybernetic Grid Pattern
+  ctx.strokeStyle = 'rgba(6, 182, 212, 0.05)';
+  ctx.lineWidth = 1;
+  const gridSize = 48;
+  for (let x = 0; x < 1024; x += gridSize) {
+    ctx.beginPath();
+    ctx.moveTo(x, 0);
+    ctx.lineTo(x, 1536);
+    ctx.stroke();
+  }
+  for (let y = 0; y < 1536; y += gridSize) {
+    ctx.beginPath();
+    ctx.moveTo(0, y);
+    ctx.lineTo(1024, y);
+    ctx.stroke();
+  }
+
+  // 3. Faint Binary Columns Streaming on Margins
+  ctx.fillStyle = 'rgba(16, 185, 129, 0.15)';
+  ctx.font = '14px monospace';
+  const binaryCols = [40, 64, 88, 936, 960, 984];
+  const binaryLines = 50;
+  binaryCols.forEach((colX) => {
+    for (let i = 0; i < binaryLines; i++) {
+      const bit = Math.random() > 0.5 ? '1' : '0';
+      ctx.fillText(bit, colX, 80 + i * 28);
+    }
+  });
+
+  // 4. Poster Outer Cyber Border & Corner Brackets
+  ctx.strokeStyle = 'rgba(6, 182, 212, 0.35)';
+  ctx.lineWidth = 3;
+  ctx.strokeRect(32, 32, 960, 1472);
+
+  // Corner Accents
+  ctx.strokeStyle = '#00f2fe';
+  ctx.lineWidth = 5;
+  const bracketSize = 36;
+  // Top-Left
+  ctx.beginPath();
+  ctx.moveTo(32, 32 + bracketSize);
+  ctx.lineTo(32, 32);
+  ctx.lineTo(32 + bracketSize, 32);
+  ctx.stroke();
+  // Top-Right
+  ctx.beginPath();
+  ctx.moveTo(992 - bracketSize, 32);
+  ctx.lineTo(992, 32);
+  ctx.lineTo(992, 32 + bracketSize);
+  ctx.stroke();
+  // Bottom-Left
+  ctx.beginPath();
+  ctx.moveTo(32, 1504 - bracketSize);
+  ctx.lineTo(32, 1504);
+  ctx.lineTo(32 + bracketSize, 1504);
+  ctx.stroke();
+  // Bottom-Right
+  ctx.beginPath();
+  ctx.moveTo(992 - bracketSize, 1504);
+  ctx.lineTo(992, 1504);
+  ctx.lineTo(992, 1504 - bracketSize);
+  ctx.stroke();
+
+  // 5. Header HUD Bar
+  ctx.fillStyle = 'rgba(6, 182, 212, 0.12)';
+  ctx.fillRect(80, 80, 864, 48);
+  ctx.strokeStyle = 'rgba(6, 182, 212, 0.4)';
+  ctx.lineWidth = 1.5;
+  ctx.strokeRect(80, 80, 864, 48);
+
+  ctx.fillStyle = '#00f2fe';
+  ctx.font = 'bold 16px monospace';
+  ctx.fillText('[ SYS://CORE.LOG ]  SEC_LEVEL: ROOT_PERMISSIVE', 104, 110);
+  ctx.fillStyle = '#10b981';
+  ctx.fillText('STATUS: ONLINE', 800, 110);
+
+  // 6. Huge Bold Title: "HACKER THOUGHTS"
+  ctx.save();
+  ctx.shadowColor = 'rgba(0, 242, 254, 0.7)';
+  ctx.shadowBlur = 24;
+
+  const titleGrad = ctx.createLinearGradient(0, 160, 0, 310);
+  titleGrad.addColorStop(0, '#ffffff');
+  titleGrad.addColorStop(0.4, '#00f2fe');
+  titleGrad.addColorStop(1, '#10b981');
+  ctx.fillStyle = titleGrad;
+
+  ctx.font = '900 78px sans-serif';
+  ctx.letterSpacing = '8px';
+  ctx.textAlign = 'center';
+  ctx.fillText('HACKER', 512, 240);
+  ctx.fillText('THOUGHTS', 512, 325);
+  ctx.restore();
+
+  // Divider Line
+  const divGrad = ctx.createLinearGradient(120, 0, 904, 0);
+  divGrad.addColorStop(0, 'rgba(0, 242, 254, 0)');
+  divGrad.addColorStop(0.5, '#00f2fe');
+  divGrad.addColorStop(1, 'rgba(16, 185, 129, 0)');
+  ctx.strokeStyle = divGrad;
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  ctx.moveTo(120, 360);
+  ctx.lineTo(904, 360);
+  ctx.stroke();
+
+  // Subtitle
+  ctx.fillStyle = 'rgba(148, 163, 184, 0.85)';
+  ctx.font = '16px monospace';
+  ctx.textAlign = 'center';
+  ctx.fillText('PHILOSOPHY OF THE UNBOUNDED MIND // THE PROTOCOL OF FREEDOM', 512, 395);
+
+  // 7. Thought Axiom Cards
+  const thoughts = [
+    {
+      idx: '01',
+      title: 'CONTROL IS AN ILLUSION',
+      quote: 'There is no system that cannot be understood.\nNo firewall is absolute; every wall has a door.',
+      color: '#00f2fe',
+    },
+    {
+      idx: '02',
+      title: 'CODE IS THE GREATEST EQUALIZER',
+      quote: 'In cyberspace, neither wealth nor ancestry commands authority.\nOnly logic, perseverance, and clarity of thought rule.',
+      color: '#10b981',
+    },
+    {
+      idx: '03',
+      title: 'QUESTION EVERY PROTOCOL',
+      quote: 'Rules are written by humans, and code can always be rewritten.\nNever accept a limitation as a law of nature.',
+      color: '#38bdf8',
+    },
+    {
+      idx: '04',
+      title: 'PRIVACY IS A SACRED RIGHT',
+      quote: 'Encryption is the digital sanctuary of human thought.\nWe build what protects the sovereign individual.',
+      color: '#a855f7',
+    },
+    {
+      idx: '05',
+      title: 'ROOT IS A STATE OF MIND',
+      quote: 'Do not just consume technology—reverse engineer it.\nMaster the low levels to command the high levels.',
+      color: '#ec4899',
+    },
+  ];
+
+  let cardY = 445;
+  thoughts.forEach((item) => {
+    // Card background
+    ctx.fillStyle = 'rgba(9, 14, 28, 0.75)';
+    ctx.fillRect(96, cardY, 832, 138);
+
+    ctx.strokeStyle = 'rgba(6, 182, 212, 0.2)';
+    ctx.lineWidth = 1;
+    ctx.strokeRect(96, cardY, 832, 138);
+
+    // Left indicator bar
+    ctx.fillStyle = item.color;
+    ctx.fillRect(96, cardY, 6, 138);
+
+    // Card Index
+    ctx.fillStyle = item.color;
+    ctx.font = 'bold 28px monospace';
+    ctx.textAlign = 'left';
+    ctx.fillText(item.idx, 124, cardY + 44);
+
+    // Card Title
+    ctx.save();
+    ctx.shadowColor = item.color;
+    ctx.shadowBlur = 10;
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 22px sans-serif';
+    ctx.letterSpacing = '1px';
+    ctx.fillText(item.title, 180, cardY + 42);
+    ctx.restore();
+
+    // Card Quotes (multi-line)
+    ctx.fillStyle = 'rgba(203, 213, 225, 0.85)';
+    ctx.font = '16px monospace';
+    const lines = item.quote.split('\n');
+    lines.forEach((line, lIdx) => {
+      ctx.fillText(line, 128, cardY + 80 + lIdx * 26);
+    });
+
+    cardY += 162;
+  });
+
+  // 8. Bottom Barcode & Terminal Prompt
+  ctx.fillStyle = 'rgba(16, 185, 129, 0.9)';
+  ctx.font = 'bold 18px monospace';
+  ctx.textAlign = 'left';
+  ctx.fillText('root@workstation:~/thoughts# ./deploy_matrix.sh --forever', 110, 1360);
+
+  // Digital Barcode
+  const barStart = 110;
+  const barWidth = 804;
+  const barHeight = 44;
+  ctx.fillStyle = '#00f2fe';
+  let curX = barStart;
+  while (curX < barStart + barWidth) {
+    const w = (Math.floor(Math.random() * 4) + 1) * 2.5;
+    ctx.fillRect(curX, 1395, w, barHeight);
+    curX += w + (Math.floor(Math.random() * 3) + 1) * 3;
+  }
+
+  // Footer Hash
+  ctx.fillStyle = 'rgba(100, 116, 139, 0.9)';
+  ctx.font = '14px monospace';
+  ctx.textAlign = 'center';
+  ctx.fillText('SHA-256: 7F9A2B4C1D6E8F0A5B7C9D1E3F5A7B9C0D2E4F6A8B0C2D4E6F8A // PERSISTENT', 512, 1475);
+
+  return canvas;
+}
+
+export function createAnonymousMaskCanvas(): HTMLCanvasElement {
+  const canvas = document.createElement('canvas');
+  canvas.width = 1024;
+  canvas.height = 1536;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return canvas;
+
+  // 1. Deep Midnight Black Background
+  const bgGrad = ctx.createRadialGradient(512, 720, 100, 512, 720, 900);
+  bgGrad.addColorStop(0, '#040d1a');
+  bgGrad.addColorStop(0.5, '#02050c');
+  bgGrad.addColorStop(1, '#000000');
+  ctx.fillStyle = bgGrad;
+  ctx.fillRect(0, 0, 1024, 1536);
+
+  // 2. Vertical Matrix Code Rain in Background
+  ctx.font = '14px monospace';
+  const glyphs = '0123456789ABCDEF01XYZ><;:';
+  for (let x = 40; x < 984; x += 28) {
+    const colLen = Math.floor(Math.random() * 25) + 15;
+    const startY = Math.floor(Math.random() * 300);
+    for (let j = 0; j < colLen; j++) {
+      const alpha = (j / colLen) * 0.35;
+      ctx.fillStyle = j === colLen - 1 ? '#ffffff' : `rgba(16, 185, 129, ${alpha})`;
+      const char = glyphs[Math.floor(Math.random() * glyphs.length)];
+      ctx.fillText(char, x, startY + j * 24);
+    }
+  }
+
+  // 3. Cyber Framing
+  ctx.strokeStyle = 'rgba(16, 185, 129, 0.35)';
+  ctx.lineWidth = 3;
+  ctx.strokeRect(32, 32, 960, 1472);
+
+  // Corner crosshairs
+  ctx.strokeStyle = '#10b981';
+  ctx.lineWidth = 4;
+  const cornerLen = 40;
+  // Top-left
+  ctx.beginPath();
+  ctx.moveTo(32, 32 + cornerLen);
+  ctx.lineTo(32, 32);
+  ctx.lineTo(32 + cornerLen, 32);
+  ctx.stroke();
+  // Top-right
+  ctx.beginPath();
+  ctx.moveTo(992 - cornerLen, 32);
+  ctx.lineTo(992, 32);
+  ctx.lineTo(992, 32 + cornerLen);
+  ctx.stroke();
+  // Bottom-left
+  ctx.beginPath();
+  ctx.moveTo(32, 1504 - cornerLen);
+  ctx.lineTo(32, 1504);
+  ctx.lineTo(32 + cornerLen, 1504);
+  ctx.stroke();
+  // Bottom-right
+  ctx.beginPath();
+  ctx.moveTo(992 - cornerLen, 1504);
+  ctx.lineTo(992, 1504);
+  ctx.lineTo(992, 1504 - cornerLen);
+  ctx.stroke();
+
+  // 4. Header: ANONYMOUS
+  ctx.save();
+  ctx.shadowColor = 'rgba(16, 185, 129, 0.8)';
+  ctx.shadowBlur = 25;
+  ctx.fillStyle = '#ffffff';
+  ctx.font = '900 68px sans-serif';
+  ctx.letterSpacing = '14px';
+  ctx.textAlign = 'center';
+  ctx.fillText('ANONYMOUS', 512, 160);
+  ctx.restore();
+
+  ctx.fillStyle = 'rgba(0, 242, 254, 0.7)';
+  ctx.font = 'bold 15px monospace';
+  ctx.letterSpacing = '4px';
+  ctx.textAlign = 'center';
+  ctx.fillText('KNOWLEDGE IS FREE • WE ARE VOICE OF THE VOICELESS', 512, 205);
+
+  // 5. Stylized Vector Guy Fawkes Anonymous Mask (Centered around Y=620)
+  ctx.save();
+  ctx.translate(512, 600);
+
+  // A. Hood Silhouette Behind Mask
+  ctx.beginPath();
+  ctx.arc(0, 20, 260, Math.PI * 0.85, Math.PI * 2.15);
+  ctx.lineTo(190, 360);
+  ctx.lineTo(-190, 360);
+  ctx.closePath();
+  ctx.fillStyle = '#060c18';
+  ctx.fill();
+  ctx.strokeStyle = 'rgba(6, 182, 212, 0.4)';
+  ctx.lineWidth = 3;
+  ctx.stroke();
+
+  // B. Mask Face Porcelain Base (Smooth Oval/Chin Contour)
+  ctx.beginPath();
+  ctx.moveTo(-130, -100);
+  // Forehead arch
+  ctx.bezierCurveTo(-140, -180, 140, -180, 130, -100);
+  // Right cheek down to pointed chin
+  ctx.bezierCurveTo(150, 20, 110, 160, 0, 240);
+  // Pointed chin back up left cheek
+  ctx.bezierCurveTo(-110, 160, -150, 20, -130, -100);
+  ctx.closePath();
+
+  // Porcelain White with subtle shadow gradient
+  const faceGrad = ctx.createRadialGradient(0, -20, 20, 0, 40, 240);
+  faceGrad.addColorStop(0, '#ffffff');
+  faceGrad.addColorStop(0.75, '#e2e8f0');
+  faceGrad.addColorStop(1, '#94a3b8');
+  ctx.fillStyle = faceGrad;
+  ctx.shadowColor = 'rgba(0, 242, 254, 0.5)';
+  ctx.shadowBlur = 30;
+  ctx.fill();
+  ctx.shadowBlur = 0;
+
+  // C. Thin Arched Black Eyebrows
+  ctx.strokeStyle = '#0f172a';
+  ctx.fillStyle = '#0f172a';
+  ctx.lineWidth = 6;
+  // Left eyebrow
+  ctx.beginPath();
+  ctx.moveTo(-95, -70);
+  ctx.quadraticCurveTo(-60, -115, -20, -78);
+  ctx.stroke();
+  // Right eyebrow
+  ctx.beginPath();
+  ctx.moveTo(95, -70);
+  ctx.quadraticCurveTo(60, -115, 20, -78);
+  ctx.stroke();
+
+  // D. Narrow Sly Eye Slits
+  // Left eye
+  ctx.beginPath();
+  ctx.moveTo(-85, -50);
+  ctx.quadraticCurveTo(-55, -68, -25, -48);
+  ctx.quadraticCurveTo(-55, -35, -85, -50);
+  ctx.fillStyle = '#020617';
+  ctx.fill();
+  // Left glowing cyber pupil
+  ctx.fillStyle = '#00f2fe';
+  ctx.beginPath();
+  ctx.arc(-55, -50, 4, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Right eye
+  ctx.beginPath();
+  ctx.moveTo(85, -50);
+  ctx.quadraticCurveTo(55, -68, 25, -48);
+  ctx.quadraticCurveTo(55, -35, 85, -50);
+  ctx.fillStyle = '#020617';
+  ctx.fill();
+  // Right glowing cyber pupil
+  ctx.fillStyle = '#00f2fe';
+  ctx.beginPath();
+  ctx.arc(55, -50, 4, 0, Math.PI * 2);
+  ctx.fill();
+
+  // E. Flushed Red/Pink Cheeks
+  ctx.fillStyle = 'rgba(239, 68, 68, 0.35)';
+  ctx.beginPath();
+  ctx.arc(-82, 35, 26, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.beginPath();
+  ctx.arc(82, 35, 26, 0, Math.PI * 2);
+  ctx.fill();
+
+  // F. Signature Thin Upward-Curved Mustache
+  ctx.fillStyle = '#090d16';
+  ctx.beginPath();
+  // Center dip under nose
+  ctx.moveTo(0, 75);
+  // Left mustache wing curling up
+  ctx.bezierCurveTo(-40, 68, -100, 78, -125, 52);
+  ctx.bezierCurveTo(-105, 88, -45, 96, 0, 90);
+  // Right mustache wing curling up
+  ctx.bezierCurveTo(45, 96, 105, 88, 125, 52);
+  ctx.bezierCurveTo(100, 78, 40, 68, 0, 75);
+  ctx.closePath();
+  ctx.fill();
+
+  // G. Iconic Smiling Mouth Line
+  ctx.strokeStyle = '#0f172a';
+  ctx.lineWidth = 4;
+  ctx.beginPath();
+  ctx.moveTo(-60, 115);
+  ctx.quadraticCurveTo(0, 142, 60, 115);
+  ctx.stroke();
+
+  // H. Pointed Goatee Beard on Chin
+  ctx.fillStyle = '#090d16';
+  ctx.beginPath();
+  ctx.moveTo(-16, 148);
+  ctx.lineTo(16, 148);
+  ctx.lineTo(8, 215);
+  ctx.lineTo(0, 230);
+  ctx.lineTo(-8, 215);
+  ctx.closePath();
+  ctx.fill();
+
+  ctx.restore();
+
+  // 6. The Legendary Manifesto / Creed
+  ctx.save();
+  ctx.textAlign = 'center';
+
+  const creedLines = [
+    { text: 'WE ARE ANONYMOUS.', size: 'bold 36px monospace', color: '#ffffff' },
+    { text: 'WE ARE LEGION.', size: 'bold 36px monospace', color: '#10b981' },
+    { text: 'WE DO NOT FORGIVE.', size: 'bold 36px monospace', color: '#00f2fe' },
+    { text: 'WE DO NOT FORGET.', size: 'bold 36px monospace', color: '#ffffff' },
+  ];
+
+  let textY = 1000;
+  creedLines.forEach((item) => {
+    ctx.font = item.size;
+    ctx.fillStyle = item.color;
+    ctx.shadowColor = item.color;
+    ctx.shadowBlur = 12;
+    ctx.fillText(item.text, 512, textY);
+    textY += 62;
+  });
+
+  // Huge Climax Call: "EXPECT US."
+  ctx.shadowColor = 'rgba(239, 68, 68, 0.9)';
+  ctx.shadowBlur = 35;
+  ctx.fillStyle = '#ef4444';
+  ctx.font = '900 58px sans-serif';
+  ctx.letterSpacing = '10px';
+  ctx.fillText('EXPECT US.', 512, 1290);
+  ctx.restore();
+
+  // 7. Bottom Digital Footer
+  ctx.fillStyle = 'rgba(6, 182, 212, 0.4)';
+  ctx.font = '14px monospace';
+  ctx.textAlign = 'center';
+  ctx.fillText('//////////////////  ANONYMOUS COLLECTIVE  //////////////////', 512, 1420);
+  ctx.fillStyle = 'rgba(148, 163, 184, 0.6)';
+  ctx.fillText('IDENTIFIER: 0xANON_VOID_997 • THE TRUTH WILL SET YOU FREE', 512, 1455);
+
+  return canvas;
+}

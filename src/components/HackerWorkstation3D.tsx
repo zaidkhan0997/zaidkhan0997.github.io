@@ -5,7 +5,8 @@ import { useGLTF, useAnimations, Sparkles } from '@react-three/drei';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { HackerScreen } from './HackerScreen';
-import { FastForward, ChevronDown, Terminal, Sparkles as SparklesIcon } from 'lucide-react';
+import { ChevronDown, Sparkles as SparklesIcon } from 'lucide-react';
+import { createHackerThoughtsCanvas, createAnonymousMaskCanvas } from './workstationPosters';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -97,7 +98,25 @@ const LaptopScene: React.FC<LaptopSceneProps> = ({
   const anchorRef = useRef<THREE.Object3D | null>(null);
   const screenDimsRef = useRef<{ pxW: number; pxH: number }>({ pxW: 1440, pxH: 900 });
 
-  // Animated matrix canvas texture for dual background screens
+  // 1. Procedural Wall Frame Posters: "Hacker Thoughts" & "Anonymous Mask"
+  const { thoughtsTexture, maskTexture } = useMemo(() => {
+    if (typeof document === 'undefined') {
+      return { thoughtsTexture: null, maskTexture: null };
+    }
+    const thoughtsCanvas = createHackerThoughtsCanvas();
+    const tTex = new THREE.CanvasTexture(thoughtsCanvas);
+    tTex.colorSpace = THREE.SRGBColorSpace;
+    tTex.flipY = true;
+
+    const maskCanvas = createAnonymousMaskCanvas();
+    const mTex = new THREE.CanvasTexture(maskCanvas);
+    mTex.colorSpace = THREE.SRGBColorSpace;
+    mTex.flipY = true;
+
+    return { thoughtsTexture: tTex, maskTexture: mTex };
+  }, []);
+
+  // 2. Animated matrix canvas texture for dual background screens
   const matrixCanvas = useMemo(() => {
     if (typeof document === 'undefined') return null;
     const canvas = document.createElement('canvas');
@@ -141,7 +160,7 @@ const LaptopScene: React.FC<LaptopSceneProps> = ({
     }
   }, [actions]);
 
-  // Find screen mesh, attach anchor, and setup materials
+  // Find screen mesh, attach anchor, replace wall posters, remove requested table items
   useEffect(() => {
     let foundMesh: THREE.Mesh | null = null;
 
@@ -149,26 +168,75 @@ const LaptopScene: React.FC<LaptopSceneProps> = ({
       const mesh = o as THREE.Mesh;
       if (mesh.isMesh) {
         const mat = mesh.material as THREE.MeshStandardMaterial;
-        if (mat) {
-          // Identify laptop display
-          if (mat.name === SCREEN_MATERIAL) {
-            foundMesh = mesh;
+        const matName = mat?.name || '';
+        const meshName = mesh.name || '';
+
+        // 1. Identify laptop display
+        if (matName === SCREEN_MATERIAL) {
+          foundMesh = mesh;
+        }
+
+        // 2. Replace Wall Poster 1 ("FEAR THE DARK KNIGHT" -> "Hacker Thoughts")
+        if (matName === 'fear_the_dark' || meshName === 'Object_24') {
+          if (thoughtsTexture) {
+            mesh.material = new THREE.MeshStandardMaterial({
+              map: thoughtsTexture,
+              emissive: new THREE.Color(0x00f2fe),
+              emissiveMap: thoughtsTexture,
+              emissiveIntensity: 0.35,
+              roughness: 0.25,
+              metalness: 0.1,
+            });
           }
-          // Enhance background desktop monitors with glowing matrix screens
-          if (mat.name === 'screen' || mat.name === 'screen.001') {
-            mat.emissive = new THREE.Color(0x00f2fe);
-            mat.emissiveIntensity = 2.5;
-            if (matrixTexture) {
-              mat.emissiveMap = matrixTexture;
-              mat.needsUpdate = true;
-            }
+        }
+
+        // 3. Replace Wall Poster 2 ("OBEY THE FALSE GOD" -> "Anonymous Mask")
+        if (matName === 'obey_the_god' || meshName === 'Object_36') {
+          if (maskTexture) {
+            mesh.material = new THREE.MeshStandardMaterial({
+              map: maskTexture,
+              emissive: new THREE.Color(0x10b981),
+              emissiveMap: maskTexture,
+              emissiveIntensity: 0.35,
+              roughness: 0.25,
+              metalness: 0.1,
+            });
           }
-          // Enhance PC tower fan LED with glowing cyber red
-          if (mat.name === 'fan_led') {
-            mat.emissive = new THREE.Color(0xff1544);
-            mat.emissiveIntensity = 5.0;
+        }
+
+        // 4. Remove Speaker, Headphones, and Juice Glass from table
+        const isSpeaker = matName === 'speaker_2' || meshName === 'Object_111';
+        const isHeadphone =
+          matName === 'headphone' ||
+          matName === 'headphone_snger' ||
+          meshName === 'Object_89' ||
+          meshName === 'Object_92';
+        const isJuiceGlass =
+          matName.startsWith('drink') ||
+          meshName === 'Object_19' ||
+          meshName === 'Object_21' ||
+          meshName === 'Object_22' ||
+          meshName === 'Object_23';
+
+        if (isSpeaker || isHeadphone || isJuiceGlass) {
+          mesh.visible = false;
+        }
+
+        // 5. Enhance background desktop monitors with glowing matrix screens
+        if (matName === 'screen' || matName === 'screen.001') {
+          mat.emissive = new THREE.Color(0x00f2fe);
+          mat.emissiveIntensity = 2.5;
+          if (matrixTexture) {
+            mat.emissiveMap = matrixTexture;
             mat.needsUpdate = true;
           }
+        }
+
+        // 6. Enhance PC tower fan LED with glowing cyber red
+        if (matName === 'fan_led') {
+          mat.emissive = new THREE.Color(0xff1544);
+          mat.emissiveIntensity = 5.0;
+          mat.needsUpdate = true;
         }
       }
     });
@@ -210,7 +278,7 @@ const LaptopScene: React.FC<LaptopSceneProps> = ({
       }
       anchorRef.current = null;
     };
-  }, [model, matrixTexture]);
+  }, [model, matrixTexture, thoughtsTexture, maskTexture]);
 
   // GSAP ScrollTrigger timeline to drive scroll scrubbing
   useEffect(() => {
@@ -297,7 +365,6 @@ const LaptopScene: React.FC<LaptopSceneProps> = ({
     }
 
     // 3. Smooth camera swoop from workstation view into the screen
-    // Ease progress for cinematic feel
     const t = clamp(p, 0, 1);
     const easeT = easeInOut(t);
 
@@ -429,7 +496,6 @@ export const HackerWorkstation3D: React.FC = () => {
   const overlayRef = useRef<HTMLDivElement>(null);
   const notchRef = useRef<HTMLDivElement>(null);
   const [expandProgress, setExpandProgress] = useState(0);
-  const [introDismissed, setIntroDismissed] = useState(false);
 
   // Parallax pointer handler (works seamlessly for mouse and touch)
   useEffect(() => {
@@ -504,14 +570,6 @@ export const HackerWorkstation3D: React.FC = () => {
     []
   );
 
-  const skipIntro = () => {
-    setIntroDismissed(true);
-    const target = document.getElementById('portfolio-content');
-    if (target) {
-      target.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
   return (
     <div id="hacker-workstation-intro" className="relative w-full">
       {/* 3D WebGL Background Canvas (Fixed, dynamic viewport height compatible) */}
@@ -519,7 +577,7 @@ export const HackerWorkstation3D: React.FC = () => {
         id="hacker-workstation-canvas-wrapper"
         className="fixed inset-0 z-0 w-full h-[100dvh] bg-[#02050e] pointer-events-none transition-opacity duration-700"
         style={{
-          opacity: introDismissed || expandProgress >= 0.99 ? 0 : 1,
+          opacity: expandProgress >= 0.99 ? 0 : 1,
         }}
       >
         <Canvas
@@ -550,7 +608,7 @@ export const HackerWorkstation3D: React.FC = () => {
         style={{
           visibility: 'hidden',
           background: '#030712',
-          opacity: introDismissed || expandProgress >= 0.99 ? 0 : 1,
+          opacity: expandProgress >= 0.99 ? 0 : 1,
         }}
       >
         <HackerScreen expandProgress={expandProgress} />
@@ -562,36 +620,11 @@ export const HackerWorkstation3D: React.FC = () => {
         />
       </div>
 
-      {/* Top Floating Controls with Safe Area Support for iPhone / Android / Foldables */}
-      <div
-        className="fixed top-4 right-4 sm:top-6 sm:right-6 z-40 flex items-center gap-3 transition-opacity duration-300 pt-[env(safe-area-inset-top,0px)] pr-[env(safe-area-inset-right,0px)]"
-        style={{
-          opacity: introDismissed || expandProgress >= 0.95 ? 0 : 1,
-          pointerEvents: introDismissed || expandProgress >= 0.95 ? 'none' : 'auto',
-        }}
-      >
-        {/* Terminal Status Pill */}
-        <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-950/80 border border-cyan-500/20 backdrop-blur-md text-[11px] font-mono text-cyan-300 shadow-md">
-          <Terminal className="w-3.5 h-3.5 text-emerald-400 animate-pulse" />
-          <span>WORKSTATION ONLINE</span>
-        </div>
-
-        {/* Skip Recon CTA Button (44px min touch target for mobile thumb reach) */}
-        <button
-          onClick={skipIntro}
-          className="flex items-center gap-2 min-h-[44px] px-4 py-2 rounded-full bg-slate-900/90 hover:bg-slate-800 text-cyan-400 hover:text-cyan-300 border border-cyan-500/40 backdrop-blur-md text-xs font-mono font-semibold tracking-wider transition-all shadow-[0_0_20px_rgba(6,182,212,0.3)] hover:scale-105 active:scale-95"
-          title="Skip 3D Intro directly to Portfolio"
-        >
-          <FastForward className="w-3.5 h-3.5" />
-          <span>SKIP RECON</span>
-        </button>
-      </div>
-
       {/* Bottom Scroll Indicator with Mobile Safe Area Support */}
       <div
         className="fixed bottom-6 left-1/2 -translate-x-1/2 z-30 flex flex-col items-center gap-1.5 text-cyan-400 font-mono text-xs tracking-widest pointer-events-none transition-all duration-300 pb-[env(safe-area-inset-bottom,0px)]"
         style={{
-          opacity: introDismissed || expandProgress > 0.25 ? 0 : 1,
+          opacity: expandProgress > 0.25 ? 0 : 1,
           transform: `translate(-50%, ${expandProgress * 30}px)`,
         }}
       >
