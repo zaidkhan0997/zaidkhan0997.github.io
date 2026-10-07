@@ -1,11 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Terminal, Cpu, ShieldCheck, Zap, Disc3, Layers } from 'lucide-react';
 
-interface HackerScreenProps {
-  expandProgress?: number; // 0 to 1
-  isCompleted?: boolean;
-}
-
 const KERNEL_LOG_STREAM = [
   '[  0.000000] Linux version 5.4.242-android12-9-zaid-kernel+ (zaid@workstation) (LLVM 17.0.6)',
   '[  0.000214] Command line: console=ttyMSM0,115200n8 androidboot.hardware=qcom androidboot.bootdevice=1d84000.ufshc',
@@ -29,10 +24,10 @@ const KERNEL_LOG_STREAM = [
   '[  0.920100] HANDSHAKE: Authenticating developer workstation handshake...',
 ];
 
-export const HackerScreen: React.FC<HackerScreenProps> = ({ expandProgress = 0 }) => {
-  const [logs, setLogs] = useState<string[]>(KERNEL_LOG_STREAM.slice(0, 8));
-  const [cpuUsage, setCpuUsage] = useState<number[]>([72, 85, 91, 64, 78, 88, 94, 98]);
-  const logContainerRef = useRef<HTMLDivElement>(null);
+export const HackerScreen = ({ expandProgress = 0 }) => {
+  const [logs, setLogs] = useState(KERNEL_LOG_STREAM.slice(0, 8));
+  const [cpuUsage, setCpuUsage] = useState([72, 85, 91, 64, 78, 88, 94, 98]);
+  const logContainerRef = useRef(null);
 
   // Streaming real-time script logs
   useEffect(() => {
@@ -84,9 +79,6 @@ export const HackerScreen: React.FC<HackerScreenProps> = ({ expandProgress = 0 }
       logContainerRef.current.scrollTop = logContainerRef.current.scrollHeight;
     }
   }, [logs]);
-
-  // Expand phase trigger
-  const isEnteringWorld = expandProgress > 0.65;
 
   return (
     <div

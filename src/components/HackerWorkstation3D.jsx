@@ -27,7 +27,7 @@ const DRACO_PATH = '/draco/';
 useGLTF.preload(MODEL_PATH, DRACO_PATH);
 
 // Cyberpunk 3D Scene Loader HUD
-const Cyber3DLoader: React.FC = () => {
+const Cyber3DLoader = () => {
   const { active, progress } = useProgress();
   if (!active) return null;
 
@@ -62,7 +62,7 @@ const clamp = THREE.MathUtils.clamp;
 // Multi-device responsive camera configuration
 // Supports ultra-wide, laptops, tablets (iPad/Android), folding phones, and smartphones
 // Fully displays the entire hacking battlestation (all monitors, shelf, and desk) on any screen!
-function getResponsiveCameraConfig(aspect: number) {
+function getResponsiveCameraConfig(aspect) {
   const isPortrait = aspect < 1.0;
   const pullBack = Math.max(0, 1.25 - aspect);
 
@@ -108,16 +108,11 @@ function getResponsiveCameraConfig(aspect: number) {
 
 const easeInOut = gsap.parseEase('power2.inOut');
 
-interface LaptopSceneProps {
-  scrollProgressRef: React.MutableRefObject<number>;
-  pointerRef: React.MutableRefObject<{ x: number; y: number }>;
-}
-
-const LaptopScene: React.FC<LaptopSceneProps> = ({
+const LaptopScene = ({
   scrollProgressRef,
   pointerRef,
 }) => {
-  const camera = useThree((s) => s.camera as THREE.PerspectiveCamera);
+  const camera = useThree((s) => s.camera);
   const gl = useThree((s) => s.gl);
   const size = useThree((s) => s.size);
 
@@ -125,7 +120,7 @@ const LaptopScene: React.FC<LaptopSceneProps> = ({
   const { actions } = useAnimations(model.animations, model.scene);
 
   const clipDuration = useRef(0);
-  const anchorRef = useRef<THREE.Object3D | null>(null);
+  const anchorRef = useRef(null);
 
   // 1. Procedural Wall Frame Posters, Shelf Display, Acoustic Foam, and Dual Desktop Wallpapers
   const {
@@ -251,12 +246,12 @@ const LaptopScene: React.FC<LaptopSceneProps> = ({
 
   // Find screen mesh, attach anchor with 3D terminal plane, replace wall posters, remove clutter from desk
   useEffect(() => {
-    let foundMesh: THREE.Mesh | null = null;
+    let foundMesh = null;
 
     model.scene.traverse((o) => {
-      const mesh = o as THREE.Mesh;
+      const mesh = o;
       if (mesh.isMesh) {
-        const mat = mesh.material as THREE.MeshStandardMaterial;
+        const mat = mesh.material;
         const matName = mat?.name || '';
         const meshName = mesh.name || '';
 
@@ -435,7 +430,7 @@ const LaptopScene: React.FC<LaptopSceneProps> = ({
       }
     });
 
-    const screenMesh = foundMesh as THREE.Mesh | null;
+    const screenMesh = foundMesh;
     if (!screenMesh) {
       console.warn(`[Workstation3D] Mesh with material "${SCREEN_MATERIAL}" not found.`);
       return;
@@ -458,7 +453,7 @@ const LaptopScene: React.FC<LaptopSceneProps> = ({
 
     // Attach high-res 3D terminal display plane directly to anchor
     // This renders the live terminal directly in WebGL on the laptop screen
-    let terminalPlaneMesh: THREE.Mesh | null = null;
+    let terminalPlaneMesh = null;
     if (terminalTexture) {
       const planeGeo = new THREE.PlaneGeometry(pxW * 0.965, pxH * 0.965);
       const planeMat = new THREE.MeshBasicMaterial({
@@ -677,23 +672,23 @@ const LaptopScene: React.FC<LaptopSceneProps> = ({
   );
 };
 
-export const HackerWorkstation3D: React.FC = () => {
+export const HackerWorkstation3D = () => {
   const scrollProgressRef = useRef(0);
   const pointerRef = useRef({ x: 0, y: 0 });
 
-  const canvasWrapperRef = useRef<HTMLDivElement>(null);
+  const canvasWrapperRef = useRef(null);
   const [scrollProgressState, setScrollProgressState] = useState(0);
 
   // Parallax pointer handler (works seamlessly for mouse and touch)
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
+    const handleMouseMove = (e) => {
       pointerRef.current = {
         x: (e.clientX / window.innerWidth) * 2 - 1,
         y: -(e.clientY / window.innerHeight) * 2 + 1,
       };
     };
 
-    const handleTouchMove = (e: TouchEvent) => {
+    const handleTouchMove = (e) => {
       if (e.touches.length > 0) {
         const touch = e.touches[0];
         pointerRef.current = {

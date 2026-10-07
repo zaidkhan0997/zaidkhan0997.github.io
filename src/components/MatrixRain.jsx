@@ -1,18 +1,12 @@
 import React, { useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-interface MatrixRainProps {
-  isActive: boolean;
-  onComplete: () => void;
-  durationMs?: number;
-}
-
-export const MatrixRain: React.FC<MatrixRainProps> = ({
+export const MatrixRain = ({
   isActive,
   onComplete,
   durationMs = 5000,
 }) => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const canvasRef = useRef(null);
 
   useEffect(() => {
     if (!isActive) return;
@@ -23,7 +17,7 @@ export const MatrixRain: React.FC<MatrixRainProps> = ({
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    let animationFrameId: number;
+    let animationFrameId;
     let width = (canvas.width = window.innerWidth);
     let height = (canvas.height = window.innerHeight);
 
@@ -40,7 +34,7 @@ export const MatrixRain: React.FC<MatrixRainProps> = ({
     const charArray = chars.split('');
     const fontSize = 14;
     const columns = Math.floor(width / fontSize);
-    const drops: number[] = new Array(columns).fill(1);
+    const drops = new Array(columns).fill(1);
 
     const draw = () => {
       // Semi-transparent black background creates fade trail

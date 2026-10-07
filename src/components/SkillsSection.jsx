@@ -2,14 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Code2, Smartphone, Wrench, Cpu, CheckCircle2, ChevronDown, ChevronUp } from 'lucide-react';
 
-interface SkillItem {
-  name: string;
-  level: number;
-  category: 'languages' | 'android' | 'tools' | 'devices';
-  desc: string;
-}
-
-const SKILLS_DATA: SkillItem[] = [
+const SKILLS_DATA = [
   // Languages
   { name: 'C', level: 95, category: 'languages', desc: 'Kernel drivers, low-level memory management, and system calls.' },
   { name: 'C++', level: 90, category: 'languages', desc: 'HAL implementation, Android native daemons, and OS frameworks.' },
@@ -36,80 +29,78 @@ const SKILLS_DATA: SkillItem[] = [
   { name: 'Snapdragon SoC Architecture', level: 88, category: 'devices', desc: 'Qualcomm SM7325 & SM6150 platform driver bringup.' },
 ];
 
-const SkillCard3D = React.forwardRef<HTMLDivElement, { skill: SkillItem; index: number }>(
-  ({ skill, index }, ref) => {
-    const [rotateX, setRotateX] = useState(0);
-    const [rotateY, setRotateY] = useState(0);
+const SkillCard3D = React.forwardRef(({ skill, index }, ref) => {
+  const [rotateX, setRotateX] = useState(0);
+  const [rotateY, setRotateY] = useState(0);
 
-    const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-      if (typeof window === 'undefined') return;
-      if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches || window.innerWidth < 768) return;
-      const rect = e.currentTarget.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      const centerX = rect.width / 2;
-      const centerY = rect.height / 2;
-      setRotateX(((y - centerY) / centerY) * -12);
-      setRotateY(((x - centerX) / centerX) * 12);
-    };
+  const handleMouseMove = (e) => {
+    if (typeof window === 'undefined') return;
+    if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches || window.innerWidth < 768) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    setRotateX(((y - centerY) / centerY) * -12);
+    setRotateY(((x - centerX) / centerX) * 12);
+  };
 
-    const handleMouseLeave = () => {
-      setRotateX(0);
-      setRotateY(0);
-    };
+  const handleMouseLeave = () => {
+    setRotateX(0);
+    setRotateY(0);
+  };
 
-    return (
-      <motion.div
-        ref={ref}
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
-        initial={{ opacity: 0, y: 35, scale: 0.95 }}
-        whileInView={{ opacity: 1, y: 0, scale: 1 }}
-        exit={{ opacity: 0, scale: 0.95 }}
-        viewport={{ once: false, amount: 0.1 }}
-        transition={{ duration: 0.5, delay: (index % 3) * 0.08, ease: [0.16, 1, 0.3, 1] }}
-        style={{
-          transformStyle: 'preserve-3d',
-          perspective: '1000px',
-          transform: `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`,
-        }}
-        className="group rounded-3xl frosted-glass-card p-6"
-      >
-        <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center gap-2.5">
-            <CheckCircle2 className="h-4.5 w-4.5 text-cyan-400" />
-            <h3 className="text-base font-bold text-white group-hover:text-cyan-300 transition-colors">
-              {skill.name}
-            </h3>
-          </div>
-          <span className="text-xs font-mono font-bold text-cyan-400">
-            {skill.level}%
-          </span>
+  return (
+    <motion.div
+      ref={ref}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      initial={{ opacity: 0, y: 35, scale: 0.95 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.95 }}
+      viewport={{ once: false, amount: 0.1 }}
+      transition={{ duration: 0.5, delay: (index % 3) * 0.08, ease: [0.16, 1, 0.3, 1] }}
+      style={{
+        transformStyle: 'preserve-3d',
+        perspective: '1000px',
+        transform: `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`,
+      }}
+      className="group rounded-3xl frosted-glass-card p-6"
+    >
+      <div className="flex items-center justify-between mb-3">
+        <div className="flex items-center gap-2.5">
+          <CheckCircle2 className="h-4.5 w-4.5 text-cyan-400" />
+          <h3 className="text-base font-bold text-white group-hover:text-cyan-300 transition-colors">
+            {skill.name}
+          </h3>
         </div>
+        <span className="text-xs font-mono font-bold text-cyan-400">
+          {skill.level}%
+        </span>
+      </div>
 
-        <p className="text-xs text-white/80 mb-4 min-h-[32px] leading-relaxed">
-          {skill.desc}
-        </p>
+      <p className="text-xs text-white/80 mb-4 min-h-[32px] leading-relaxed">
+        {skill.desc}
+      </p>
 
-        {/* Solid Clean Violet to Cyan Progress bar matching background */}
-        <div className="h-2 w-full rounded-full bg-white/20 overflow-hidden shadow-inner">
-          <motion.div
-            initial={{ width: 0 }}
-            whileInView={{ width: `${skill.level}%` }}
-            viewport={{ once: false, amount: 0.1 }}
-            transition={{ duration: 0.85, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="h-full rounded-full bg-gradient-to-r from-violet-600 via-purple-500 to-cyan-400 shadow-[0_0_10px_rgba(6,182,212,0.5)]"
-          />
-        </div>
-      </motion.div>
-    );
-  }
-);
+      {/* Solid Clean Violet to Cyan Progress bar matching background */}
+      <div className="h-2 w-full rounded-full bg-white/20 overflow-hidden shadow-inner">
+        <motion.div
+          initial={{ width: 0 }}
+          whileInView={{ width: `${skill.level}%` }}
+          viewport={{ once: false, amount: 0.1 }}
+          transition={{ duration: 0.85, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+          className="h-full rounded-full bg-gradient-to-r from-violet-600 via-purple-500 to-cyan-400 shadow-[0_0_10px_rgba(6,182,212,0.5)]"
+        />
+      </div>
+    </motion.div>
+  );
+});
 
 SkillCard3D.displayName = 'SkillCard3D';
 
 export const SkillsSection = () => {
-  const [activeTab, setActiveTab] = useState<'all' | 'languages' | 'android' | 'tools' | 'devices'>('all');
+  const [activeTab, setActiveTab] = useState('all');
   const [showAllSkills, setShowAllSkills] = useState(false);
 
   const filteredSkills = activeTab === 'all' 

@@ -38,18 +38,17 @@ export const FloatingMenu = () => {
       setLikes(data.likes);
     });
 
-    const handleKeyDown = (e: KeyboardEvent) => {
+    const handleKeyDown = (e) => {
       if (e.key === 'Escape') setIsOpen(false);
     };
     const handleToggleEvent = () => {
       setIsOpen((prev) => !prev);
     };
-    const handleSync = (e: Event) => {
-      const customEvent = e as CustomEvent;
-      if (customEvent.detail) {
-        if (typeof customEvent.detail.views === 'number') setViews(customEvent.detail.views);
-        if (typeof customEvent.detail.likes === 'number') setLikes(customEvent.detail.likes);
-        if (typeof customEvent.detail.hasLiked === 'boolean') setHasLiked(customEvent.detail.hasLiked);
+    const handleSync = (e) => {
+      if (e.detail) {
+        if (typeof e.detail.views === 'number') setViews(e.detail.views);
+        if (typeof e.detail.likes === 'number') setLikes(e.detail.likes);
+        if (typeof e.detail.hasLiked === 'boolean') setHasLiked(e.detail.hasLiked);
       }
     };
 
@@ -81,15 +80,7 @@ export const FloatingMenu = () => {
     );
   };
 
-  interface NavItem {
-    label: string;
-    desc: string;
-    href: string;
-    icon: React.ElementType;
-    onClick?: (e: React.MouseEvent) => void;
-  }
-
-  const navItems: NavItem[] = [
+  const navItems = [
     {
       label: 'Home',
       desc: 'Intro, hero & metrics showcase',
@@ -184,7 +175,7 @@ export const FloatingMenu = () => {
 
                 <div className="space-y-2">
                   {navItems.map((item, index) => {
-                    const Icon = item.icon as React.ComponentType<{ className?: string }>;
+                    const Icon = item.icon;
                     return (
                       <motion.a
                         key={item.label}

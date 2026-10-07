@@ -1,21 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Eye, Heart, FolderGit2, Users, GitBranch } from 'lucide-react';
-import { fetchGitHubUser, GitHubUser } from '@/lib/github';
+import { fetchGitHubUser } from '@/lib/github';
 import { BASE_VIEWS, BASE_LIKES, fetchCloudStats, updateCloudStats } from '@/lib/statsApi';
 
 // Reusable 3D Frosted Glass Tilt Card Wrapper for Metrics
 const Glass3DCard = ({
   children,
   className = '',
-}: {
-  children: React.ReactNode;
-  className?: string;
 }) => {
   const [rotateX, setRotateX] = useState(0);
   const [rotateY, setRotateY] = useState(0);
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+  const handleMouseMove = (e) => {
     if (typeof window === 'undefined') return;
     if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches || window.innerWidth < 768) return;
     const rect = e.currentTarget.getBoundingClientRect();
@@ -54,7 +51,7 @@ export const EngagementBar = () => {
   const [hasLiked, setHasLiked] = useState(false);
   const [likes, setLikes] = useState(BASE_LIKES);
   const [views, setViews] = useState(BASE_VIEWS);
-  const [userInfo, setUserInfo] = useState<GitHubUser | null>(null);
+  const [userInfo, setUserInfo] = useState(null);
 
   useEffect(() => {
     // Persistent Local Like State
@@ -81,12 +78,11 @@ export const EngagementBar = () => {
       if (data) setUserInfo(data);
     });
 
-    const handleSync = (e: Event) => {
-      const customEvent = e as CustomEvent;
-      if (customEvent.detail) {
-        if (typeof customEvent.detail.views === 'number') setViews(customEvent.detail.views);
-        if (typeof customEvent.detail.likes === 'number') setLikes(customEvent.detail.likes);
-        if (typeof customEvent.detail.hasLiked === 'boolean') setHasLiked(customEvent.detail.hasLiked);
+    const handleSync = (e) => {
+      if (e.detail) {
+        if (typeof e.detail.views === 'number') setViews(e.detail.views);
+        if (typeof e.detail.likes === 'number') setLikes(e.detail.likes);
+        if (typeof e.detail.hasLiked === 'boolean') setHasLiked(e.detail.hasLiked);
       }
     };
 

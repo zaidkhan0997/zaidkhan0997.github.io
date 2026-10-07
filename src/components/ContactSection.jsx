@@ -1,18 +1,15 @@
 import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Mail, Send, CheckCircle2, MessageSquare, ShieldCheck, MapPin, UploadCloud, X, FileCode2, Paperclip } from 'lucide-react';
+import { Mail, Send, CheckCircle2, MessageSquare, ShieldCheck, MapPin, UploadCloud, X, FileCode2 } from 'lucide-react';
 
 const ContactCard3D = ({
   children,
   className = '',
-}: {
-  children: React.ReactNode;
-  className?: string;
 }) => {
   const [rotateX, setRotateX] = useState(0);
   const [rotateY, setRotateY] = useState(0);
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+  const handleMouseMove = (e) => {
     if (typeof window === 'undefined') return;
     if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches || window.innerWidth < 768) return;
     const rect = e.currentTarget.getBoundingClientRect();
@@ -53,18 +50,14 @@ export const ContactSection = () => {
     email: '',
     message: '',
   });
-  const [attachment, setAttachment] = useState<{
-    name: string;
-    content: string; // base64 string
-    size: number;
-  } | null>(null);
+  const [attachment, setAttachment] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const fileInputRef = useRef(null);
 
-  const processFile = (file: File) => {
+  const processFile = (file) => {
     // Max 8MB file size limit
     const MAX_SIZE_BYTES = 8 * 1024 * 1024;
     if (file.size > MAX_SIZE_BYTES) {
@@ -76,7 +69,7 @@ export const ContactSection = () => {
     setErrorMessage('');
     const reader = new FileReader();
     reader.onload = () => {
-      const result = reader.result as string;
+      const result = reader.result;
       const base64Content = result.includes(',') ? result.split(',')[1] : result;
       setAttachment({
         name: file.name,
@@ -90,26 +83,26 @@ export const ContactSection = () => {
     reader.readAsDataURL(file);
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (e) => {
     const file = e.target.files?.[0];
     if (file) {
       processFile(file);
     }
   };
 
-  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+  const handleDragOver = (e) => {
     e.preventDefault();
     e.stopPropagation();
     setIsDragging(true);
   };
 
-  const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
+  const handleDragLeave = (e) => {
     e.preventDefault();
     e.stopPropagation();
     setIsDragging(false);
   };
 
-  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+  const handleDrop = (e) => {
     e.preventDefault();
     e.stopPropagation();
     setIsDragging(false);
@@ -126,18 +119,18 @@ export const ContactSection = () => {
     }
   };
 
-  const formatFileSize = (bytes: number) => {
+  const formatFileSize = (bytes) => {
     if (bytes < 1024) return `${bytes} B`;
     if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
     return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
   };
 
-  const getFileExtension = (filename: string) => {
+  const getFileExtension = (filename) => {
     const ext = filename.split('.').pop();
     return ext ? ext.toUpperCase().slice(0, 4) : 'FILE';
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitting(true);
     setErrorMessage('');

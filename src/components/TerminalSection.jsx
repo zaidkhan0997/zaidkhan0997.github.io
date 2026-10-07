@@ -3,21 +3,18 @@ import { motion } from 'framer-motion';
 import { CornerDownLeft, Sparkles, Volume2, VolumeX, Terminal as TerminalIcon } from 'lucide-react';
 import { fetchCloudStats } from '@/lib/statsApi';
 
-interface HistoryItem {
-  command: string;
-  output: React.ReactNode;
-}
-
 // Subtle mechanical key sound synthesizer using Web Audio API (Zero external assets)
 class SoundFx {
-  private ctx: AudioContext | null = null;
-  public enabled: boolean = true;
+  constructor() {
+    this.ctx = null;
+    this.enabled = true;
+  }
 
-  private initCtx() {
+  initCtx() {
     if (typeof window === 'undefined' || typeof navigator === 'undefined') return;
     if ('userActivation' in navigator && navigator.userActivation && !navigator.userActivation.hasBeenActive) return;
     if (!this.ctx) {
-      const AudioCtx = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
       if (AudioCtx) {
         try {
           this.ctx = new AudioCtx();
@@ -116,26 +113,21 @@ const DMESG_SAMPLE = [
   '[    1.500312] [ OK ] Reached target Graphical Interface & Web Runtime.',
 ];
 
-interface TerminalSectionProps {
-  onTriggerMatrix?: () => void;
-  onTriggerKernelPanic?: () => void;
-}
-
-export const TerminalSection: React.FC<TerminalSectionProps> = ({
+export const TerminalSection = ({
   onTriggerMatrix,
   onTriggerKernelPanic,
 }) => {
   const [input, setInput] = useState('');
   const [isFlashing, setIsFlashing] = useState(false);
   const [flashProgress, setFlashProgress] = useState(0);
-  const [flashDevice, setFlashDevice] = useState<'lisa' | 'sweet' | null>(null);
+  const [flashDevice, setFlashDevice] = useState(null);
   const [soundEnabled, setSoundEnabled] = useState(true);
 
   // Command history buffer for up/down arrows
-  const [commandHistory, setCommandHistory] = useState<string[]>(['neofetch']);
-  const [historyIndex, setHistoryIndex] = useState<number>(-1);
+  const [commandHistory, setCommandHistory] = useState(['neofetch']);
+  const [historyIndex, setHistoryIndex] = useState(-1);
 
-  const [history, setHistory] = useState<HistoryItem[]>([
+  const [history, setHistory] = useState([
     {
       command: 'neofetch',
       output: (
@@ -151,11 +143,11 @@ export const TerminalSection: React.FC<TerminalSectionProps> = ({
     },
   ]);
 
-  const [views, setViews] = useState<number>(0);
-  const [likes, setLikes] = useState<number>(0);
+  const [views, setViews] = useState(0);
+  const [likes, setLikes] = useState(0);
 
-  const historyContainerRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const historyContainerRef = useRef(null);
+  const inputRef = useRef(null);
   const isInitialMount = useRef(true);
 
   useEffect(() => {
@@ -164,11 +156,10 @@ export const TerminalSection: React.FC<TerminalSectionProps> = ({
       setLikes(data.likes);
     });
 
-    const handleSync = (e: Event) => {
-      const customEvent = e as CustomEvent;
-      if (customEvent.detail) {
-        if (typeof customEvent.detail.views === 'number') setViews(customEvent.detail.views);
-        if (typeof customEvent.detail.likes === 'number') setLikes(customEvent.detail.likes);
+    const handleSync = (e) => {
+      if (e.detail) {
+        if (typeof e.detail.views === 'number') setViews(e.detail.views);
+        if (typeof e.detail.likes === 'number') setLikes(e.detail.likes);
       }
     };
     window.addEventListener('portfolio-cloud-stats-updated', handleSync);
@@ -226,7 +217,7 @@ export const TerminalSection: React.FC<TerminalSectionProps> = ({
     sound.enabled = next;
   };
 
-  const executeCommandString = (rawCmd: string) => {
+  const executeCommandString = (rawCmd) => {
     const cmd = rawCmd.trim();
     if (!cmd) return;
 
@@ -312,7 +303,7 @@ export const TerminalSection: React.FC<TerminalSectionProps> = ({
       return;
     }
 
-    let outputNode: React.ReactNode = null;
+    let outputNode = null;
 
     switch (lower) {
       case 'help':
@@ -497,12 +488,12 @@ export const TerminalSection: React.FC<TerminalSectionProps> = ({
     setInput('');
   };
 
-  const handleCommand = (e: React.FormEvent) => {
+  const handleCommand = (e) => {
     e.preventDefault();
     executeCommandString(input);
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = (e) => {
     if (e.key === 'ArrowUp') {
       e.preventDefault();
       if (commandHistory.length === 0) return;

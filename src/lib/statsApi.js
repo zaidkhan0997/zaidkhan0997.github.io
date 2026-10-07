@@ -4,16 +4,11 @@ const CLOUD_API_URL = 'https://portfolio-contact-api.zaidkhan0997.workers.dev/st
 export const BASE_VIEWS = 1753127;
 export const BASE_LIKES = 1518437;
 
-export interface PortfolioStats {
-  views: number;
-  likes: number;
-}
-
 // Local cache keys
 const CACHE_KEY_VIEWS = 'portfolio_cached_views_v2';
 const CACHE_KEY_LIKES = 'portfolio_cached_likes_v2';
 
-const getInitialCachedStats = (): PortfolioStats => {
+const getInitialCachedStats = () => {
   if (typeof window === 'undefined') {
     return { views: BASE_VIEWS, likes: BASE_LIKES };
   }
@@ -29,12 +24,12 @@ const getInitialCachedStats = (): PortfolioStats => {
   }
 };
 
-let cachedStats: PortfolioStats = getInitialCachedStats();
-let activeFetchPromise: Promise<PortfolioStats> | null = null;
+let cachedStats = getInitialCachedStats();
+let activeFetchPromise = null;
 let lastFetchTime = 0;
 const CACHE_TTL_MS = 60 * 1000; // 1 minute in-memory cache
 
-const persistLocally = (stats: PortfolioStats) => {
+const persistLocally = (stats) => {
   if (typeof window === 'undefined') return;
   try {
     localStorage.setItem(CACHE_KEY_VIEWS, stats.views.toString());
@@ -42,7 +37,7 @@ const persistLocally = (stats: PortfolioStats) => {
   } catch {}
 };
 
-export const fetchCloudStats = async (forceRefresh = false): Promise<PortfolioStats> => {
+export const fetchCloudStats = async (forceRefresh = false) => {
   const now = Date.now();
 
   // If cached recently and not forcing refresh, return in-memory cached stats immediately
@@ -80,7 +75,7 @@ export const fetchCloudStats = async (forceRefresh = false): Promise<PortfolioSt
   return activeFetchPromise;
 };
 
-export const updateCloudStats = async (newStats: PortfolioStats): Promise<PortfolioStats> => {
+export const updateCloudStats = async (newStats) => {
   cachedStats = {
     views: Math.max(BASE_VIEWS, newStats.views),
     likes: Math.max(BASE_LIKES, newStats.likes),

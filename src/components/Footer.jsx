@@ -3,11 +3,11 @@ import { motion } from 'framer-motion';
 import { ArrowUp, Github, Send, Mail, Instagram, Linkedin } from 'lucide-react';
 
 // Reusable 3D Translucent Glass Tilt Card Wrapper for Footer Bar
-const FooterGlassCard3D = ({ children, className = '' }: { children: React.ReactNode; className?: string }) => {
+const FooterGlassCard3D = ({ children, className = '' }) => {
   const [rotateX, setRotateX] = useState(0);
   const [rotateY, setRotateY] = useState(0);
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+  const handleMouseMove = (e) => {
     if (typeof window === 'undefined') return;
     if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches || window.innerWidth < 768) return;
     const rect = e.currentTarget.getBoundingClientRect();
@@ -128,7 +128,7 @@ export const Footer = () => {
             </div>
 
             <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-center text-[11px] text-white/50">
-              <p>&copy; 2026 MOHD ZAID (zaidkhan0997). All rights reserved.</p>
+              <p>&copy; {currentYear} MOHD ZAID (zaidkhan0997). All rights reserved.</p>
             </div>
           </FooterGlassCard3D>
         </motion.div>

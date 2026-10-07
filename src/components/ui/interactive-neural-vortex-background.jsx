@@ -1,17 +1,12 @@
 import React, { useEffect, useRef } from 'react';
 
-export interface InteractiveNeuralVortexProps {
-  children?: React.ReactNode;
-  className?: string;
-}
-
-export const InteractiveNeuralVortex: React.FC<InteractiveNeuralVortexProps> = ({
+export const InteractiveNeuralVortex = ({
   children,
   className = '',
 }) => {
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const canvasRef = useRef(null);
   const pointer = useRef({ x: 0, y: 0, tX: 0, tY: 0 });
-  const animationRef = useRef<number | null>(null);
+  const animationRef = useRef(null);
 
   useEffect(() => {
     const canvasEl = canvasRef.current;
@@ -26,14 +21,14 @@ export const InteractiveNeuralVortex: React.FC<InteractiveNeuralVortexProps> = (
     };
 
     // Initialize WebGL context with optimal settings for speed & smooth alpha
-    const gl = (canvasEl.getContext('webgl', {
-      alpha: true,
-      depth: false,
-      stencil: false,
-      antialias: false,
-      powerPreference: 'high-performance',
-    }) ||
-      canvasEl.getContext('experimental-webgl')) as WebGLRenderingContext | null;
+    const gl =
+      canvasEl.getContext('webgl', {
+        alpha: true,
+        depth: false,
+        stencil: false,
+        antialias: false,
+        powerPreference: 'high-performance',
+      }) || canvasEl.getContext('experimental-webgl');
 
     if (!gl) {
       console.error('WebGL not supported');
@@ -108,11 +103,7 @@ export const InteractiveNeuralVortex: React.FC<InteractiveNeuralVortexProps> = (
     `;
 
     // Shader compilation
-    const compileShader = (
-      glContext: WebGLRenderingContext,
-      source: string,
-      type: number
-    ): WebGLShader | null => {
+    const compileShader = (glContext, source, type) => {
       const shader = glContext.createShader(type);
       if (!shader) return null;
       glContext.shaderSource(shader, source);
@@ -222,19 +213,19 @@ export const InteractiveNeuralVortex: React.FC<InteractiveNeuralVortexProps> = (
     render();
 
     // Event listeners
-    const handleMouseMove = (e: MouseEvent | PointerEvent) => {
+    const handleMouseMove = (e) => {
       pointer.current.tX = e.clientX;
       pointer.current.tY = e.clientY;
     };
 
-    const handleTouchMove = (e: TouchEvent) => {
+    const handleTouchMove = (e) => {
       if (e.touches[0]) {
         pointer.current.tX = e.touches[0].clientX;
         pointer.current.tY = e.touches[0].clientY;
       }
     };
 
-    const handleContextLost = (e: Event) => {
+    const handleContextLost = (e) => {
       e.preventDefault();
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current);

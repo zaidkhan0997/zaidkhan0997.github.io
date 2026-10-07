@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, Star, GitFork, ExternalLink, FolderGit2, RefreshCw, ChevronDown, ChevronUp } from 'lucide-react';
-import { fetchGitHubRepos, GitHubRepo } from '@/lib/github';
+import { fetchGitHubRepos } from '@/lib/github';
 
-const FALLBACK_REPOS: GitHubRepo[] = [
+const FALLBACK_REPOS = [
   {
     id: 1,
     name: 'device_xiaomi_lisa',
@@ -138,32 +138,31 @@ const FALLBACK_REPOS: GitHubRepo[] = [
   },
 ];
 
-const RepoCard3D = React.forwardRef<HTMLAnchorElement, { repo: GitHubRepo; index: number }>(
-  ({ repo, index }, ref) => {
-    const [rotateX, setRotateX] = useState(0);
-    const [rotateY, setRotateY] = useState(0);
+const RepoCard3D = React.forwardRef(({ repo, index }, ref) => {
+  const [rotateX, setRotateX] = useState(0);
+  const [rotateY, setRotateY] = useState(0);
 
-    const handleMouseMove = (e: React.MouseEvent<HTMLAnchorElement>) => {
-      if (typeof window === 'undefined') return;
-      if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches || window.innerWidth < 768) return;
-      const rect = e.currentTarget.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      const centerX = rect.width / 2;
-      const centerY = rect.height / 2;
-      setRotateX(((y - centerY) / centerY) * -12);
-      setRotateY(((x - centerX) / centerX) * 12);
-    };
+  const handleMouseMove = (e) => {
+    if (typeof window === 'undefined') return;
+    if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches || window.innerWidth < 768) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    setRotateX(((y - centerY) / centerY) * -12);
+    setRotateY(((x - centerX) / centerX) * 12);
+  };
 
-    const handleMouseLeave = () => {
-      setRotateX(0);
-      setRotateY(0);
-    };
+  const handleMouseLeave = () => {
+    setRotateX(0);
+    setRotateY(0);
+  };
 
-    return (
-      <motion.a
-        ref={ref}
-        href={repo.html_url}
+  return (
+    <motion.a
+      ref={ref}
+      href={repo.html_url}
       target="_blank"
       rel="noopener noreferrer"
       onMouseMove={handleMouseMove}
@@ -220,9 +219,9 @@ const RepoCard3D = React.forwardRef<HTMLAnchorElement, { repo: GitHubRepo; index
 RepoCard3D.displayName = 'RepoCard3D';
 
 export const ReposSection = () => {
-  const [repos, setRepos] = useState<GitHubRepo[]>(FALLBACK_REPOS);
+  const [repos, setRepos] = useState(FALLBACK_REPOS);
   const [search, setSearch] = useState('');
-  const [selectedCat, setSelectedCat] = useState<'all' | 'android' | 'c-cpp' | 'shell'>('all');
+  const [selectedCat, setSelectedCat] = useState('all');
   const [loading, setLoading] = useState(false);
   const [isLive, setIsLive] = useState(false);
   const [showAllRepos, setShowAllRepos] = useState(false);

@@ -14,8 +14,8 @@ import { HackerWorkstation3D } from '@/components/HackerWorkstation3D';
 import { Instagram, Github, Send, Linkedin, Mail } from 'lucide-react';
 
 export default function App() {
-  const [showMatrix, setShowMatrix] = useState<boolean>(false);
-  const [showPanic, setShowPanic] = useState<boolean>(false);
+  const [showMatrix, setShowMatrix] = useState(false);
+  const [showPanic, setShowPanic] = useState(false);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {

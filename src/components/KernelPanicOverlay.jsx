@@ -1,12 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-interface KernelPanicOverlayProps {
-  isActive: boolean;
-  onComplete: () => void;
-}
-
-export const KernelPanicOverlay: React.FC<KernelPanicOverlayProps> = ({
+export const KernelPanicOverlay = ({
   isActive,
   onComplete,
 }) => {

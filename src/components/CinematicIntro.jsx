@@ -2,26 +2,26 @@ import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { FastForward, ChevronDown } from 'lucide-react';
 
 const TOTAL_FRAMES = 240;
-const FRAME_PATH = (index: number) =>
+const FRAME_PATH = (index) =>
   `/cinematic/frames/frame_${String(index).padStart(4, '0')}.jpg`;
 
-export const CinematicIntro: React.FC = () => {
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const spacerRef = useRef<HTMLDivElement | null>(null);
+export const CinematicIntro = () => {
+  const canvasRef = useRef(null);
+  const spacerRef = useRef(null);
 
-  const [scrollProgress, setScrollProgress] = useState<number>(0);
-  const [isPastIntro, setIsPastIntro] = useState<boolean>(false);
-  const [framesLoaded, setFramesLoaded] = useState<number>(0);
-  const [hasScrolled, setHasScrolled] = useState<boolean>(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const [isPastIntro, setIsPastIntro] = useState(false);
+  const [framesLoaded, setFramesLoaded] = useState(0);
+  const [hasScrolled, setHasScrolled] = useState(false);
 
   // Frame cache
-  const framesRef = useRef<(HTMLImageElement | null)[]>(new Array(TOTAL_FRAMES + 1).fill(null));
-  const currentRenderedFrameRef = useRef<number>(1);
-  const targetFrameRef = useRef<number>(1);
-  const animFrameIdRef = useRef<number | null>(null);
+  const framesRef = useRef(new Array(TOTAL_FRAMES + 1).fill(null));
+  const currentRenderedFrameRef = useRef(1);
+  const targetFrameRef = useRef(1);
+  const animFrameIdRef = useRef(null);
 
   // Render a specific frame onto canvas keeping 16:9 cover
-  const drawFrame = useCallback((frameIdx: number) => {
+  const drawFrame = useCallback((frameIdx) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d', { alpha: false });
@@ -91,13 +91,13 @@ export const CinematicIntro: React.FC = () => {
       drawFrame(1);
 
       // Priority 1: Keyframes (every 4th frame for instant scrub response)
-      const keyframes: number[] = [];
+      const keyframes = [];
       for (let i = 5; i <= TOTAL_FRAMES; i += 4) {
         keyframes.push(i);
       }
 
       let loadedCount = 1;
-      const loadBatch = (list: number[], onDone: () => void) => {
+      const loadBatch = (list, onDone) => {
         let remaining = list.length;
         if (remaining === 0) return onDone();
 
@@ -123,7 +123,7 @@ export const CinematicIntro: React.FC = () => {
       loadBatch(keyframes, () => {
         if (cancelled) return;
         // Priority 2: Rest of frames
-        const remainingFrames: number[] = [];
+        const remainingFrames = [];
         for (let i = 2; i <= TOTAL_FRAMES; i++) {
           if (!framesRef.current[i]) remainingFrames.push(i);
         }

@@ -1,27 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { LucideIcon, Menu } from 'lucide-react';
+import { Menu } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-export interface MinimalistHeroProps {
-  logoText: string;
-  navLinks: { label: string; href: string }[];
-  imageSrc: string;
-  imageAlt: string;
-  overlayText: {
-    part1: string;
-    part2: string;
-  };
-  socialLinks: { icon: LucideIcon; href: string }[];
-  locationText: string;
-  className?: string;
-  subBadge?: string;
-  quote?: string;
-  mainText?: string;
-  readMoreLink?: string;
-}
-
-const NavLink = ({ href, children }: { href: string; children: React.ReactNode }) => (
+const NavLink = ({ href, children }) => (
   <a
     href={href}
     className="px-3.5 py-1.5 rounded-2xl text-xs font-semibold tracking-wider text-white/85 transition-all hover:text-cyan-300 frosted-glass-pill hover:bg-white/15 uppercase font-ubuntu"
@@ -31,7 +13,7 @@ const NavLink = ({ href, children }: { href: string; children: React.ReactNode }
 );
 
 // Responsive optically centered Social Icon button (guaranteed 100% inside card bounds on all screens)
-const SocialIcon = ({ href, icon: Icon }: { href: string; icon: LucideIcon }) => (
+const SocialIcon = ({ href, icon: Icon }) => (
   <a
     href={href}
     target="_blank"
@@ -43,11 +25,11 @@ const SocialIcon = ({ href, icon: Icon }: { href: string; icon: LucideIcon }) =>
 );
 
 // Reusable Frosted Glass 3D Card for Hero
-const HeroCard3D = ({ children, className = '' }: { children: React.ReactNode; className?: string }) => {
+const HeroCard3D = ({ children, className = '' }) => {
   const [rotateX, setRotateX] = useState(0);
   const [rotateY, setRotateY] = useState(0);
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+  const handleMouseMove = (e) => {
     if (typeof window === 'undefined') return;
     if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches || window.innerWidth < 1024) return;
 
@@ -94,10 +76,12 @@ export const MinimalistHero = ({
   overlayText,
   socialLinks,
   locationText,
-  className,
+  className = '',
   subBadge = "Android Kernel & OS Developer",
-  quote = '"Be happy, it drives people crazy."'
-}: MinimalistHeroProps) => {
+  quote = '"Be happy, it drives people crazy."',
+  mainText = '',
+  readMoreLink = ''
+}) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [showNavbar, setShowNavbar] = useState(false);

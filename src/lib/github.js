@@ -1,35 +1,14 @@
-export interface GitHubRepo {
-  id: number;
-  name: string;
-  description: string | null;
-  html_url: string;
-  stargazers_count: number;
-  forks_count: number;
-  language: string | null;
-  category: 'android' | 'cpp' | 'shell' | 'web';
-  updated_at: string;
-}
-
-export interface GitHubUser {
-  public_repos: number;
-  followers: number;
-  following: number;
-  avatar_url: string;
-  bio: string | null;
-  location: string | null;
-}
-
-let cachedUser: GitHubUser | null = null;
-let userPromise: Promise<GitHubUser | null> | null = null;
+let cachedUser = null;
+let userPromise = null;
 let lastUserFetch = 0;
 
-let cachedRepos: GitHubRepo[] | null = null;
-let reposPromise: Promise<GitHubRepo[]> | null = null;
+let cachedRepos = null;
+let reposPromise = null;
 let lastReposFetch = 0;
 
 const GITHUB_CACHE_TTL = 5 * 60 * 1000; // 5 minutes
 
-export async function fetchGitHubUser(): Promise<GitHubUser | null> {
+export async function fetchGitHubUser() {
   const now = Date.now();
   if (cachedUser && now - lastUserFetch < GITHUB_CACHE_TTL) {
     return cachedUser;
@@ -54,7 +33,7 @@ export async function fetchGitHubUser(): Promise<GitHubUser | null> {
   return userPromise;
 }
 
-export async function fetchGitHubRepos(): Promise<GitHubRepo[]> {
+export async function fetchGitHubRepos() {
   const now = Date.now();
   if (cachedRepos && now - lastReposFetch < GITHUB_CACHE_TTL) {
     return cachedRepos;
@@ -65,11 +44,11 @@ export async function fetchGitHubRepos(): Promise<GitHubRepo[]> {
     try {
       const res = await fetch('https://api.github.com/users/zaidkhan0997/repos?per_page=100&sort=updated');
       if (res.ok) {
-        const data: any[] = await res.json();
+        const data = await res.json();
         cachedRepos = data.map((repo) => {
           const name = repo.name.toLowerCase();
           const lang = (repo.language || '').toLowerCase();
-          let category: 'android' | 'cpp' | 'shell' | 'web' = 'web';
+          let category = 'web';
 
           if (
             name.includes('xiaomi') ||
