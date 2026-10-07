@@ -1,10 +1,10 @@
 import React, { useEffect, useLayoutEffect, useRef, useState, useCallback, useMemo } from 'react';
 import * as THREE from 'three';
 import { Canvas, useThree, useFrame } from '@react-three/fiber';
-import { useGLTF, useAnimations, Sparkles } from '@react-three/drei';
+import { useGLTF, useAnimations, Sparkles, useProgress } from '@react-three/drei';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { ChevronDown, Sparkles as SparklesIcon, ArrowRight, ShieldCheck, Zap } from 'lucide-react';
+import { ChevronDown, Sparkles as SparklesIcon, ArrowRight, ShieldCheck, Zap, Terminal } from 'lucide-react';
 import {
   createHackerThoughtsCanvas,
   createAnonymousMaskCanvas,
@@ -21,9 +21,34 @@ import {
 
 gsap.registerPlugin(ScrollTrigger);
 
-// Pre-load 3D hacker workstation model
+// Pre-load 3D hacker workstation model with local 100% offline Draco decoders
 const MODEL_PATH = '/models/hacksetup.glb';
-useGLTF.preload(MODEL_PATH);
+const DRACO_PATH = '/draco/';
+useGLTF.preload(MODEL_PATH, DRACO_PATH);
+
+// Cyberpunk 3D Scene Loader HUD
+const Cyber3DLoader: React.FC = () => {
+  const { active, progress } = useProgress();
+  if (!active) return null;
+
+  return (
+    <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-[#02050e] text-cyan-400 font-mono pointer-events-none transition-opacity duration-300">
+      <div className="relative mb-4 flex items-center justify-center">
+        <div className="w-16 h-16 rounded-full border-2 border-cyan-500/30 border-t-cyan-400 animate-spin" />
+        <Terminal className="w-6 h-6 text-emerald-400 absolute animate-pulse" />
+      </div>
+      <div className="text-xs tracking-widest uppercase text-cyan-300 font-semibold mb-2">
+        INITIALIZING HACKER WORKSTATION // {Math.round(progress)}%
+      </div>
+      <div className="w-52 h-1.5 bg-slate-900 rounded-full overflow-hidden border border-cyan-500/30">
+        <div
+          className="h-full bg-gradient-to-r from-emerald-400 to-cyan-400 transition-all duration-150"
+          style={{ width: `${Math.max(8, progress)}%` }}
+        />
+      </div>
+    </div>
+  );
+};
 
 const SCREEN_MATERIAL = 'Display.002';
 const SCREEN_PX_W = 1440;
@@ -36,35 +61,44 @@ const clamp = THREE.MathUtils.clamp;
 
 // Multi-device responsive camera configuration
 // Supports ultra-wide, laptops, tablets (iPad/Android), folding phones, and smartphones
-// Eliminates over-zooming on narrow screens by scaling both start and end camera distances!
+// Eliminates over-zooming on narrow screens via vertical FOV compensation without pushing camera outside room!
 function getResponsiveCameraConfig(aspect: number) {
-  // Pullback factor on tall screens (smartphones, tablets, and foldables)
-  const pullBack = Math.max(0, 1.45 - aspect);
+  // Mobile / tall screens: subtle pullback without leaving room bounds (max safe Z is 2.90, safe Y is 3.32)
+  const isTall = aspect < 1.0;
+  const pullBack = Math.max(0, 1.0 - aspect);
 
   // 1. Initial wide room view (startPos)
   const startX = 0.55;
-  const startY = 3.32 + pullBack * 0.90;
-  const startZ = 2.70 + pullBack * 3.50;
+  const startY = 3.32 + pullBack * 0.06; // Keep view cleanly framed on the hacker desk
+  const startZ = 2.70 + pullBack * 0.18; // Stays safely in room, avoiding back banners/walls (Z <= 2.88)
 
   // 2. Docked laptop view (endPos)
-  // Pull back camera on narrow screens so laptop screen fits 100% horizontally without being cut off!
   const endX = 0.50;
-  const endY = 2.731 + pullBack * 0.14;
-  const endZ = -1.35 + pullBack * 0.82;
+  const endY = 2.731;
+  const endZ = -1.35;
 
   let baseFov = 46;
   let targetEndFov = 40;
-  if (aspect < 0.50) {
-    baseFov = 62; // Narrow folding outer screens (Galaxy Fold)
-    targetEndFov = 52;
-  } else if (aspect < 0.80) {
-    baseFov = 56; // Standard phones (iPhone, Android)
+
+  if (aspect < 0.48) {
+    // Ultra-tall outer foldable screens (Galaxy Z Fold, aspect ~0.42)
+    baseFov = 72;
+    targetEndFov = 62;
+  } else if (aspect < 0.70) {
+    // Standard smartphones portrait (iPhone 14/15/16, Android, aspect ~0.46 - 0.6)
+    baseFov = 66;
+    targetEndFov = 56;
+  } else if (aspect < 0.90) {
+    // Foldable inner screens / small tablets (aspect ~0.75 - 0.85)
+    baseFov = 58;
     targetEndFov = 48;
-  } else if (aspect < 1.10) {
-    baseFov = 52; // Tablets portrait (iPad)
+  } else if (aspect < 1.3) {
+    // Tablets landscape / square screens
+    baseFov = 52;
     targetEndFov = 44;
   } else if (aspect > 2.0) {
-    baseFov = 42; // Ultra-wide monitors
+    // Ultra-wide monitors
+    baseFov = 42;
     targetEndFov = 38;
   }
 
@@ -98,7 +132,7 @@ const LaptopScene: React.FC<LaptopSceneProps> = ({
   const gl = useThree((s) => s.gl);
   const size = useThree((s) => s.size);
 
-  const model = useGLTF(MODEL_PATH);
+  const model = useGLTF(MODEL_PATH, DRACO_PATH);
   const { actions } = useAnimations(model.animations, model.scene);
 
   const clipDuration = useRef(0);
@@ -290,22 +324,37 @@ const LaptopScene: React.FC<LaptopSceneProps> = ({
           }
         }
 
-        // 5. Studio Acoustic Soundproofing Pyramid Foam Walls (Matches reference photo)
+        // Hide invisible camera occlusion wall (walls_invis / Object_49) and hanging room banners
         if (
-          matName.startsWith('walls') ||
-          meshName === 'Object_47' ||
-          meshName === 'Object_48' ||
-          meshName === 'Object_111'
+          matName === 'walls_invis' ||
+          meshName === 'Object_49' ||
+          matName.startsWith('banner') ||
+          meshName === 'Object_5' ||
+          meshName === 'Object_6'
         ) {
+          mesh.visible = false;
+        }
+
+        // 5. Studio Acoustic Soundproofing Pyramid Foam Walls (Back wall & structural walls only)
+        const isRealWall =
+          (matName === 'walls' ||
+            matName === 'walls.001' ||
+            matName === 'walls.002' ||
+            meshName === 'Object_47' ||
+            meshName === 'Object_48' ||
+            meshName === 'Object_111') &&
+          matName !== 'walls_invis' &&
+          meshName !== 'Object_49';
+
+        if (isRealWall) {
           if (acousticFoamTexture) {
             mesh.material = new THREE.MeshStandardMaterial({
               map: acousticFoamTexture,
-              bumpMap: acousticFoamTexture,
-              bumpScale: 0.08,
               roughness: 0.92,
               metalness: 0.05,
               color: new THREE.Color(0x151c28),
             });
+            mesh.visible = true;
           }
         }
 
@@ -337,8 +386,7 @@ const LaptopScene: React.FC<LaptopSceneProps> = ({
           matName.startsWith('drink') ||
           matName === 'Material.019' ||
           meshName === 'Object_19' ||
-          meshName === 'Object_21' ||
-          meshName === 'Object_5';
+          meshName === 'Object_21';
 
         if (isSpeaker || isHeadphone || isJuiceGlass) {
           mesh.visible = false;
@@ -703,6 +751,7 @@ export const HackerWorkstation3D: React.FC = () => {
           display: isIntroHidden ? 'none' : 'block',
         }}
       >
+        <Cyber3DLoader />
         <Canvas
           dpr={[1, Math.min(typeof window !== 'undefined' ? window.devicePixelRatio : 2, 2)]}
           gl={{
