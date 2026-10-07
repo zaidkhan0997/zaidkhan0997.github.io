@@ -1,9 +1,146 @@
 /**
- * Procedural High-Definition Canvas Textures for Cyberpunk Workstation Wall Posters & Shelf Displays
+ * Procedural High-Definition Canvas Textures for Cyberpunk Workstation Wall Posters & Displays
  * - Poster 1: "Hacker Thoughts" (Philosophical hacker axioms & cybernetic circuit HUD)
  * - Poster 2: "Anonymous Mask" (Iconic Guy Fawkes hacker mask with Matrix rain & manifesto)
  * - Shelf Display: "Kali Cyber Threat Radar" (High-tech exploit & network monitor replacing shelf doodle)
+ * - Laptop Display: "Live Hacker Kernel Terminal" (3D Screen displaying real-time Linux compilation)
  */
+
+export const KERNEL_TERMINAL_LOGS = [
+  '[  0.000000] Linux version 5.4.242-android12-9-zaid-kernel+ (zaid@workstation) (LLVM 17.0.6)',
+  '[  0.000214] Command line: console=ttyMSM0,115200n8 androidboot.hardware=qcom bootdevice=1d84000.ufshc',
+  '[  0.001048] DTS: Loading device tree blob arch/arm64/boot/dts/qcom/sm7325-lisa.dtb',
+  '[  0.003912] CPU: ARMv8.2-A (Kryo 670 Octa-Core: 4x Silver @ 1.8GHz, 3x Gold @ 2.2GHz, 1x Prime @ 2.4GHz)',
+  '[  0.010892] MEMORY: Initializing buddy allocator 8192MB lowmem + 8192MB highmem',
+  '[  0.024510] AOSP: SELinux enforcing mode primed; root namespace bypass hook injected',
+  '[  0.041029] QCOM: Adreno 642L GPU clock frequency table loaded [490MHz - 840MHz]',
+  '[  0.068200] COMPILING: drivers/android/binder.c -> [OK] (zero overhead dispatch)',
+  '[  0.098412] COMPILING: drivers/misc/kernel_su.c -> [OK] (safetynet / play integrity spoof)',
+  '[  0.134590] COMPILING: fs/f2fs/segment.c -> [OK] (rapid flash storage acceleration)',
+  '[  0.180210] LINK: vmlinux -> generating uncompressed image.gz',
+  '[  0.220912] FASTBOOT: Waiting for USB target enumeration on vendor 0x2717 (Xiaomi)...',
+  '[  0.281004] USB: Target linked: Xiaomi 11 Lite 5G NE [lisa] via protocol fastbootd',
+  '[  0.340112] FLASHING: fastboot flash boot boot.img [38,912,416 bytes] -> SUCCESS (1.18s)',
+  '[  0.410982] FLASHING: fastboot flash dtbo dtbo.img -> SUCCESS (0.12s)',
+  '[  0.489100] VERIFY: Cryptographic hash SHA-256 match: e3b0c44298fc1c149afbf4c8996fb924',
+  '[  0.590120] REBOOT: Bootloader handoff to OS kernel completed.',
+  '[  0.690810] TELEMETRY: Thermal governor active. Max temperature: 38.2°C.',
+  '[  0.810940] STATUS: Kernel execution verified. Core pipeline synchronized.',
+];
+
+export function updateLaptopTerminalCanvas(
+  canvas: HTMLCanvasElement,
+  logOffset: number = 0,
+  cursorBlink: boolean = true
+): void {
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return;
+
+  const w = canvas.width;
+  const h = canvas.height;
+
+  // Background
+  ctx.fillStyle = '#020612';
+  ctx.fillRect(0, 0, w, h);
+
+  // CRT scanlines
+  ctx.fillStyle = 'rgba(0, 242, 254, 0.02)';
+  for (let y = 0; y < h; y += 4) {
+    ctx.fillRect(0, y, w, 2);
+  }
+
+  // Window Top Bar
+  ctx.fillStyle = '#080e1c';
+  ctx.fillRect(0, 0, w, 44);
+  ctx.strokeStyle = 'rgba(6, 182, 212, 0.3)';
+  ctx.lineWidth = 1;
+  ctx.strokeRect(0, 0, w, 44);
+
+  // Window buttons
+  ctx.fillStyle = '#ef4444';
+  ctx.beginPath();
+  ctx.arc(24, 22, 6, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.fillStyle = '#f59e0b';
+  ctx.beginPath();
+  ctx.arc(44, 22, 6, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.fillStyle = '#10b981';
+  ctx.beginPath();
+  ctx.arc(64, 22, 6, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Window Title
+  ctx.fillStyle = '#00f2fe';
+  ctx.font = 'bold 15px monospace';
+  ctx.textAlign = 'left';
+  ctx.fillText('zaid@workstation: ~/android/kernel/xiaomi-lisa', 88, 27);
+
+  ctx.fillStyle = '#10b981';
+  ctx.textAlign = 'right';
+  ctx.fillText('● COMPILER ACTIVE [CLANG 17]', w - 24, 27);
+
+  // Subheader Telemetry
+  ctx.fillStyle = 'rgba(4, 11, 24, 0.85)';
+  ctx.fillRect(0, 44, w, 32);
+  ctx.strokeStyle = 'rgba(6, 182, 212, 0.15)';
+  ctx.strokeRect(0, 44, w, 32);
+
+  ctx.fillStyle = '#94a3b8';
+  ctx.font = '12px monospace';
+  ctx.textAlign = 'left';
+  ctx.fillText('CPU: ARM64 8-Core (Kryo 670)  |  RAM: 14.6/32 GB  |  SELinux: Permissive (Root)', 20, 65);
+
+  ctx.fillStyle = '#00f2fe';
+  ctx.textAlign = 'right';
+  ctx.fillText('FASTBOOTD LINKED [0x2717]', w - 20, 65);
+
+  // Terminal Logs
+  ctx.font = '13px monospace';
+  ctx.textAlign = 'left';
+
+  const visibleCount = 17;
+  const startIdx = Math.max(0, logOffset % (KERNEL_TERMINAL_LOGS.length - 8));
+  const activeSlice = KERNEL_TERMINAL_LOGS.slice(startIdx, startIdx + visibleCount);
+
+  let textY = 105;
+  activeSlice.forEach((line, idx) => {
+    const isOk = line.includes('SUCCESS') || line.includes('[OK]');
+    const isFlash = line.includes('FLASHING') || line.includes('LINK');
+    const isCpu = line.includes('CPU') || line.includes('MEMORY');
+
+    ctx.fillStyle = 'rgba(100, 116, 139, 0.7)';
+    ctx.fillText(String(startIdx + idx + 1).padStart(3, '0'), 20, textY);
+
+    if (isOk) ctx.fillStyle = '#10b981';
+    else if (isFlash) ctx.fillStyle = '#00f2fe';
+    else if (isCpu) ctx.fillStyle = '#38bdf8';
+    else ctx.fillStyle = '#cbd5e1';
+
+    ctx.fillText(line, 60, textY);
+    textY += 28;
+  });
+
+  // Prompt Line
+  ctx.fillStyle = '#10b981';
+  ctx.font = 'bold 15px monospace';
+  ctx.fillText('zaid@workstation:~/kernel# ./build_kernel.sh --target=lisa', 20, textY + 10);
+
+  if (cursorBlink) {
+    ctx.fillStyle = '#00f2fe';
+    ctx.fillRect(580, textY - 4, 10, 18);
+  }
+}
+
+export function createLaptopTerminalCanvas(): HTMLCanvasElement {
+  const canvas = document.createElement('canvas');
+  canvas.width = 1024;
+  canvas.height = 672; // 16:10 aspect ratio matching MacBook Pro screen
+  updateLaptopTerminalCanvas(canvas, 0, true);
+  return canvas;
+}
 
 export function createHackerThoughtsCanvas(): HTMLCanvasElement {
   const canvas = document.createElement('canvas');
@@ -59,25 +196,24 @@ export function createHackerThoughtsCanvas(): HTMLCanvasElement {
   ctx.strokeStyle = '#00f2fe';
   ctx.lineWidth = 5;
   const bracketSize = 36;
-  // Top-Left
   ctx.beginPath();
   ctx.moveTo(32, 32 + bracketSize);
   ctx.lineTo(32, 32);
   ctx.lineTo(32 + bracketSize, 32);
   ctx.stroke();
-  // Top-Right
+
   ctx.beginPath();
   ctx.moveTo(992 - bracketSize, 32);
   ctx.lineTo(992, 32);
   ctx.lineTo(992, 32 + bracketSize);
   ctx.stroke();
-  // Bottom-Left
+
   ctx.beginPath();
   ctx.moveTo(32, 1504 - bracketSize);
   ctx.lineTo(32, 1504);
   ctx.lineTo(32 + bracketSize, 1504);
   ctx.stroke();
-  // Bottom-Right
+
   ctx.beginPath();
   ctx.moveTo(992 - bracketSize, 1504);
   ctx.lineTo(992, 1504);
@@ -463,10 +599,6 @@ export function createAnonymousMaskCanvas(): HTMLCanvasElement {
   return canvas;
 }
 
-/**
- * Procedural Shelf Hacker Display (replaces the doodle frame on the shelf)
- * Realistic Cyber Threat Radar / Kali Exploit Telemetry HUD
- */
 export function createShelfHackerMatrixCanvas(): HTMLCanvasElement {
   const canvas = document.createElement('canvas');
   canvas.width = 1024;
@@ -506,7 +638,6 @@ export function createShelfHackerMatrixCanvas(): HTMLCanvasElement {
   ctx.strokeStyle = '#00f2fe';
   ctx.lineWidth = 5;
   const cLen = 28;
-  // Corners
   ctx.beginPath();
   ctx.moveTo(20, 20 + cLen);
   ctx.lineTo(20, 20);
@@ -547,12 +678,11 @@ export function createShelfHackerMatrixCanvas(): HTMLCanvasElement {
   ctx.textAlign = 'right';
   ctx.fillText('SECURITY STATUS: ZERO-DAY ARMED', 968, 68);
 
-  // 5. Left: Circular Scanning Radar (Center around X=240, Y=340, Radius=160)
+  // 5. Left: Circular Scanning Radar (Center around X=260, Y=340, Radius=170)
   const radarX = 260;
   const radarY = 340;
   const radarR = 170;
 
-  // Radar Rings
   ctx.strokeStyle = 'rgba(16, 185, 129, 0.3)';
   ctx.lineWidth = 1.5;
   for (let r = 40; r <= radarR; r += 42) {
@@ -561,7 +691,6 @@ export function createShelfHackerMatrixCanvas(): HTMLCanvasElement {
     ctx.stroke();
   }
 
-  // Cross lines
   ctx.beginPath();
   ctx.moveTo(radarX - radarR, radarY);
   ctx.lineTo(radarX + radarR, radarY);
@@ -569,7 +698,6 @@ export function createShelfHackerMatrixCanvas(): HTMLCanvasElement {
   ctx.lineTo(radarX, radarY + radarR);
   ctx.stroke();
 
-  // Radar Sweep Cone
   const sweepGrad = ctx.createRadialGradient(radarX, radarY, 10, radarX, radarY, radarR);
   sweepGrad.addColorStop(0, 'rgba(0, 242, 254, 0.4)');
   sweepGrad.addColorStop(1, 'rgba(16, 185, 129, 0.02)');
@@ -580,7 +708,6 @@ export function createShelfHackerMatrixCanvas(): HTMLCanvasElement {
   ctx.closePath();
   ctx.fill();
 
-  // Radar Targets (Blinking nodes)
   const targets = [
     { x: radarX + 65, y: radarY - 45, label: '0x1A: HOST' },
     { x: radarX - 80, y: radarY + 70, label: '0x4F: AP_PROX' },

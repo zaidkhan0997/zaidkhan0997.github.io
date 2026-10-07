@@ -210,16 +210,16 @@ export const HackerScreen: React.FC<HackerScreenProps> = ({ expandProgress = 0 }
       </div>
 
       {/* "ENTERING ZAID'S DIGITAL WORLD" HUD Overlay on Zoom/Expand */}
-      {isEnteringWorld && (
+      {expandProgress > 0.2 && (
         <div
-          className="absolute inset-0 z-40 flex flex-col items-center justify-center p-6 bg-black/90 backdrop-blur-md transition-all duration-500 animate-in fade-in"
+          className="absolute inset-0 z-40 flex flex-col items-center justify-center p-6 bg-black/90 backdrop-blur-md transition-all duration-300"
           style={{
-            opacity: Math.min(1, (expandProgress - 0.65) / 0.25),
+            opacity: Math.min(1, (expandProgress - 0.2) / 0.4),
           }}
         >
           {/* Cyber Ring Graphic */}
           <div className="relative mb-6 flex items-center justify-center">
-            <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-full border border-cyan-500/40 animate-spin border-t-cyan-400 border-r-transparent" />
+            <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-full border-2 border-cyan-500/40 animate-spin border-t-cyan-400 border-r-transparent" />
             <div className="absolute w-16 h-16 sm:w-20 sm:h-20 rounded-full border border-emerald-500/50 animate-ping border-b-emerald-400 border-l-transparent" />
             <ShieldCheck className="w-8 h-8 sm:w-10 sm:h-10 text-cyan-400 absolute animate-pulse" />
           </div>
@@ -239,11 +239,11 @@ export const HackerScreen: React.FC<HackerScreenProps> = ({ expandProgress = 0 }
               INITIALIZING LINUX KERNEL SUBSYSTEMS &amp; ANDROID ARCHITECTURE
             </p>
 
-            <div className="w-full bg-slate-900 h-1.5 rounded-full overflow-hidden border border-cyan-500/30 mt-4">
+            <div className="w-full bg-slate-900 h-2 rounded-full overflow-hidden border border-cyan-500/30 mt-4">
               <div
-                className="h-full bg-gradient-to-r from-emerald-500 via-cyan-400 to-indigo-500 transition-all duration-300"
+                className="h-full bg-gradient-to-r from-emerald-500 via-cyan-400 to-indigo-500 transition-all duration-150"
                 style={{
-                  width: `${Math.min(100, ((expandProgress - 0.65) / 0.35) * 100)}%`,
+                  width: `${Math.min(100, Math.max(5, ((expandProgress - 0.2) / 0.75) * 100))}%`,
                 }}
               />
             </div>
