@@ -4,8 +4,7 @@ import { Canvas, useThree, useFrame } from '@react-three/fiber';
 import { useGLTF, useAnimations, Sparkles } from '@react-three/drei';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { HackerScreen } from './HackerScreen';
-import { ChevronDown, Sparkles as SparklesIcon, ArrowRight } from 'lucide-react';
+import { ChevronDown, Sparkles as SparklesIcon, ArrowRight, ShieldCheck, Zap } from 'lucide-react';
 import {
   createHackerThoughtsCanvas,
   createAnonymousMaskCanvas,
@@ -24,10 +23,6 @@ useGLTF.preload(MODEL_PATH);
 
 const SCREEN_MATERIAL = 'Display.002';
 const SCREEN_PX_W = 1440;
-const NOTCH_W = 0.12;
-const NOTCH_H = 0.0355;
-const NOTCH_R = 0.006;
-const SCREEN_R = 0.009;
 
 // Fixed world coordinates of the hacking workstation
 const WORKSTATION_TARGET = new THREE.Vector3(0.5, 2.65, -2.7);
@@ -85,24 +80,13 @@ function getResponsiveCameraConfig(aspect: number) {
 }
 
 const easeInOut = gsap.parseEase('power2.inOut');
-const CORNERS = [
-  [-1, 1],
-  [1, 1],
-  [-1, -1],
-  [1, -1],
-];
 
 interface LaptopSceneProps {
-  onUpdateOverlay: (
-    bounds: { minX: number; minY: number; w0: number; h0: number } | null,
-    progress: number
-  ) => void;
   scrollProgressRef: React.MutableRefObject<number>;
   pointerRef: React.MutableRefObject<{ x: number; y: number }>;
 }
 
 const LaptopScene: React.FC<LaptopSceneProps> = ({
-  onUpdateOverlay,
   scrollProgressRef,
   pointerRef,
 }) => {
@@ -115,9 +99,8 @@ const LaptopScene: React.FC<LaptopSceneProps> = ({
 
   const clipDuration = useRef(0);
   const anchorRef = useRef<THREE.Object3D | null>(null);
-  const screenDimsRef = useRef<{ pxW: number; pxH: number }>({ pxW: 1440, pxH: 900 });
 
-  // 1. Procedural Wall Frame Posters & Shelf Display Textures
+  // 1. Procedural Wall Frame Posters, Shelf Display, and Dual Desktop Wallpapers
   const { thoughtsTexture, maskTexture, shelfTexture, leftWallpaperTexture, rightWallpaperTexture } = useMemo(() => {
     if (typeof document === 'undefined') {
       return {
@@ -176,22 +159,6 @@ const LaptopScene: React.FC<LaptopSceneProps> = ({
     tex.flipY = true;
     return tex;
   }, [terminalCanvas]);
-
-  // 3. Animated matrix canvas texture for dual background screens
-  const matrixCanvas = useMemo(() => {
-    if (typeof document === 'undefined') return null;
-    const canvas = document.createElement('canvas');
-    canvas.width = 512;
-    canvas.height = 256;
-    return canvas;
-  }, []);
-
-  const matrixTexture = useMemo(() => {
-    if (!matrixCanvas) return null;
-    const tex = new THREE.CanvasTexture(matrixCanvas);
-    tex.colorSpace = THREE.SRGBColorSpace;
-    return tex;
-  }, [matrixCanvas]);
 
   // Set up ACES Filmic tone mapping and colors
   useLayoutEffect(() => {
@@ -358,7 +325,6 @@ const LaptopScene: React.FC<LaptopSceneProps> = ({
 
     const pxW = SCREEN_PX_W;
     const pxH = Math.round((pxW * meshSize.y) / meshSize.x);
-    screenDimsRef.current = { pxW, pxH };
 
     const anchor = new THREE.Object3D();
     anchor.position.copy(center);
@@ -367,7 +333,7 @@ const LaptopScene: React.FC<LaptopSceneProps> = ({
     anchorRef.current = anchor;
 
     // Attach high-res 3D terminal display plane directly to anchor
-    // This solves the black screen issue by providing proper UV mapped geometry
+    // This renders the live terminal directly in WebGL on the laptop screen
     let terminalPlaneMesh: THREE.Mesh | null = null;
     if (terminalTexture) {
       const planeGeo = new THREE.PlaneGeometry(pxW * 0.965, pxH * 0.965);
@@ -405,11 +371,10 @@ const LaptopScene: React.FC<LaptopSceneProps> = ({
       }
       anchorRef.current = null;
     };
-  }, [model, matrixTexture, thoughtsTexture, maskTexture, shelfTexture, terminalTexture, leftWallpaperTexture, rightWallpaperTexture]);
+  }, [model, thoughtsTexture, maskTexture, shelfTexture, terminalTexture, leftWallpaperTexture, rightWallpaperTexture]);
 
-  // Frame loop: update live terminal texture, matrix screens, camera swoop, parallax, and screen projection
+  // Frame loop: update live terminal texture, camera swoop, and parallax
   const frameRef = useRef(0);
-  const matrixCols = useRef<number[]>(new Array(32).fill(0).map(() => Math.floor(Math.random() * 20)));
 
   useFrame(() => {
     frameRef.current++;
@@ -425,37 +390,13 @@ const LaptopScene: React.FC<LaptopSceneProps> = ({
       terminalTexture.needsUpdate = true;
     }
 
-    // 2. Animate background matrix canvas texture every 3 frames
-    if (matrixCanvas && matrixTexture && frameRef.current % 3 === 0) {
-      const ctx = matrixCanvas.getContext('2d');
-      if (ctx) {
-        ctx.fillStyle = 'rgba(2, 6, 23, 0.18)';
-        ctx.fillRect(0, 0, matrixCanvas.width, matrixCanvas.height);
-        ctx.fillStyle = '#00f2fe';
-        ctx.font = '10px monospace';
-        const glyphs = '0123456789ABCDEF<>/:;*%$#@!&';
-        for (let i = 0; i < matrixCols.current.length; i++) {
-          const char = glyphs[Math.floor(Math.random() * glyphs.length)];
-          const x = i * 16;
-          const y = matrixCols.current[i] * 12;
-          ctx.fillText(char, x, y);
-          if (y > matrixCanvas.height && Math.random() > 0.95) {
-            matrixCols.current[i] = 0;
-          } else {
-            matrixCols.current[i]++;
-          }
-        }
-        matrixTexture.needsUpdate = true;
-      }
-    }
-
-    // 3. Sync laptop lid opening animation clip with scroll
+    // 2. Sync laptop lid opening animation clip with scroll
     const action = actions['EmptyAction.001'];
     if (action && clipDuration.current > 0) {
       action.time = clamp(p * 1.35, 0, 1) * clipDuration.current;
     }
 
-    // 4. Smooth camera swoop from workstation view into the laptop screen
+    // 3. Smooth camera swoop from workstation view into the laptop screen
     const t = clamp(p / 0.85, 0, 1);
     const easeT = easeInOut(t);
 
@@ -474,38 +415,6 @@ const LaptopScene: React.FC<LaptopSceneProps> = ({
 
     camera.fov = lerp(config.startFov, config.endFov, easeT);
     camera.updateProjectionMatrix();
-
-    // 5. Calculate screen projection onto 2D viewport
-    const anchor = anchorRef.current;
-    if (!anchor) return;
-
-    const v = new THREE.Vector3();
-    const { pxW, pxH } = screenDimsRef.current;
-    camera.updateMatrixWorld();
-    anchor.updateWorldMatrix(true, false);
-
-    const canvasEl = gl.domElement;
-    const r = canvasEl.getBoundingClientRect();
-
-    let minX = Infinity;
-    let minY = Infinity;
-    let maxX = -Infinity;
-    let maxY = -Infinity;
-
-    for (const [sx, sy] of CORNERS) {
-      v.set((sx * pxW) / 2, (sy * pxH) / 2, 0).applyMatrix4(anchor.matrixWorld).project(camera);
-      const x = r.left + (v.x * 0.5 + 0.5) * r.width;
-      const y = r.top + (-v.y * 0.5 + 0.5) * r.height;
-      minX = Math.min(minX, x);
-      maxX = Math.max(maxX, x);
-      minY = Math.min(minY, y);
-      maxY = Math.max(maxY, y);
-    }
-
-    const w0 = maxX - minX;
-    const h0 = maxY - minY;
-
-    onUpdateOverlay({ minX, minY, w0, h0 }, p);
   });
 
   return (
@@ -580,9 +489,6 @@ export const HackerWorkstation3D: React.FC = () => {
   const pointerRef = useRef({ x: 0, y: 0 });
 
   const canvasWrapperRef = useRef<HTMLDivElement>(null);
-  const overlayRef = useRef<HTMLDivElement>(null);
-  const notchRef = useRef<HTMLDivElement>(null);
-  const [expandProgress, setExpandProgress] = useState(0);
   const [scrollProgressState, setScrollProgressState] = useState(0);
 
   // Parallax pointer handler (works seamlessly for mouse and touch)
@@ -639,102 +545,33 @@ export const HackerWorkstation3D: React.FC = () => {
     }
   }, []);
 
-  const handleUpdateOverlay = useCallback(
-    (
-      bounds: { minX: number; minY: number; w0: number; h0: number } | null,
-      progress: number
-    ) => {
-      const overlay = overlayRef.current;
-      const notch = notchRef.current;
-      const canvasWrapper = canvasWrapperRef.current;
-      if (!overlay || !notch || !bounds) return;
-
-      // 1. COMPLETION GATE (progress >= 0.95):
-      // Cleanly unmount/hide intro so user NEVER gets stuck!
-      if (progress >= 0.95) {
-        overlay.style.display = 'none';
-        overlay.style.opacity = '0';
-        overlay.style.pointerEvents = 'none';
-        if (canvasWrapper) {
-          canvasWrapper.style.display = 'none';
-          canvasWrapper.style.opacity = '0';
-        }
-        setExpandProgress(1);
-        return;
-      }
-
-      // Restore display when scrolling back up into intro
-      if (canvasWrapper) {
-        canvasWrapper.style.display = 'block';
-      }
-
-      // 2. 3D ZOOM PHASE (progress < 0.70):
-      // Keep 2D HTML overlay hidden; user looks at the live 3D screen in the room
-      if (progress < 0.70) {
-        overlay.style.display = 'none';
-        overlay.style.opacity = '0';
-        overlay.style.pointerEvents = 'none';
-        if (canvasWrapper) canvasWrapper.style.opacity = '1';
-        setExpandProgress(0);
-        return;
-      }
-
-      // 3. DOCKING & HUD GATE PHASE (progress 0.70 -> 0.95):
-      overlay.style.display = 'block';
-
-      // Normalized expansion factor (0 to 1)
-      const dockT = clamp((progress - 0.70) / 0.18, 0, 1);
-      const e = easeInOut(dockT);
-      setExpandProgress(dockT);
-
-      // Smooth fade-in and eventual fade-out into portfolio
-      let alpha = 1;
-      if (progress < 0.76) {
-        alpha = clamp((progress - 0.70) / 0.06, 0, 1);
-      } else if (progress > 0.88) {
-        alpha = Math.max(0, 1 - (progress - 0.88) / 0.07);
-      }
-
-      overlay.style.opacity = `${alpha}`;
-      overlay.style.pointerEvents = 'none'; // Never capture clicks so scroll flows freely
-      if (canvasWrapper) {
-        canvasWrapper.style.opacity = `${alpha}`;
-      }
-
-      const { minX, minY, w0, h0 } = bounds;
-      const w = lerp(w0, window.innerWidth, e);
-      const h = lerp(h0, window.innerHeight, e);
-      const left = lerp(minX, 0, e);
-      const top = lerp(minY, 0, e);
-      const borderRadius = lerp(w0 * SCREEN_R, 0, e);
-
-      overlay.style.left = `${left}px`;
-      overlay.style.top = `${top}px`;
-      overlay.style.width = `${w}px`;
-      overlay.style.height = `${h}px`;
-      overlay.style.borderRadius = `${borderRadius}px`;
-
-      // Notch slides up off screen when expanding
-      const nh = h0 * NOTCH_H;
-      const nr = w0 * NOTCH_R;
-      notch.style.width = `${w0 * NOTCH_W}px`;
-      notch.style.height = `${nh}px`;
-      notch.style.borderRadius = `0 0 ${nr}px ${nr}px`;
-      notch.style.transform = `translate(-50%, ${-nh * clamp(e / 0.5, 0, 1)}px)`;
-    },
-    []
-  );
-
   // Scroll indicator opacity: fades smoothly when scrolling starts
   const scrollPromptOpacity = Math.max(0, 1 - scrollProgressState * 8);
 
+  // Intro wrapper fade-out into portfolio:
+  // Stays 100% visible and on top (z-40) through the 3D intro
+  // Between progress 0.92 and 0.98, cleanly dissolves into portfolio
+  // Past 0.98, completely unmounts/hides so portfolio has 0 obstruction!
+  const introOpacity =
+    scrollProgressState >= 0.98
+      ? 0
+      : scrollProgressState >= 0.92
+      ? Math.max(0, 1 - (scrollProgressState - 0.92) / 0.06)
+      : 1;
+
+  const isIntroHidden = scrollProgressState >= 0.98;
+
   return (
     <div id="hacker-workstation-intro" className="relative w-full">
-      {/* 3D WebGL Background Canvas (Fixed, dynamic viewport height compatible) */}
+      {/* 3D WebGL Background Canvas (Fixed at z-40 so it stays ON TOP of portfolio until transition finishes) */}
       <div
         ref={canvasWrapperRef}
         id="hacker-workstation-canvas-wrapper"
-        className="fixed inset-0 z-0 w-full h-[100dvh] bg-[#02050e] pointer-events-none transition-opacity duration-300"
+        className="fixed inset-0 z-40 w-full h-[100dvh] bg-[#02050e] pointer-events-none transition-opacity duration-300"
+        style={{
+          opacity: introOpacity,
+          display: isIntroHidden ? 'none' : 'block',
+        }}
       >
         <Canvas
           dpr={[1, Math.min(typeof window !== 'undefined' ? window.devicePixelRatio : 2, 2)]}
@@ -748,7 +585,6 @@ export const HackerWorkstation3D: React.FC = () => {
         >
           <React.Suspense fallback={null}>
             <LaptopScene
-              onUpdateOverlay={handleUpdateOverlay}
               scrollProgressRef={scrollProgressRef}
               pointerRef={pointerRef}
             />
@@ -756,28 +592,54 @@ export const HackerWorkstation3D: React.FC = () => {
         </Canvas>
       </div>
 
-      {/* Floating 3D Laptop Screen Overlay (Only docks when camera reaches screen) */}
-      <div
-        ref={overlayRef}
-        className="fixed z-20 overflow-hidden pointer-events-none transition-[opacity] duration-150 border border-cyan-500/30 shadow-[0_0_50px_rgba(6,182,212,0.3)]"
-        style={{
-          display: 'none',
-          opacity: 0,
-          background: '#030712',
-        }}
-      >
-        <HackerScreen expandProgress={expandProgress} />
-
-        {/* Mac / Laptop Camera Notch */}
+      {/* Full-Screen Cyber Transition Portal HUD (Reveals at zoom climax, charges to 100%, then dissolves cleanly) */}
+      {scrollProgressState >= 0.82 && scrollProgressState < 0.98 && (
         <div
-          ref={notchRef}
-          className="absolute top-0 left-1/2 -translate-x-1/2 bg-black z-30 pointer-events-none transition-transform"
-        />
-      </div>
+          className="fixed inset-0 z-50 flex flex-col items-center justify-center p-6 bg-black/90 backdrop-blur-md pointer-events-none transition-opacity duration-200"
+          style={{
+            opacity:
+              scrollProgressState < 0.88
+                ? clamp((scrollProgressState - 0.82) / 0.05, 0, 1)
+                : clamp(1 - (scrollProgressState - 0.92) / 0.06, 0, 1),
+          }}
+        >
+          {/* Cyber Ring Graphic */}
+          <div className="relative mb-6 flex items-center justify-center">
+            <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-full border-2 border-cyan-500/40 animate-spin border-t-cyan-400 border-r-transparent" />
+            <div className="absolute w-16 h-16 sm:w-20 sm:h-20 rounded-full border border-emerald-500/50 animate-ping border-b-emerald-400 border-l-transparent" />
+            <ShieldCheck className="w-8 h-8 sm:w-10 sm:h-10 text-cyan-400 absolute animate-pulse" />
+          </div>
+
+          {/* Access Banner */}
+          <div className="text-center space-y-2 max-w-lg">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-400/40 text-[11px] sm:text-xs text-emerald-400 font-semibold tracking-widest uppercase">
+              <Zap className="w-3.5 h-3.5 text-emerald-400" />
+              AUTHENTICATION VERIFIED • LEVEL 0
+            </div>
+
+            <h1 className="text-xl sm:text-3xl md:text-4xl font-extrabold tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-cyan-300 to-indigo-400 drop-shadow-[0_0_20px_rgba(6,182,212,0.8)] uppercase">
+              ENTERING ZAID&apos;S DIGITAL WORLD
+            </h1>
+
+            <p className="text-xs sm:text-sm text-slate-400 font-mono tracking-wide pt-1">
+              INITIALIZING LINUX KERNEL SUBSYSTEMS &amp; ANDROID ARCHITECTURE
+            </p>
+
+            <div className="w-full bg-slate-900 h-2 rounded-full overflow-hidden border border-cyan-500/30 mt-4">
+              <div
+                className="h-full bg-gradient-to-r from-emerald-500 via-cyan-400 to-indigo-500 transition-all duration-150"
+                style={{
+                  width: `${Math.min(100, Math.max(5, ((scrollProgressState - 0.82) / 0.12) * 100))}%`,
+                }}
+              />
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Top-Right "Skip Intro / Enter Portfolio" Button */}
       {scrollProgressState < 0.90 && (
-        <div className="fixed top-5 right-5 z-30">
+        <div className="fixed top-5 right-5 z-50">
           <button
             onClick={scrollToPortfolio}
             className="group flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-950/80 border border-cyan-500/40 text-cyan-300 hover:text-white hover:border-cyan-400 hover:bg-cyan-950/40 backdrop-blur-md shadow-[0_0_20px_rgba(6,182,212,0.25)] transition-all text-xs font-mono tracking-wider cursor-pointer active:scale-95"
@@ -791,7 +653,7 @@ export const HackerWorkstation3D: React.FC = () => {
       {/* Bottom Scroll Indicator: Sleek, compact, clickable, fades upon scrolling */}
       {scrollPromptOpacity > 0.05 && (
         <div
-          className="fixed bottom-4 left-1/2 -translate-x-1/2 z-30 flex flex-col items-center gap-1 pointer-events-auto transition-opacity duration-200 pb-[env(safe-area-inset-bottom,0px)]"
+          className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-1 pointer-events-auto transition-opacity duration-200 pb-[env(safe-area-inset-bottom,0px)]"
           style={{
             opacity: scrollPromptOpacity,
             transform: `translate(-50%, ${scrollProgressState * 15}px)`,
