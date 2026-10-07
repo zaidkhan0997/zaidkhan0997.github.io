@@ -13,6 +13,10 @@ import {
   updateLaptopTerminalCanvas,
   createLeftDesktopHackerWallpaperCanvas,
   createRightDesktopHackerWallpaperCanvas,
+  createDefconPosterCanvas,
+  createAcousticFoamCanvas,
+  updateLeftHackerMonitorCanvas,
+  updateRightHackerMonitorCanvas,
 } from './workstationPosters';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -100,14 +104,28 @@ const LaptopScene: React.FC<LaptopSceneProps> = ({
   const clipDuration = useRef(0);
   const anchorRef = useRef<THREE.Object3D | null>(null);
 
-  // 1. Procedural Wall Frame Posters, Shelf Display, and Dual Desktop Wallpapers
-  const { thoughtsTexture, maskTexture, shelfTexture, leftWallpaperTexture, rightWallpaperTexture } = useMemo(() => {
+  // 1. Procedural Wall Frame Posters, Shelf Display, Acoustic Foam, and Dual Desktop Wallpapers
+  const {
+    thoughtsTexture,
+    maskTexture,
+    shelfTexture,
+    defconTexture,
+    acousticFoamTexture,
+    leftCanvas,
+    leftWallpaperTexture,
+    rightCanvas,
+    rightWallpaperTexture,
+  } = useMemo(() => {
     if (typeof document === 'undefined') {
       return {
         thoughtsTexture: null,
         maskTexture: null,
         shelfTexture: null,
+        defconTexture: null,
+        acousticFoamTexture: null,
+        leftCanvas: null,
         leftWallpaperTexture: null,
+        rightCanvas: null,
         rightWallpaperTexture: null,
       };
     }
@@ -126,14 +144,28 @@ const LaptopScene: React.FC<LaptopSceneProps> = ({
     sTex.colorSpace = THREE.SRGBColorSpace;
     sTex.flipY = true;
 
-    // Dual Monitor Authentic Hacker Desktop Wallpapers (replacing default Witcher pictures)
-    const leftCanvas = createLeftDesktopHackerWallpaperCanvas();
-    const lTex = new THREE.CanvasTexture(leftCanvas);
+    // Iconic DEFCON Poster with Anonymous Mask from reference photo
+    const defconCanvas = createDefconPosterCanvas();
+    const dTex = new THREE.CanvasTexture(defconCanvas);
+    dTex.colorSpace = THREE.SRGBColorSpace;
+    dTex.flipY = true;
+
+    // Charcoal 3D Acoustic Pyramid Soundproofing Foam for Studio Walls
+    const foamCanvas = createAcousticFoamCanvas();
+    const fTex = new THREE.CanvasTexture(foamCanvas);
+    fTex.wrapS = THREE.RepeatWrapping;
+    fTex.wrapT = THREE.RepeatWrapping;
+    fTex.repeat.set(12, 8);
+    fTex.colorSpace = THREE.SRGBColorSpace;
+
+    // Dual Monitor Authentic Hacker Desktop Wallpapers (Wireshark + Kali Cyber Attack Map)
+    const lCanvas = createLeftDesktopHackerWallpaperCanvas();
+    const lTex = new THREE.CanvasTexture(lCanvas);
     lTex.colorSpace = THREE.SRGBColorSpace;
     lTex.flipY = true;
 
-    const rightCanvas = createRightDesktopHackerWallpaperCanvas();
-    const rTex = new THREE.CanvasTexture(rightCanvas);
+    const rCanvas = createRightDesktopHackerWallpaperCanvas();
+    const rTex = new THREE.CanvasTexture(rCanvas);
     rTex.colorSpace = THREE.SRGBColorSpace;
     rTex.flipY = true;
 
@@ -141,7 +173,11 @@ const LaptopScene: React.FC<LaptopSceneProps> = ({
       thoughtsTexture: tTex,
       maskTexture: mTex,
       shelfTexture: sTex,
+      defconTexture: dTex,
+      acousticFoamTexture: fTex,
+      leftCanvas: lCanvas,
       leftWallpaperTexture: lTex,
+      rightCanvas: rCanvas,
       rightWallpaperTexture: rTex,
     };
   }, []);
@@ -204,8 +240,29 @@ const LaptopScene: React.FC<LaptopSceneProps> = ({
           foundMesh = mesh;
         }
 
-        // 2. Replace Wall Poster 1 ("FEAR THE DARK KNIGHT" -> "Hacker Thoughts")
-        if (matName === 'fear_the_dark' || meshName === 'Object_24' || meshName === 'Object_22') {
+        // 2. Replace Wall Poster 1 ("FEAR THE DARK KNIGHT" -> DEFCON Anonymous Hacker Poster)
+        if (
+          matName === 'fear_the_dark' ||
+          matName === 'fear_the_dark.001' ||
+          matName === 'fear_the_dark.002' ||
+          meshName === 'Object_24' ||
+          meshName === 'Object_22' ||
+          meshName === 'Object_23'
+        ) {
+          if (defconTexture) {
+            mesh.material = new THREE.MeshStandardMaterial({
+              map: defconTexture,
+              emissive: new THREE.Color(0xffffff),
+              emissiveMap: defconTexture,
+              emissiveIntensity: 0.55,
+              roughness: 0.25,
+              metalness: 0.1,
+            });
+          }
+        }
+
+        // 3. Replace Wall Poster 2 ("OBEY THE FALSE GOD" -> Hacker Thoughts & Axioms)
+        if (matName === 'obey_the_god' || meshName === 'Object_36' || meshName === 'Object_34') {
           if (thoughtsTexture) {
             mesh.material = new THREE.MeshStandardMaterial({
               map: thoughtsTexture,
@@ -218,28 +275,14 @@ const LaptopScene: React.FC<LaptopSceneProps> = ({
           }
         }
 
-        // 3. Replace Wall Poster 2 ("OBEY THE FALSE GOD" -> "Anonymous Mask")
-        if (matName === 'obey_the_god' || meshName === 'Object_36' || meshName === 'Object_34') {
+        // 4. Replace Shelf Frame ("doodle canvas" -> Anonymous Mask illuminated plaque)
+        if (matName === 'canvas' || meshName === 'Object_12' || meshName === 'Object_14') {
           if (maskTexture) {
             mesh.material = new THREE.MeshStandardMaterial({
               map: maskTexture,
               emissive: new THREE.Color(0x10b981),
               emissiveMap: maskTexture,
-              emissiveIntensity: 0.45,
-              roughness: 0.25,
-              metalness: 0.1,
-            });
-          }
-        }
-
-        // 4. Replace Shelf Frame ("doodle canvas" -> Kali Cyber Threat Radar)
-        if (matName === 'canvas' || meshName === 'Object_12' || meshName === 'Object_14') {
-          if (shelfTexture) {
-            mesh.material = new THREE.MeshStandardMaterial({
-              map: shelfTexture,
-              emissive: new THREE.Color(0x00f2fe),
-              emissiveMap: shelfTexture,
-              emissiveIntensity: 0.65,
+              emissiveIntensity: 0.75,
               roughness: 0.2,
               metalness: 0.1,
             });
@@ -247,43 +290,69 @@ const LaptopScene: React.FC<LaptopSceneProps> = ({
           }
         }
 
-        // 5. Remove BOTH White Speakers (Cabinets + Cones)
+        // 5. Studio Acoustic Soundproofing Pyramid Foam Walls (Matches reference photo)
+        if (
+          matName.startsWith('walls') ||
+          meshName === 'Object_47' ||
+          meshName === 'Object_48' ||
+          meshName === 'Object_111'
+        ) {
+          if (acousticFoamTexture) {
+            mesh.material = new THREE.MeshStandardMaterial({
+              map: acousticFoamTexture,
+              bumpMap: acousticFoamTexture,
+              bumpScale: 0.08,
+              roughness: 0.92,
+              metalness: 0.05,
+              color: new THREE.Color(0x151c28),
+            });
+          }
+        }
+
+        // 6. Deep Dark Walnut Wood Desk finish (Matches reference photo)
+        if (matName === 'desk_wood' || matName === 'coffee_table' || meshName === 'Object_80' || meshName === 'Object_81') {
+          mesh.material = new THREE.MeshStandardMaterial({
+            color: new THREE.Color(0x1e1914),
+            roughness: 0.45,
+            metalness: 0.06,
+          });
+        }
+
+        // 7. Remove BOTH White Speakers (Cabinets + Cones) - Note: Object_109 is speaker, Object_111 is walls.001!
         const isSpeaker =
           matName === 'speaker_2' ||
           matName === 'Material.018' ||
-          meshName === 'Object_111' ||
+          meshName === 'Object_109' ||
           meshName === 'Object_53';
 
-        // 6. Remove Headphones
+        // 8. Remove Headphones
         const isHeadphone =
           matName === 'headphone' ||
           matName === 'headphone_snger' ||
-          meshName === 'Object_89' ||
-          meshName === 'Object_92';
+          meshName === 'Object_87' ||
+          meshName === 'Object_90';
 
-        // 7. Remove Juice Glass & Coaster
+        // 9. Remove Juice Glass & Coaster
         const isJuiceGlass =
           matName.startsWith('drink') ||
           matName === 'Material.019' ||
           meshName === 'Object_19' ||
           meshName === 'Object_21' ||
-          meshName === 'Object_22' ||
-          meshName === 'Object_23' ||
           meshName === 'Object_5';
 
         if (isSpeaker || isHeadphone || isJuiceGlass) {
           mesh.visible = false;
         }
 
-        // 8. Replace dual background monitors with HD Hacker Desktop Wallpapers
+        // 10. Replace dual background monitors with HD Animated Hacker Displays
         if (matName === 'screen' || meshName === 'Object_42') {
           if (leftWallpaperTexture) {
             mesh.material = new THREE.MeshStandardMaterial({
               map: leftWallpaperTexture,
               emissive: new THREE.Color(0x00f2fe),
               emissiveMap: leftWallpaperTexture,
-              emissiveIntensity: 0.65,
-              roughness: 0.25,
+              emissiveIntensity: 0.85,
+              roughness: 0.2,
               metalness: 0.1,
             });
           }
@@ -295,14 +364,14 @@ const LaptopScene: React.FC<LaptopSceneProps> = ({
               map: rightWallpaperTexture,
               emissive: new THREE.Color(0x00f2fe),
               emissiveMap: rightWallpaperTexture,
-              emissiveIntensity: 0.65,
-              roughness: 0.25,
+              emissiveIntensity: 0.85,
+              roughness: 0.2,
               metalness: 0.1,
             });
           }
         }
 
-        // 9. Enhance PC tower fan LED with glowing cyber red
+        // 11. Enhance PC tower fan LED with glowing cyber red
         if (matName === 'fan_led') {
           mat.emissive = new THREE.Color(0xff1544);
           mat.emissiveIntensity = 5.0;
@@ -371,7 +440,17 @@ const LaptopScene: React.FC<LaptopSceneProps> = ({
       }
       anchorRef.current = null;
     };
-  }, [model, thoughtsTexture, maskTexture, shelfTexture, terminalTexture, leftWallpaperTexture, rightWallpaperTexture]);
+  }, [
+    model,
+    thoughtsTexture,
+    maskTexture,
+    shelfTexture,
+    defconTexture,
+    acousticFoamTexture,
+    terminalTexture,
+    leftWallpaperTexture,
+    rightWallpaperTexture,
+  ]);
 
   // Frame loop: update live terminal texture, camera swoop, and parallax
   const frameRef = useRef(0);
@@ -390,13 +469,25 @@ const LaptopScene: React.FC<LaptopSceneProps> = ({
       terminalTexture.needsUpdate = true;
     }
 
-    // 2. Sync laptop lid opening animation clip with scroll
+    // 2. Animate Left Hacker Monitor (Wireshark Packet Sniffer + Decrypting Target cracking)
+    if (leftCanvas && leftWallpaperTexture && frameRef.current % 3 === 0) {
+      updateLeftHackerMonitorCanvas(leftCanvas, frameRef.current);
+      leftWallpaperTexture.needsUpdate = true;
+    }
+
+    // 3. Animate Right Hacker Monitor (Kali Global Cyber Attack Map + Infrastructure Topology)
+    if (rightCanvas && rightWallpaperTexture && frameRef.current % 3 === 0) {
+      updateRightHackerMonitorCanvas(rightCanvas, frameRef.current);
+      rightWallpaperTexture.needsUpdate = true;
+    }
+
+    // 4. Sync laptop lid opening animation clip with scroll
     const action = actions['EmptyAction.001'];
     if (action && clipDuration.current > 0) {
       action.time = clamp(p * 1.35, 0, 1) * clipDuration.current;
     }
 
-    // 3. Smooth camera swoop from workstation view into the laptop screen
+    // 5. Smooth camera swoop from workstation view into the laptop screen
     const t = clamp(p / 0.85, 0, 1);
     const easeT = easeInOut(t);
 
@@ -423,12 +514,12 @@ const LaptopScene: React.FC<LaptopSceneProps> = ({
       <primitive object={model.scene} position={[0, 0, 0]} scale={[1, 1, 1]} />
 
       {/* Cyberpunk Room Lighting Architecture */}
-      <ambientLight intensity={0.7} color="#080e21" />
+      <ambientLight intensity={0.65} color="#060c1d" />
 
       {/* Cyan Monitor Glow (Casts light from screens onto desk & keyboard) */}
       <pointLight
         position={[0.5, 3.2, -2.5]}
-        intensity={8.0}
+        intensity={9.0}
         color="#00f2fe"
         distance={10}
         decay={2}
@@ -437,7 +528,7 @@ const LaptopScene: React.FC<LaptopSceneProps> = ({
       {/* Emerald Green Keyboard Terminal Light */}
       <pointLight
         position={[0.5, 2.3, -2.1]}
-        intensity={4.5}
+        intensity={5.0}
         color="#10b981"
         distance={6}
         decay={2}
@@ -452,12 +543,51 @@ const LaptopScene: React.FC<LaptopSceneProps> = ({
         decay={2}
       />
 
-      {/* Deep Violet / Indigo Rim Light (Back wall ambience) */}
+      {/* Deep Violet / Indigo Back Wall Ambience */}
       <pointLight
         position={[-3.2, 3.5, -2.8]}
         intensity={6.0}
         color="#818cf8"
         distance={12}
+        decay={2}
+      />
+
+      {/* Vertical Cyber Neon LED Tube Lightbar on shelf (Matches reference image) */}
+      <group position={[-0.8, 4.38, -3.15]}>
+        <mesh>
+          <cylinderGeometry args={[0.045, 0.045, 0.76, 24]} />
+          <meshStandardMaterial
+            color="#f0f9ff"
+            emissive="#38bdf8"
+            emissiveIntensity={6.0}
+            roughness={0.1}
+            toneMapped={false}
+          />
+        </mesh>
+        <mesh position={[0, 0.39, 0]}>
+          <cylinderGeometry args={[0.052, 0.052, 0.03, 16]} />
+          <meshStandardMaterial color="#0f172a" roughness={0.5} />
+        </mesh>
+        <mesh position={[0, -0.39, 0]}>
+          <cylinderGeometry args={[0.065, 0.065, 0.04, 16]} />
+          <meshStandardMaterial color="#0f172a" roughness={0.5} />
+        </mesh>
+        {/* Dedicated White/Cyan Light Emission from the Tube */}
+        <pointLight
+          position={[0, 0, 0.1]}
+          intensity={5.5}
+          color="#bae6fd"
+          distance={6}
+          decay={2}
+        />
+      </group>
+
+      {/* Shelf Top-Right Purple / Violet Accent Rim Light (Exact match to reference photo) */}
+      <pointLight
+        position={[2.4, 4.65, -3.1]}
+        intensity={6.5}
+        color="#c084fc"
+        distance={7}
         decay={2}
       />
 
@@ -472,7 +602,7 @@ const LaptopScene: React.FC<LaptopSceneProps> = ({
 
       {/* Floating Cyber Particle Embers */}
       <Sparkles
-        count={65}
+        count={75}
         scale={[7, 4, 6]}
         position={[0.5, 2.8, -1.5]}
         size={2.2}
