@@ -1,7 +1,8 @@
 /**
- * Procedural High-Definition Canvas Textures for Cyberpunk Workstation Wall Posters
+ * Procedural High-Definition Canvas Textures for Cyberpunk Workstation Wall Posters & Shelf Displays
  * - Poster 1: "Hacker Thoughts" (Philosophical hacker axioms & cybernetic circuit HUD)
  * - Poster 2: "Anonymous Mask" (Iconic Guy Fawkes hacker mask with Matrix rain & manifesto)
+ * - Shelf Display: "Kali Cyber Threat Radar" (High-tech exploit & network monitor replacing shelf doodle)
  */
 
 export function createHackerThoughtsCanvas(): HTMLCanvasElement {
@@ -168,7 +169,6 @@ export function createHackerThoughtsCanvas(): HTMLCanvasElement {
 
   let cardY = 445;
   thoughts.forEach((item) => {
-    // Card background
     ctx.fillStyle = 'rgba(9, 14, 28, 0.75)';
     ctx.fillRect(96, cardY, 832, 138);
 
@@ -176,17 +176,14 @@ export function createHackerThoughtsCanvas(): HTMLCanvasElement {
     ctx.lineWidth = 1;
     ctx.strokeRect(96, cardY, 832, 138);
 
-    // Left indicator bar
     ctx.fillStyle = item.color;
     ctx.fillRect(96, cardY, 6, 138);
 
-    // Card Index
     ctx.fillStyle = item.color;
     ctx.font = 'bold 28px monospace';
     ctx.textAlign = 'left';
     ctx.fillText(item.idx, 124, cardY + 44);
 
-    // Card Title
     ctx.save();
     ctx.shadowColor = item.color;
     ctx.shadowBlur = 10;
@@ -196,7 +193,6 @@ export function createHackerThoughtsCanvas(): HTMLCanvasElement {
     ctx.fillText(item.title, 180, cardY + 42);
     ctx.restore();
 
-    // Card Quotes (multi-line)
     ctx.fillStyle = 'rgba(203, 213, 225, 0.85)';
     ctx.font = '16px monospace';
     const lines = item.quote.split('\n');
@@ -272,25 +268,24 @@ export function createAnonymousMaskCanvas(): HTMLCanvasElement {
   ctx.strokeStyle = '#10b981';
   ctx.lineWidth = 4;
   const cornerLen = 40;
-  // Top-left
   ctx.beginPath();
   ctx.moveTo(32, 32 + cornerLen);
   ctx.lineTo(32, 32);
   ctx.lineTo(32 + cornerLen, 32);
   ctx.stroke();
-  // Top-right
+
   ctx.beginPath();
   ctx.moveTo(992 - cornerLen, 32);
   ctx.lineTo(992, 32);
   ctx.lineTo(992, 32 + cornerLen);
   ctx.stroke();
-  // Bottom-left
+
   ctx.beginPath();
   ctx.moveTo(32, 1504 - cornerLen);
   ctx.lineTo(32, 1504);
   ctx.lineTo(32 + cornerLen, 1504);
   ctx.stroke();
-  // Bottom-right
+
   ctx.beginPath();
   ctx.moveTo(992 - cornerLen, 1504);
   ctx.lineTo(992, 1504);
@@ -314,7 +309,7 @@ export function createAnonymousMaskCanvas(): HTMLCanvasElement {
   ctx.textAlign = 'center';
   ctx.fillText('KNOWLEDGE IS FREE • WE ARE VOICE OF THE VOICELESS', 512, 205);
 
-  // 5. Stylized Vector Guy Fawkes Anonymous Mask (Centered around Y=620)
+  // 5. Stylized Vector Guy Fawkes Anonymous Mask (Centered around Y=600)
   ctx.save();
   ctx.translate(512, 600);
 
@@ -330,18 +325,14 @@ export function createAnonymousMaskCanvas(): HTMLCanvasElement {
   ctx.lineWidth = 3;
   ctx.stroke();
 
-  // B. Mask Face Porcelain Base (Smooth Oval/Chin Contour)
+  // B. Mask Face Porcelain Base
   ctx.beginPath();
   ctx.moveTo(-130, -100);
-  // Forehead arch
   ctx.bezierCurveTo(-140, -180, 140, -180, 130, -100);
-  // Right cheek down to pointed chin
   ctx.bezierCurveTo(150, 20, 110, 160, 0, 240);
-  // Pointed chin back up left cheek
   ctx.bezierCurveTo(-110, 160, -150, 20, -130, -100);
   ctx.closePath();
 
-  // Porcelain White with subtle shadow gradient
   const faceGrad = ctx.createRadialGradient(0, -20, 20, 0, 40, 240);
   faceGrad.addColorStop(0, '#ffffff');
   faceGrad.addColorStop(0.75, '#e2e8f0');
@@ -356,39 +347,35 @@ export function createAnonymousMaskCanvas(): HTMLCanvasElement {
   ctx.strokeStyle = '#0f172a';
   ctx.fillStyle = '#0f172a';
   ctx.lineWidth = 6;
-  // Left eyebrow
   ctx.beginPath();
   ctx.moveTo(-95, -70);
   ctx.quadraticCurveTo(-60, -115, -20, -78);
   ctx.stroke();
-  // Right eyebrow
   ctx.beginPath();
   ctx.moveTo(95, -70);
   ctx.quadraticCurveTo(60, -115, 20, -78);
   ctx.stroke();
 
   // D. Narrow Sly Eye Slits
-  // Left eye
   ctx.beginPath();
   ctx.moveTo(-85, -50);
   ctx.quadraticCurveTo(-55, -68, -25, -48);
   ctx.quadraticCurveTo(-55, -35, -85, -50);
   ctx.fillStyle = '#020617';
   ctx.fill();
-  // Left glowing cyber pupil
+
   ctx.fillStyle = '#00f2fe';
   ctx.beginPath();
   ctx.arc(-55, -50, 4, 0, Math.PI * 2);
   ctx.fill();
 
-  // Right eye
   ctx.beginPath();
   ctx.moveTo(85, -50);
   ctx.quadraticCurveTo(55, -68, 25, -48);
   ctx.quadraticCurveTo(55, -35, 85, -50);
   ctx.fillStyle = '#020617';
   ctx.fill();
-  // Right glowing cyber pupil
+
   ctx.fillStyle = '#00f2fe';
   ctx.beginPath();
   ctx.arc(55, -50, 4, 0, Math.PI * 2);
@@ -406,12 +393,9 @@ export function createAnonymousMaskCanvas(): HTMLCanvasElement {
   // F. Signature Thin Upward-Curved Mustache
   ctx.fillStyle = '#090d16';
   ctx.beginPath();
-  // Center dip under nose
   ctx.moveTo(0, 75);
-  // Left mustache wing curling up
   ctx.bezierCurveTo(-40, 68, -100, 78, -125, 52);
   ctx.bezierCurveTo(-105, 88, -45, 96, 0, 90);
-  // Right mustache wing curling up
   ctx.bezierCurveTo(45, 96, 105, 88, 125, 52);
   ctx.bezierCurveTo(100, 78, 40, 68, 0, 75);
   ctx.closePath();
@@ -475,6 +459,209 @@ export function createAnonymousMaskCanvas(): HTMLCanvasElement {
   ctx.fillText('//////////////////  ANONYMOUS COLLECTIVE  //////////////////', 512, 1420);
   ctx.fillStyle = 'rgba(148, 163, 184, 0.6)';
   ctx.fillText('IDENTIFIER: 0xANON_VOID_997 • THE TRUTH WILL SET YOU FREE', 512, 1455);
+
+  return canvas;
+}
+
+/**
+ * Procedural Shelf Hacker Display (replaces the doodle frame on the shelf)
+ * Realistic Cyber Threat Radar / Kali Exploit Telemetry HUD
+ */
+export function createShelfHackerMatrixCanvas(): HTMLCanvasElement {
+  const canvas = document.createElement('canvas');
+  canvas.width = 1024;
+  canvas.height = 768; // 4:3 landscape matching 0.78 x 0.57 shelf frame
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return canvas;
+
+  // 1. Background
+  const bg = ctx.createLinearGradient(0, 0, 1024, 768);
+  bg.addColorStop(0, '#020612');
+  bg.addColorStop(0.5, '#040d1f');
+  bg.addColorStop(1, '#02050c');
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, 1024, 768);
+
+  // 2. Faint grid
+  ctx.strokeStyle = 'rgba(6, 182, 212, 0.08)';
+  ctx.lineWidth = 1;
+  for (let x = 0; x < 1024; x += 32) {
+    ctx.beginPath();
+    ctx.moveTo(x, 0);
+    ctx.lineTo(x, 768);
+    ctx.stroke();
+  }
+  for (let y = 0; y < 768; y += 32) {
+    ctx.beginPath();
+    ctx.moveTo(0, y);
+    ctx.lineTo(1024, y);
+    ctx.stroke();
+  }
+
+  // 3. Cyber Outer Frame
+  ctx.strokeStyle = 'rgba(6, 182, 212, 0.5)';
+  ctx.lineWidth = 3;
+  ctx.strokeRect(20, 20, 984, 728);
+
+  ctx.strokeStyle = '#00f2fe';
+  ctx.lineWidth = 5;
+  const cLen = 28;
+  // Corners
+  ctx.beginPath();
+  ctx.moveTo(20, 20 + cLen);
+  ctx.lineTo(20, 20);
+  ctx.lineTo(20 + cLen, 20);
+  ctx.stroke();
+
+  ctx.beginPath();
+  ctx.moveTo(1004 - cLen, 20);
+  ctx.lineTo(1004, 20);
+  ctx.lineTo(1004, 20 + cLen);
+  ctx.stroke();
+
+  ctx.beginPath();
+  ctx.moveTo(20, 748 - cLen);
+  ctx.lineTo(20, 748);
+  ctx.lineTo(20 + cLen, 748);
+  ctx.stroke();
+
+  ctx.beginPath();
+  ctx.moveTo(1004 - cLen, 748);
+  ctx.lineTo(1004, 748);
+  ctx.lineTo(1004, 748 - cLen);
+  ctx.stroke();
+
+  // 4. Header Bar
+  ctx.fillStyle = 'rgba(6, 182, 212, 0.15)';
+  ctx.fillRect(40, 40, 944, 44);
+  ctx.strokeStyle = 'rgba(6, 182, 212, 0.4)';
+  ctx.lineWidth = 1.5;
+  ctx.strokeRect(40, 40, 944, 44);
+
+  ctx.fillStyle = '#00f2fe';
+  ctx.font = 'bold 18px monospace';
+  ctx.textAlign = 'left';
+  ctx.fillText('◈ KALI LINUX // THREAT INTELLIGENCE NODE', 56, 68);
+
+  ctx.fillStyle = '#10b981';
+  ctx.textAlign = 'right';
+  ctx.fillText('SECURITY STATUS: ZERO-DAY ARMED', 968, 68);
+
+  // 5. Left: Circular Scanning Radar (Center around X=240, Y=340, Radius=160)
+  const radarX = 260;
+  const radarY = 340;
+  const radarR = 170;
+
+  // Radar Rings
+  ctx.strokeStyle = 'rgba(16, 185, 129, 0.3)';
+  ctx.lineWidth = 1.5;
+  for (let r = 40; r <= radarR; r += 42) {
+    ctx.beginPath();
+    ctx.arc(radarX, radarY, r, 0, Math.PI * 2);
+    ctx.stroke();
+  }
+
+  // Cross lines
+  ctx.beginPath();
+  ctx.moveTo(radarX - radarR, radarY);
+  ctx.lineTo(radarX + radarR, radarY);
+  ctx.moveTo(radarX, radarY - radarR);
+  ctx.lineTo(radarX, radarY + radarR);
+  ctx.stroke();
+
+  // Radar Sweep Cone
+  const sweepGrad = ctx.createRadialGradient(radarX, radarY, 10, radarX, radarY, radarR);
+  sweepGrad.addColorStop(0, 'rgba(0, 242, 254, 0.4)');
+  sweepGrad.addColorStop(1, 'rgba(16, 185, 129, 0.02)');
+  ctx.fillStyle = sweepGrad;
+  ctx.beginPath();
+  ctx.moveTo(radarX, radarY);
+  ctx.arc(radarX, radarY, radarR, -Math.PI / 4, Math.PI / 4);
+  ctx.closePath();
+  ctx.fill();
+
+  // Radar Targets (Blinking nodes)
+  const targets = [
+    { x: radarX + 65, y: radarY - 45, label: '0x1A: HOST' },
+    { x: radarX - 80, y: radarY + 70, label: '0x4F: AP_PROX' },
+    { x: radarX + 110, y: radarY + 80, label: '0x99: KERNEL' },
+  ];
+  targets.forEach((t) => {
+    ctx.fillStyle = '#ef4444';
+    ctx.beginPath();
+    ctx.arc(t.x, t.y, 5, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.strokeStyle = 'rgba(239, 68, 68, 0.5)';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.arc(t.x, t.y, 11, 0, Math.PI * 2);
+    ctx.stroke();
+
+    ctx.fillStyle = '#00f2fe';
+    ctx.font = '10px monospace';
+    ctx.fillText(t.label, t.x + 10, t.y - 4);
+  });
+
+  // 6. Right Side: Real-time Exploit Stream & Telemetry Cards
+  ctx.fillStyle = 'rgba(9, 14, 28, 0.8)';
+  ctx.fillRect(490, 110, 494, 450);
+  ctx.strokeStyle = 'rgba(6, 182, 212, 0.25)';
+  ctx.strokeRect(490, 110, 494, 450);
+
+  ctx.fillStyle = '#00f2fe';
+  ctx.font = 'bold 16px monospace';
+  ctx.textAlign = 'left';
+  ctx.fillText('NETWORK TELEMETRY & ATTACK VECTORS', 510, 140);
+
+  const telemetryLines = [
+    { text: '➔ [ETH0]: 192.168.1.17/24 [PROMISCUOUS]', color: '#10b981' },
+    { text: '➔ [PACKETS]: 48,291 RX // 0 DROPPED', color: '#38bdf8' },
+    { text: '➔ [KERNEL SU]: SELinux Enforcing Bypass [OK]', color: '#a855f7' },
+    { text: '➔ [EXPLOIT]: Buffer overflow probe active', color: '#f59e0b' },
+    { text: '➔ [TARGET]: sm7325-lisa (Snapdragon 778G)', color: '#00f2fe' },
+    { text: '➔ [PAYLOAD]: android_binder_hook.bin', color: '#10b981' },
+    { text: '➔ [THREAT LEVEL]: ZERO-DAY PERSISTENT', color: '#ef4444' },
+    { text: '➔ [ENCRYPTION]: TLS 1.3 / AES-256-GCM', color: '#38bdf8' },
+  ];
+
+  telemetryLines.forEach((tl, idx) => {
+    ctx.fillStyle = tl.color;
+    ctx.font = '13px monospace';
+    ctx.fillText(tl.text, 510, 180 + idx * 30);
+  });
+
+  // Waveform Bar in Right Box
+  ctx.fillStyle = 'rgba(6, 182, 212, 0.2)';
+  ctx.fillRect(510, 435, 454, 100);
+  ctx.strokeStyle = '#00f2fe';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  for (let px = 0; px < 454; px += 6) {
+    const py = Math.sin(px * 0.08) * 25 + Math.cos(px * 0.15) * 12 + 485;
+    if (px === 0) ctx.moveTo(510 + px, py);
+    else ctx.lineTo(510 + px, py);
+  }
+  ctx.stroke();
+
+  ctx.fillStyle = '#10b981';
+  ctx.font = '11px monospace';
+  ctx.fillText('SIGNAL FREQUENCY: 2.412 GHz • RF SPECTRUM NORMAL', 516, 455);
+
+  // 7. Bottom Status Bar
+  ctx.fillStyle = 'rgba(6, 182, 212, 0.12)';
+  ctx.fillRect(40, 580, 944, 140);
+  ctx.strokeStyle = 'rgba(6, 182, 212, 0.3)';
+  ctx.strokeRect(40, 580, 944, 140);
+
+  ctx.fillStyle = '#ffffff';
+  ctx.font = 'bold 22px sans-serif';
+  ctx.fillText('ROOT DAEMON SYNCHRONIZED', 64, 620);
+
+  ctx.fillStyle = 'rgba(148, 163, 184, 0.9)';
+  ctx.font = '14px monospace';
+  ctx.fillText('HOST: zaid@workstation • ARCH: ARM64 / X86_64 HYBRID • UPTIME: 142D 08H 12M', 64, 655);
+  ctx.fillText('SECURITY STATUS: ZERO EXPLOIT VULNERABILITIES DETECTED ON INTERNAL NETWORK', 64, 685);
 
   return canvas;
 }

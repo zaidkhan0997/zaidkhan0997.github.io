@@ -6,7 +6,11 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { HackerScreen } from './HackerScreen';
 import { ChevronDown, Sparkles as SparklesIcon } from 'lucide-react';
-import { createHackerThoughtsCanvas, createAnonymousMaskCanvas } from './workstationPosters';
+import {
+  createHackerThoughtsCanvas,
+  createAnonymousMaskCanvas,
+  createShelfHackerMatrixCanvas,
+} from './workstationPosters';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -98,10 +102,10 @@ const LaptopScene: React.FC<LaptopSceneProps> = ({
   const anchorRef = useRef<THREE.Object3D | null>(null);
   const screenDimsRef = useRef<{ pxW: number; pxH: number }>({ pxW: 1440, pxH: 900 });
 
-  // 1. Procedural Wall Frame Posters: "Hacker Thoughts" & "Anonymous Mask"
-  const { thoughtsTexture, maskTexture } = useMemo(() => {
+  // 1. Procedural Wall Frame Posters & Shelf Display Textures
+  const { thoughtsTexture, maskTexture, shelfTexture } = useMemo(() => {
     if (typeof document === 'undefined') {
-      return { thoughtsTexture: null, maskTexture: null };
+      return { thoughtsTexture: null, maskTexture: null, shelfTexture: null };
     }
     const thoughtsCanvas = createHackerThoughtsCanvas();
     const tTex = new THREE.CanvasTexture(thoughtsCanvas);
@@ -113,7 +117,12 @@ const LaptopScene: React.FC<LaptopSceneProps> = ({
     mTex.colorSpace = THREE.SRGBColorSpace;
     mTex.flipY = true;
 
-    return { thoughtsTexture: tTex, maskTexture: mTex };
+    const sCanvas = createShelfHackerMatrixCanvas();
+    const sTex = new THREE.CanvasTexture(sCanvas);
+    sTex.colorSpace = THREE.SRGBColorSpace;
+    sTex.flipY = true;
+
+    return { thoughtsTexture: tTex, maskTexture: mTex, shelfTexture: sTex };
   }, []);
 
   // 2. Animated matrix canvas texture for dual background screens
@@ -160,7 +169,7 @@ const LaptopScene: React.FC<LaptopSceneProps> = ({
     }
   }, [actions]);
 
-  // Find screen mesh, attach anchor, replace wall posters, remove requested table items
+  // Find screen mesh, attach anchor, replace wall posters, remove clutter from desk
   useEffect(() => {
     let foundMesh: THREE.Mesh | null = null;
 
@@ -183,7 +192,7 @@ const LaptopScene: React.FC<LaptopSceneProps> = ({
               map: thoughtsTexture,
               emissive: new THREE.Color(0x00f2fe),
               emissiveMap: thoughtsTexture,
-              emissiveIntensity: 0.35,
+              emissiveIntensity: 0.4,
               roughness: 0.25,
               metalness: 0.1,
             });
@@ -197,32 +206,47 @@ const LaptopScene: React.FC<LaptopSceneProps> = ({
               map: maskTexture,
               emissive: new THREE.Color(0x10b981),
               emissiveMap: maskTexture,
-              emissiveIntensity: 0.35,
+              emissiveIntensity: 0.4,
               roughness: 0.25,
               metalness: 0.1,
             });
           }
         }
 
-        // 4. Remove Speaker, Headphones, and Juice Glass from table
-        const isSpeaker = matName === 'speaker_2' || meshName === 'Object_111';
+        // 4. Replace Shelf Frame ("doodle canvas" Object_14 -> hide original)
+        if (matName === 'canvas' || meshName === 'Object_14') {
+          mesh.visible = false;
+        }
+
+        // 5. Remove BOTH White Speakers (Cabinets + Cones)
+        const isSpeaker =
+          matName === 'speaker_2' ||
+          matName === 'Material.018' ||
+          meshName === 'Object_111' ||
+          meshName === 'Object_53';
+
+        // 6. Remove Headphones
         const isHeadphone =
           matName === 'headphone' ||
           matName === 'headphone_snger' ||
           meshName === 'Object_89' ||
           meshName === 'Object_92';
+
+        // 7. Remove Juice Glass & Coaster
         const isJuiceGlass =
           matName.startsWith('drink') ||
+          matName === 'Material.019' ||
           meshName === 'Object_19' ||
           meshName === 'Object_21' ||
           meshName === 'Object_22' ||
-          meshName === 'Object_23';
+          meshName === 'Object_23' ||
+          meshName === 'Object_5';
 
         if (isSpeaker || isHeadphone || isJuiceGlass) {
           mesh.visible = false;
         }
 
-        // 5. Enhance background desktop monitors with glowing matrix screens
+        // 8. Enhance background desktop monitors with glowing matrix screens
         if (matName === 'screen' || matName === 'screen.001') {
           mat.emissive = new THREE.Color(0x00f2fe);
           mat.emissiveIntensity = 2.5;
@@ -232,7 +256,7 @@ const LaptopScene: React.FC<LaptopSceneProps> = ({
           }
         }
 
-        // 6. Enhance PC tower fan LED with glowing cyber red
+        // 9. Enhance PC tower fan LED with glowing cyber red
         if (matName === 'fan_led') {
           mat.emissive = new THREE.Color(0xff1544);
           mat.emissiveIntensity = 5.0;
@@ -263,12 +287,12 @@ const LaptopScene: React.FC<LaptopSceneProps> = ({
     screenMesh.add(anchor);
     anchorRef.current = anchor;
 
-    // Dark reflective glass finish for 3D laptop screen
+    // Dark cyber reflective glass finish on the 3D laptop screen
     const originalMaterial = screenMesh.material;
     screenMesh.material = new THREE.MeshStandardMaterial({
-      color: 0x030712,
-      roughness: 0.15,
-      metalness: 0.85,
+      color: 0x020712,
+      roughness: 0.12,
+      metalness: 0.9,
     });
 
     return () => {
@@ -426,6 +450,28 @@ const LaptopScene: React.FC<LaptopSceneProps> = ({
       {/* 3D Hacker Workstation Room Model */}
       <primitive object={model.scene} position={[0, 0, 0]} scale={[1, 1, 1]} />
 
+      {/* Cyber Threat Intelligence Display on Shelf (replacing doodle canvas) */}
+      {shelfTexture && (
+        <group position={[-1.44, 4.45, -3.43]}>
+          {/* Glowing screen plane */}
+          <mesh>
+            <planeGeometry args={[0.78, 0.58]} />
+            <meshStandardMaterial
+              map={shelfTexture}
+              emissive="#00f2fe"
+              emissiveMap={shelfTexture}
+              emissiveIntensity={0.65}
+              roughness={0.2}
+            />
+          </mesh>
+          {/* Subtle dark frame border */}
+          <mesh position={[0, 0, -0.01]}>
+            <boxGeometry args={[0.82, 0.62, 0.02]} />
+            <meshStandardMaterial color="#080e1e" roughness={0.4} metalness={0.8} />
+          </mesh>
+        </group>
+      )}
+
       {/* Cyberpunk Room Lighting Architecture */}
       <ambientLight intensity={0.7} color="#080e21" />
 
@@ -496,6 +542,7 @@ export const HackerWorkstation3D: React.FC = () => {
   const overlayRef = useRef<HTMLDivElement>(null);
   const notchRef = useRef<HTMLDivElement>(null);
   const [expandProgress, setExpandProgress] = useState(0);
+  const [scrollProgressState, setScrollProgressState] = useState(0);
 
   // Parallax pointer handler (works seamlessly for mouse and touch)
   useEffect(() => {
@@ -531,17 +578,23 @@ export const HackerWorkstation3D: React.FC = () => {
       progress: number
     ) => {
       setExpandProgress(expand);
+      setScrollProgressState(progress);
 
       const overlay = overlayRef.current;
       const notch = notchRef.current;
       if (!overlay || !notch || !bounds) return;
 
-      // Show screen overlay once lid starts opening
-      if (progress < 0.22) {
+      // FIX FOR IMAGE 3: Do NOT show the 2D HTML overlay while the camera is still flying through 3D room.
+      // Only reveal the HTML terminal HUD once the camera has zoomed all the way into the screen (expand > 0.02)
+      if (expand <= 0.02 || progress < 0.82) {
         overlay.style.visibility = 'hidden';
+        overlay.style.opacity = '0';
         return;
       }
       overlay.style.visibility = 'visible';
+      // Smooth fade-in as camera docks with screen
+      const fadeAlpha = clamp((expand - 0.02) / 0.18, 0, 1);
+      overlay.style.opacity = `${fadeAlpha}`;
 
       const { minX, minY, w0, h0 } = bounds;
       const t = clamp(expand, 0, 1);
@@ -569,6 +622,9 @@ export const HackerWorkstation3D: React.FC = () => {
     },
     []
   );
+
+  // Fast fade-out for scroll indicator so it disappears immediately upon scrolling
+  const scrollPromptOpacity = Math.max(0, 1 - scrollProgressState * 18);
 
   return (
     <div id="hacker-workstation-intro" className="relative w-full">
@@ -601,14 +657,14 @@ export const HackerWorkstation3D: React.FC = () => {
         </Canvas>
       </div>
 
-      {/* Floating 3D Laptop Screen Overlay */}
+      {/* Floating 3D Laptop Screen Overlay (Only docks when camera reaches screen) */}
       <div
         ref={overlayRef}
-        className="fixed z-20 overflow-hidden pointer-events-auto transition-[visibility] duration-200 border border-cyan-500/30 shadow-[0_0_50px_rgba(6,182,212,0.3)]"
+        className="fixed z-20 overflow-hidden pointer-events-auto transition-[opacity] duration-200 border border-cyan-500/30 shadow-[0_0_50px_rgba(6,182,212,0.3)]"
         style={{
           visibility: 'hidden',
+          opacity: 0,
           background: '#030712',
-          opacity: expandProgress >= 0.99 ? 0 : 1,
         }}
       >
         <HackerScreen expandProgress={expandProgress} />
@@ -620,20 +676,22 @@ export const HackerWorkstation3D: React.FC = () => {
         />
       </div>
 
-      {/* Bottom Scroll Indicator with Mobile Safe Area Support */}
-      <div
-        className="fixed bottom-6 left-1/2 -translate-x-1/2 z-30 flex flex-col items-center gap-1.5 text-cyan-400 font-mono text-xs tracking-widest pointer-events-none transition-all duration-300 pb-[env(safe-area-inset-bottom,0px)]"
-        style={{
-          opacity: expandProgress > 0.25 ? 0 : 1,
-          transform: `translate(-50%, ${expandProgress * 30}px)`,
-        }}
-      >
-        <span className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-950/80 border border-cyan-500/30 backdrop-blur-md shadow-[0_0_25px_rgba(6,182,212,0.25)] text-[10px] sm:text-xs">
-          <SparklesIcon className="w-3.5 h-3.5 text-cyan-400 animate-pulse" />
-          SCROLL TO INITIALIZE WORKSTATION
-        </span>
-        <ChevronDown className="w-5 h-5 text-cyan-400 animate-bounce" />
-      </div>
+      {/* Bottom Scroll Indicator: Sleek, compact, fades immediately upon scrolling */}
+      {scrollPromptOpacity > 0.01 && (
+        <div
+          className="fixed bottom-4 left-1/2 -translate-x-1/2 z-30 flex flex-col items-center gap-1 text-cyan-400 font-mono text-xs tracking-widest pointer-events-none transition-opacity duration-200 pb-[env(safe-area-inset-bottom,0px)]"
+          style={{
+            opacity: scrollPromptOpacity,
+            transform: `translate(-50%, ${scrollProgressState * 15}px)`,
+          }}
+        >
+          <span className="flex items-center gap-2 px-3 py-1 rounded-full bg-slate-950/70 border border-cyan-500/25 backdrop-blur-md shadow-[0_0_20px_rgba(6,182,212,0.2)] text-[10px] sm:text-[11px]">
+            <SparklesIcon className="w-3 h-3 text-cyan-400 animate-pulse" />
+            SCROLL TO INITIALIZE WORKSTATION
+          </span>
+          <ChevronDown className="w-4 h-4 text-cyan-400 animate-bounce" />
+        </div>
+      )}
 
       {/* Tall Scroll Spacer (Enables Smooth Scrubbing) */}
       <div
