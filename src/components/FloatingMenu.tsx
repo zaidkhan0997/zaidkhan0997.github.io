@@ -184,7 +184,7 @@ export const FloatingMenu = () => {
 
                 <div className="space-y-2">
                   {navItems.map((item, index) => {
-                    const Icon = item.icon;
+                    const Icon = item.icon as React.ComponentType<{ className?: string }>;
                     return (
                       <motion.a
                         key={item.label}

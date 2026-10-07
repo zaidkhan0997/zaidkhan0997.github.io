@@ -10,7 +10,7 @@ import { Footer } from '@/components/Footer';
 import { FloatingMenu } from '@/components/FloatingMenu';
 import { MatrixRain } from '@/components/MatrixRain';
 import { KernelPanicOverlay } from '@/components/KernelPanicOverlay';
-import { CinematicIntro } from '@/components/CinematicIntro';
+import { HackerWorkstation3D } from '@/components/HackerWorkstation3D';
 import { Instagram, Github, Send, Linkedin, Mail } from 'lucide-react';
 
 export default function App() {
@@ -35,8 +35,8 @@ export default function App() {
         onComplete={() => setShowPanic(false)}
       />
 
-      {/* Cinematic Workstation Recon Intro */}
-      <CinematicIntro />
+      {/* 3D Hacker Workstation Scroll-Zoom Intro */}
+      <HackerWorkstation3D />
 
       {/* Main Portfolio Content */}
       <div
