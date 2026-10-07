@@ -186,11 +186,13 @@ const LaptopScene: React.FC<LaptopSceneProps> = ({
     const lTex = new THREE.CanvasTexture(lCanvas);
     lTex.colorSpace = THREE.SRGBColorSpace;
     lTex.flipY = true;
+    lTex.needsUpdate = true;
 
     const rCanvas = createRightDesktopHackerWallpaperCanvas();
     const rTex = new THREE.CanvasTexture(rCanvas);
     rTex.colorSpace = THREE.SRGBColorSpace;
     rTex.flipY = true;
+    rTex.needsUpdate = true;
 
     return {
       thoughtsTexture: tTex,
@@ -384,29 +386,43 @@ const LaptopScene: React.FC<LaptopSceneProps> = ({
         }
 
         // 10. Replace dual background monitors with HD Animated Hacker Displays
-        if (matName === 'screen' || meshName === 'Object_42') {
+        const isRightMonitor =
+          matName === 'screen' ||
+          meshName === 'Object_44' ||
+          (matName.startsWith('screen') && !matName.includes('001'));
+
+        const isLeftMonitor =
+          matName === 'screen.001' ||
+          meshName === 'Object_45' ||
+          matName.includes('screen.001');
+
+        if (isRightMonitor) {
           if (leftWallpaperTexture) {
             mesh.material = new THREE.MeshStandardMaterial({
               map: leftWallpaperTexture,
-              emissive: new THREE.Color(0x00f2fe),
+              emissive: new THREE.Color(0xffffff),
               emissiveMap: leftWallpaperTexture,
-              emissiveIntensity: 0.85,
+              emissiveIntensity: 0.95,
               roughness: 0.2,
               metalness: 0.1,
+              side: THREE.DoubleSide,
             });
+            mesh.material.needsUpdate = true;
           }
         }
 
-        if (matName === 'screen.001' || meshName === 'Object_43') {
+        if (isLeftMonitor) {
           if (rightWallpaperTexture) {
             mesh.material = new THREE.MeshStandardMaterial({
               map: rightWallpaperTexture,
-              emissive: new THREE.Color(0x00f2fe),
+              emissive: new THREE.Color(0xffffff),
               emissiveMap: rightWallpaperTexture,
-              emissiveIntensity: 0.85,
+              emissiveIntensity: 0.95,
               roughness: 0.2,
               metalness: 0.1,
+              side: THREE.DoubleSide,
             });
+            mesh.material.needsUpdate = true;
           }
         }
 
