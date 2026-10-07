@@ -17,7 +17,7 @@ import {
   createAcousticFoamCanvas,
   updateLeftHackerMonitorCanvas,
   updateRightHackerMonitorCanvas,
-} from './workstationPosters';
+} from './workstationPosters.js';
 
 gsap.registerPlugin(ScrollTrigger);
 
