@@ -53,24 +53,23 @@ const Cyber3DLoader: React.FC = () => {
 const SCREEN_MATERIAL = 'Display.002';
 const SCREEN_PX_W = 1440;
 
-// Fixed world coordinates of the hacking workstation
-const WORKSTATION_TARGET = new THREE.Vector3(0.5, 2.65, -2.7);
+// Center target of the hacker workstation (centered between dual monitors, shelf, and laptop)
+const WORKSTATION_TARGET = new THREE.Vector3(0.5, 3.02, -2.7);
 
 const lerp = THREE.MathUtils.lerp;
 const clamp = THREE.MathUtils.clamp;
 
 // Multi-device responsive camera configuration
 // Supports ultra-wide, laptops, tablets (iPad/Android), folding phones, and smartphones
-// Eliminates over-zooming on narrow screens via vertical FOV compensation without pushing camera outside room!
+// Fully displays the entire hacking battlestation (all monitors, shelf, and desk) on any screen!
 function getResponsiveCameraConfig(aspect: number) {
-  // Mobile / tall screens: subtle pullback without leaving room bounds (max safe Z is 2.90, safe Y is 3.32)
-  const isTall = aspect < 1.0;
-  const pullBack = Math.max(0, 1.0 - aspect);
+  const isPortrait = aspect < 1.0;
+  const pullBack = Math.max(0, 1.25 - aspect);
 
   // 1. Initial wide room view (startPos)
-  const startX = 0.55;
-  const startY = 3.32 + pullBack * 0.06; // Keep view cleanly framed on the hacker desk
-  const startZ = 2.70 + pullBack * 0.18; // Stays safely in room, avoiding back banners/walls (Z <= 2.88)
+  const startX = 0.50; // Perfectly centered horizontally with the hacker setup
+  const startY = 3.12 + (isPortrait ? pullBack * 0.12 : 0.15); // Level with monitors & desk, not pointing down at floor
+  const startZ = 2.70 + (isPortrait ? pullBack * 0.85 : 0); // Smooth distance revealing the entire workstation
 
   // 2. Docked laptop view (endPos)
   const endX = 0.50;
@@ -78,29 +77,19 @@ function getResponsiveCameraConfig(aspect: number) {
   const endZ = -1.35;
 
   let baseFov = 46;
-  let targetEndFov = 40;
-
   if (aspect < 0.48) {
-    // Ultra-tall outer foldable screens (Galaxy Z Fold, aspect ~0.42)
-    baseFov = 72;
-    targetEndFov = 62;
-  } else if (aspect < 0.70) {
-    // Standard smartphones portrait (iPhone 14/15/16, Android, aspect ~0.46 - 0.6)
-    baseFov = 66;
-    targetEndFov = 56;
-  } else if (aspect < 0.90) {
-    // Foldable inner screens / small tablets (aspect ~0.75 - 0.85)
-    baseFov = 58;
-    targetEndFov = 48;
-  } else if (aspect < 1.3) {
-    // Tablets landscape / square screens
-    baseFov = 52;
-    targetEndFov = 44;
+    baseFov = 84; // Galaxy Z Fold outer screen (~0.42 aspect)
+  } else if (aspect < 0.65) {
+    baseFov = 76; // Standard smartphones portrait (iPhone, Android)
+  } else if (aspect < 0.85) {
+    baseFov = 68; // Foldables inner screen / small tablets
+  } else if (aspect < 1.2) {
+    baseFov = 56; // Tablets (iPad portrait/landscape)
   } else if (aspect > 2.0) {
-    // Ultra-wide monitors
-    baseFov = 42;
-    targetEndFov = 38;
+    baseFov = 42; // Ultra-wide monitors
   }
+
+  const targetEndFov = isPortrait ? Math.min(65, Math.round(baseFov * 0.82)) : 40;
 
   const startPos = new THREE.Vector3(startX, startY, startZ);
   const endPos = new THREE.Vector3(endX, endY, endZ);
@@ -324,13 +313,15 @@ const LaptopScene: React.FC<LaptopSceneProps> = ({
           }
         }
 
-        // Hide invisible camera occlusion wall (walls_invis / Object_49) and hanging room banners
+        // Hide invisible camera occlusion wall (walls_invis / Object_49), sofa, and hanging banners
         if (
           matName === 'walls_invis' ||
           meshName === 'Object_49' ||
           matName.startsWith('banner') ||
           meshName === 'Object_5' ||
-          meshName === 'Object_6'
+          meshName === 'Object_6' ||
+          matName === 'sofa' ||
+          meshName === 'Object_108'
         ) {
           mesh.visible = false;
         }

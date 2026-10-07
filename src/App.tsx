@@ -18,7 +18,12 @@ export default function App() {
   const [showPanic, setShowPanic] = useState<boolean>(false);
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    if (typeof window !== 'undefined') {
+      if ('scrollRestoration' in window.history) {
+        window.history.scrollRestoration = 'manual';
+      }
+      window.scrollTo(0, 0);
+    }
   }, []);
 
   return (
