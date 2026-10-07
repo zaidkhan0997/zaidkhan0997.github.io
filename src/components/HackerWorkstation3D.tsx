@@ -12,6 +12,8 @@ import {
   createShelfHackerMatrixCanvas,
   createLaptopTerminalCanvas,
   updateLaptopTerminalCanvas,
+  createLeftDesktopHackerWallpaperCanvas,
+  createRightDesktopHackerWallpaperCanvas,
 } from './workstationPosters';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -29,41 +31,56 @@ const SCREEN_R = 0.009;
 
 // Fixed world coordinates of the hacking workstation
 const WORKSTATION_TARGET = new THREE.Vector3(0.5, 2.65, -2.7);
-const END_CAMERA_POS = new THREE.Vector3(0.5, 2.731, -1.35);
 
 const lerp = THREE.MathUtils.lerp;
 const clamp = THREE.MathUtils.clamp;
 
 // Multi-device responsive camera configuration
 // Supports ultra-wide, laptops, tablets (iPad/Android), folding phones, and smartphones
+// Eliminates over-zooming on narrow screens by scaling both start and end camera distances!
 function getResponsiveCameraConfig(aspect: number) {
-  // Dynamic distance pullback for tall screens (phones & narrow foldables)
-  const pullBack = Math.max(0, 1.25 - aspect);
+  // Pullback factor on tall screens (smartphones, tablets, and foldables)
+  const pullBack = Math.max(0, 1.45 - aspect);
+
+  // 1. Initial wide room view (startPos)
   const startX = 0.55;
-  const startY = 3.32 + pullBack * 0.45;
-  const startZ = 2.70 + pullBack * 2.15;
+  const startY = 3.32 + pullBack * 0.90;
+  const startZ = 2.70 + pullBack * 3.50;
+
+  // 2. Docked laptop view (endPos)
+  // Pull back camera on narrow screens so laptop screen fits 100% horizontally without being cut off!
+  const endX = 0.50;
+  const endY = 2.731 + pullBack * 0.14;
+  const endZ = -1.35 + pullBack * 0.82;
 
   let baseFov = 46;
-  if (aspect < 0.48) {
-    baseFov = 56; // Narrow folding outer screens (Galaxy Fold)
-  } else if (aspect < 0.75) {
-    baseFov = 52; // Standard phones (iPhone, Android)
-  } else if (aspect < 1.0) {
-    baseFov = 50; // Tablets portrait (iPad)
+  let targetEndFov = 40;
+  if (aspect < 0.50) {
+    baseFov = 62; // Narrow folding outer screens (Galaxy Fold)
+    targetEndFov = 52;
+  } else if (aspect < 0.80) {
+    baseFov = 56; // Standard phones (iPhone, Android)
+    targetEndFov = 48;
+  } else if (aspect < 1.10) {
+    baseFov = 52; // Tablets portrait (iPad)
+    targetEndFov = 44;
   } else if (aspect > 2.0) {
     baseFov = 42; // Ultra-wide monitors
+    targetEndFov = 38;
   }
 
   const startPos = new THREE.Vector3(startX, startY, startZ);
+  const endPos = new THREE.Vector3(endX, endY, endZ);
   const tempCam = new THREE.PerspectiveCamera(baseFov, aspect, 0.1, 100);
   tempCam.position.copy(startPos);
   tempCam.lookAt(WORKSTATION_TARGET);
 
   return {
     startPos,
+    endPos,
     startRot: tempCam.rotation.clone(),
     startFov: baseFov,
-    endFov: 40,
+    endFov: targetEndFov,
   };
 }
 
@@ -101,9 +118,15 @@ const LaptopScene: React.FC<LaptopSceneProps> = ({
   const screenDimsRef = useRef<{ pxW: number; pxH: number }>({ pxW: 1440, pxH: 900 });
 
   // 1. Procedural Wall Frame Posters & Shelf Display Textures
-  const { thoughtsTexture, maskTexture, shelfTexture } = useMemo(() => {
+  const { thoughtsTexture, maskTexture, shelfTexture, leftWallpaperTexture, rightWallpaperTexture } = useMemo(() => {
     if (typeof document === 'undefined') {
-      return { thoughtsTexture: null, maskTexture: null, shelfTexture: null };
+      return {
+        thoughtsTexture: null,
+        maskTexture: null,
+        shelfTexture: null,
+        leftWallpaperTexture: null,
+        rightWallpaperTexture: null,
+      };
     }
     const thoughtsCanvas = createHackerThoughtsCanvas();
     const tTex = new THREE.CanvasTexture(thoughtsCanvas);
@@ -120,7 +143,24 @@ const LaptopScene: React.FC<LaptopSceneProps> = ({
     sTex.colorSpace = THREE.SRGBColorSpace;
     sTex.flipY = true;
 
-    return { thoughtsTexture: tTex, maskTexture: mTex, shelfTexture: sTex };
+    // Dual Monitor Authentic Hacker Desktop Wallpapers (replacing default Witcher pictures)
+    const leftCanvas = createLeftDesktopHackerWallpaperCanvas();
+    const lTex = new THREE.CanvasTexture(leftCanvas);
+    lTex.colorSpace = THREE.SRGBColorSpace;
+    lTex.flipY = true;
+
+    const rightCanvas = createRightDesktopHackerWallpaperCanvas();
+    const rTex = new THREE.CanvasTexture(rightCanvas);
+    rTex.colorSpace = THREE.SRGBColorSpace;
+    rTex.flipY = true;
+
+    return {
+      thoughtsTexture: tTex,
+      maskTexture: mTex,
+      shelfTexture: sTex,
+      leftWallpaperTexture: lTex,
+      rightWallpaperTexture: rTex,
+    };
   }, []);
 
   // 2. Procedural Live Streaming 3D Terminal Canvas for Laptop Display
@@ -268,13 +308,30 @@ const LaptopScene: React.FC<LaptopSceneProps> = ({
           mesh.visible = false;
         }
 
-        // 8. Enhance background desktop monitors with glowing matrix screens
-        if (matName === 'screen' || matName === 'screen.001') {
-          mat.emissive = new THREE.Color(0x00f2fe);
-          mat.emissiveIntensity = 2.5;
-          if (matrixTexture) {
-            mat.emissiveMap = matrixTexture;
-            mat.needsUpdate = true;
+        // 8. Replace dual background monitors with HD Hacker Desktop Wallpapers
+        if (matName === 'screen' || meshName === 'Object_42') {
+          if (leftWallpaperTexture) {
+            mesh.material = new THREE.MeshStandardMaterial({
+              map: leftWallpaperTexture,
+              emissive: new THREE.Color(0x00f2fe),
+              emissiveMap: leftWallpaperTexture,
+              emissiveIntensity: 0.65,
+              roughness: 0.25,
+              metalness: 0.1,
+            });
+          }
+        }
+
+        if (matName === 'screen.001' || meshName === 'Object_43') {
+          if (rightWallpaperTexture) {
+            mesh.material = new THREE.MeshStandardMaterial({
+              map: rightWallpaperTexture,
+              emissive: new THREE.Color(0x00f2fe),
+              emissiveMap: rightWallpaperTexture,
+              emissiveIntensity: 0.65,
+              roughness: 0.25,
+              metalness: 0.1,
+            });
           }
         }
 
@@ -348,7 +405,7 @@ const LaptopScene: React.FC<LaptopSceneProps> = ({
       }
       anchorRef.current = null;
     };
-  }, [model, matrixTexture, thoughtsTexture, maskTexture, shelfTexture, terminalTexture]);
+  }, [model, matrixTexture, thoughtsTexture, maskTexture, shelfTexture, terminalTexture, leftWallpaperTexture, rightWallpaperTexture]);
 
   // Frame loop: update live terminal texture, matrix screens, camera swoop, parallax, and screen projection
   const frameRef = useRef(0);
@@ -407,9 +464,9 @@ const LaptopScene: React.FC<LaptopSceneProps> = ({
     const px = pointerRef.current.x * 0.18 * parallaxDampen;
     const py = pointerRef.current.y * 0.10 * parallaxDampen;
 
-    camera.position.x = lerp(config.startPos.x + px, END_CAMERA_POS.x, easeT);
-    camera.position.y = lerp(config.startPos.y + py, END_CAMERA_POS.y, easeT);
-    camera.position.z = lerp(config.startPos.z, END_CAMERA_POS.z, easeT);
+    camera.position.x = lerp(config.startPos.x + px, config.endPos.x, easeT);
+    camera.position.y = lerp(config.startPos.y + py, config.endPos.y, easeT);
+    camera.position.z = lerp(config.startPos.z, config.endPos.z, easeT);
 
     camera.rotation.x = lerp(config.startRot.x, 0, easeT);
     camera.rotation.y = lerp(config.startRot.y, 0, easeT);

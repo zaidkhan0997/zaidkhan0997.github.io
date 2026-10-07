@@ -110,12 +110,19 @@ export const MinimalistHero = ({
     const handleScroll = () => {
       if (!ticking) {
         window.requestAnimationFrame(() => {
-          setIsScrolled(window.scrollY > 35);
           const portfolioEl = document.getElementById('portfolio-content');
           if (portfolioEl) {
-            setShowNavbar(portfolioEl.getBoundingClientRect().top <= 120);
+            const rect = portfolioEl.getBoundingClientRect();
+            // Navbar reveals only when portfolio section arrives at viewport top
+            const reachedPortfolio = rect.top <= 80;
+            setShowNavbar(reachedPortfolio);
+
+            // isScrolled only triggers once user scrolls 180px further down within portfolio
+            const scrolledInsidePortfolio = rect.top <= -180;
+            setIsScrolled(scrolledInsidePortfolio);
           } else {
             setShowNavbar(true);
+            setIsScrolled(window.scrollY > 100);
           }
           ticking = false;
         });

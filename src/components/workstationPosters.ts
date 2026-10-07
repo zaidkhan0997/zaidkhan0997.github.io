@@ -792,3 +792,432 @@ export function createShelfHackerMatrixCanvas(): HTMLCanvasElement {
 
   return canvas;
 }
+
+/**
+ * Procedural Left Monitor Hacker Wallpaper (1024x512)
+ * Authentic Kali Linux Cyber Security Desktop with Nmap Recon & Hardware Telemetry
+ */
+export function createLeftDesktopHackerWallpaperCanvas(): HTMLCanvasElement {
+  const canvas = document.createElement('canvas');
+  canvas.width = 1024;
+  canvas.height = 512;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return canvas;
+
+  // 1. Deep Cybernetic Obsidian Background with Vignette
+  const bgGrad = ctx.createRadialGradient(512, 256, 80, 512, 256, 600);
+  bgGrad.addColorStop(0, '#040d21');
+  bgGrad.addColorStop(0.65, '#020614');
+  bgGrad.addColorStop(1, '#01030a');
+  ctx.fillStyle = bgGrad;
+  ctx.fillRect(0, 0, 1024, 512);
+
+  // 2. Faint Cyber Grid Pattern
+  ctx.strokeStyle = 'rgba(6, 182, 212, 0.05)';
+  ctx.lineWidth = 1;
+  for (let x = 0; x < 1024; x += 32) {
+    ctx.beginPath();
+    ctx.moveTo(x, 0);
+    ctx.lineTo(x, 512);
+    ctx.stroke();
+  }
+  for (let y = 0; y < 512; y += 32) {
+    ctx.beginPath();
+    ctx.moveTo(0, y);
+    ctx.lineTo(1024, y);
+    ctx.stroke();
+  }
+
+  // 3. Central Watermark: Glowing Kali Dragon Emblem
+  ctx.save();
+  ctx.strokeStyle = 'rgba(0, 242, 254, 0.18)';
+  ctx.lineWidth = 2.5;
+  ctx.beginPath();
+  // Stylized cyber dragon wings and claws
+  ctx.moveTo(512, 130);
+  ctx.lineTo(545, 175);
+  ctx.lineTo(595, 160);
+  ctx.lineTo(565, 210);
+  ctx.lineTo(620, 235);
+  ctx.lineTo(570, 260);
+  ctx.lineTo(590, 315);
+  ctx.lineTo(535, 290);
+  ctx.lineTo(512, 345);
+  ctx.lineTo(489, 290);
+  ctx.lineTo(434, 315);
+  ctx.lineTo(454, 260);
+  ctx.lineTo(404, 235);
+  ctx.lineTo(459, 210);
+  ctx.lineTo(429, 160);
+  ctx.lineTo(479, 175);
+  ctx.closePath();
+  ctx.stroke();
+  ctx.fillStyle = 'rgba(0, 242, 254, 0.035)';
+  ctx.fill();
+  ctx.restore();
+
+  // 4. Top Linux Desktop Panel
+  ctx.fillStyle = 'rgba(3, 7, 18, 0.95)';
+  ctx.fillRect(0, 0, 1024, 34);
+  ctx.strokeStyle = 'rgba(6, 182, 212, 0.3)';
+  ctx.lineWidth = 1;
+  ctx.strokeRect(0, 0, 1024, 34);
+
+  // Panel items
+  ctx.fillStyle = '#00f2fe';
+  ctx.font = 'bold 13px monospace';
+  ctx.textAlign = 'left';
+  ctx.fillText('🐉 KALI LINUX 2026.4', 16, 22);
+
+  ctx.fillStyle = 'rgba(148, 163, 184, 0.8)';
+  ctx.font = '11px monospace';
+  ctx.fillText('[WS1: RECON] [WS2: KERNEL] [WS3: BURP] [WS4: IDA]', 190, 22);
+
+  ctx.fillStyle = '#10b981';
+  ctx.textAlign = 'right';
+  ctx.fillText('● ROOT@ZAID-RIG | IP: 10.0.0.137 (TUN0) | 22:51:57', 1008, 22);
+
+  // 5. Left Floating Window: Network Recon Terminal (Nmap / CVE scanner)
+  ctx.fillStyle = 'rgba(4, 10, 24, 0.88)';
+  ctx.fillRect(28, 54, 460, 424);
+  ctx.strokeStyle = 'rgba(6, 182, 212, 0.35)';
+  ctx.lineWidth = 1.5;
+  ctx.strokeRect(28, 54, 460, 424);
+
+  // Terminal Window Bar
+  ctx.fillStyle = 'rgba(10, 18, 38, 0.9)';
+  ctx.fillRect(28, 54, 460, 28);
+  ctx.fillStyle = '#ef4444';
+  ctx.beginPath();
+  ctx.arc(44, 68, 4.5, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillStyle = '#f59e0b';
+  ctx.beginPath();
+  ctx.arc(58, 68, 4.5, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillStyle = '#10b981';
+  ctx.beginPath();
+  ctx.arc(72, 68, 4.5, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.fillStyle = '#00f2fe';
+  ctx.font = 'bold 11px monospace';
+  ctx.textAlign = 'left';
+  ctx.fillText('root@zaid-rig: ~ # nmap -sC -sV 10.0.0.0/24', 92, 72);
+
+  // Terminal Content
+  const termLines = [
+    { text: 'Starting Nmap 7.94 ( https://nmap.org ) at 22:51:48', col: '#94a3b8' },
+    { text: 'Nmap scan report for router.local (10.0.0.1)', col: '#38bdf8' },
+    { text: 'PORT      STATE SERVICE    VERSION', col: '#cbd5e1' },
+    { text: '22/tcp    open  ssh        OpenSSH 9.6p1 Debian-3', col: '#10b981' },
+    { text: '80/tcp    open  http       nginx 1.25.4 (TLS 1.3)', col: '#10b981' },
+    { text: '443/tcp   open  ssl/https  Cloudflare ZeroTrust', col: '#10b981' },
+    { text: '5555/tcp  open  adb-daemon Xiaomi Lisa (Android 12)', col: '#00f2fe' },
+    { text: '', col: '' },
+    { text: '[+] Target authenticated: SM7325 Lisa Bootloader Unlocked', col: '#10b981' },
+    { text: '[+] Root Shell verified via KernelSU subsystem', col: '#10b981' },
+    { text: '[*] Exploitation payload status: PERSISTENT IN RAM', col: '#f59e0b' },
+    { text: 'root@zaid-rig:~# ./deploy_exploit_mesh.sh --daemon', col: '#00f2fe' },
+  ];
+
+  let termY = 104;
+  termLines.forEach((tl) => {
+    if (tl.text) {
+      ctx.fillStyle = tl.col;
+      ctx.font = '11px monospace';
+      ctx.fillText(tl.text, 42, termY);
+    }
+    termY += 25;
+  });
+
+  // 6. Right Floating Window: Hardware Performance Monitor
+  ctx.fillStyle = 'rgba(4, 10, 24, 0.88)';
+  ctx.fillRect(520, 54, 476, 424);
+  ctx.strokeStyle = 'rgba(6, 182, 212, 0.35)';
+  ctx.lineWidth = 1.5;
+  ctx.strokeRect(520, 54, 476, 424);
+
+  // Title Bar
+  ctx.fillStyle = 'rgba(10, 18, 38, 0.9)';
+  ctx.fillRect(520, 54, 476, 28);
+  ctx.fillStyle = '#00f2fe';
+  ctx.font = 'bold 11px monospace';
+  ctx.textAlign = 'left';
+  ctx.fillText('HARDWARE TELEMETRY // RIG CLUSTER MONITOR', 536, 72);
+
+  // CPU Telemetry Bar
+  ctx.fillStyle = '#94a3b8';
+  ctx.font = '11px monospace';
+  ctx.fillText('CPU: AMD Ryzen 9 7950X (16C/32T @ 4.8 GHz)', 538, 110);
+  ctx.fillStyle = 'rgba(2, 6, 23, 0.8)';
+  ctx.fillRect(538, 120, 440, 18);
+  ctx.strokeStyle = 'rgba(6, 182, 212, 0.3)';
+  ctx.strokeRect(538, 120, 440, 18);
+  ctx.fillStyle = '#00f2fe';
+  ctx.fillRect(540, 122, 440 * 0.78, 14);
+  ctx.fillStyle = '#ffffff';
+  ctx.textAlign = 'right';
+  ctx.fillText('78%', 970, 133);
+
+  // GPU Telemetry Bar
+  ctx.textAlign = 'left';
+  ctx.fillStyle = '#94a3b8';
+  ctx.fillText('GPU: NVIDIA RTX 4090 (24GB GDDR6X) - 68°C', 538, 166);
+  ctx.fillStyle = 'rgba(2, 6, 23, 0.8)';
+  ctx.fillRect(538, 176, 440, 18);
+  ctx.strokeStyle = 'rgba(236, 72, 153, 0.3)';
+  ctx.strokeRect(538, 176, 440, 18);
+  const gpuGrad = ctx.createLinearGradient(540, 0, 980, 0);
+  gpuGrad.addColorStop(0, '#00f2fe');
+  gpuGrad.addColorStop(1, '#ec4899');
+  ctx.fillStyle = gpuGrad;
+  ctx.fillRect(540, 178, 440 * 0.91, 14);
+  ctx.fillStyle = '#ffffff';
+  ctx.textAlign = 'right';
+  ctx.fillText('91%', 970, 189);
+
+  // RAM Telemetry Bar
+  ctx.textAlign = 'left';
+  ctx.fillStyle = '#94a3b8';
+  ctx.fillText('MEMORY: 42.1 GB / 64.0 GB DDR5-6000 EXPO', 538, 222);
+  ctx.fillStyle = 'rgba(2, 6, 23, 0.8)';
+  ctx.fillRect(538, 232, 440, 18);
+  ctx.strokeStyle = 'rgba(16, 185, 129, 0.3)';
+  ctx.strokeRect(538, 232, 440, 18);
+  ctx.fillStyle = '#10b981';
+  ctx.fillRect(540, 234, 440 * 0.66, 14);
+  ctx.fillStyle = '#ffffff';
+  ctx.textAlign = 'right';
+  ctx.fillText('66%', 970, 245);
+
+  // Network I/O Waveform
+  ctx.textAlign = 'left';
+  ctx.fillStyle = '#00f2fe';
+  ctx.font = 'bold 11px monospace';
+  ctx.fillText('NETWORK THROUGHPUT: ▲ 480 MB/s  ▼ 1.25 GB/s (10GbE FIBER)', 538, 285);
+
+  ctx.fillStyle = 'rgba(2, 6, 23, 0.9)';
+  ctx.fillRect(538, 298, 440, 96);
+  ctx.strokeStyle = 'rgba(6, 182, 212, 0.25)';
+  ctx.strokeRect(538, 298, 440, 96);
+
+  ctx.strokeStyle = '#00f2fe';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  for (let px = 0; px < 440; px += 4) {
+    const py = Math.sin(px * 0.05) * 22 + Math.cos(px * 0.12) * 12 + 346;
+    if (px === 0) ctx.moveTo(538 + px, py);
+    else ctx.lineTo(538 + px, py);
+  }
+  ctx.stroke();
+
+  ctx.strokeStyle = '#10b981';
+  ctx.beginPath();
+  for (let px = 0; px < 440; px += 4) {
+    const py = Math.sin(px * 0.09 + 2) * 16 + Math.cos(px * 0.04) * 14 + 346;
+    if (px === 0) ctx.moveTo(538 + px, py);
+    else ctx.lineTo(538 + px, py);
+  }
+  ctx.stroke();
+
+  // Bottom Status
+  ctx.fillStyle = '#10b981';
+  ctx.font = '10px monospace';
+  ctx.fillText('● 16 KERNEL WORKERS ACTIVE  •  0 PACKET DROPS  •  MTU: 9000 JUMBO', 542, 412);
+  ctx.fillText('● FIREWALL POLICY: DROP ALL INBOUND • EGRESS ENCRYPTED VIA WIREGUARD', 542, 432);
+  ctx.fillText('● SYSTEM INTEGRITY: SECURE (SELINUX HOOK PREVENTING REVERSE AUDIT)', 542, 452);
+
+  return canvas;
+}
+
+/**
+ * Procedural Right Monitor Hacker Wallpaper (1024x512)
+ * Authentic Global Cyber Threat Map & ARM64 Ghidra / IDA Pro Disassembly HUD
+ */
+export function createRightDesktopHackerWallpaperCanvas(): HTMLCanvasElement {
+  const canvas = document.createElement('canvas');
+  canvas.width = 1024;
+  canvas.height = 512;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return canvas;
+
+  // 1. Dark Obsidian Background
+  const bgGrad = ctx.createRadialGradient(512, 256, 80, 512, 256, 600);
+  bgGrad.addColorStop(0, '#040d21');
+  bgGrad.addColorStop(0.65, '#020614');
+  bgGrad.addColorStop(1, '#01030a');
+  ctx.fillStyle = bgGrad;
+  ctx.fillRect(0, 0, 1024, 512);
+
+  // 2. Faint Cyber Grid
+  ctx.strokeStyle = 'rgba(6, 182, 212, 0.05)';
+  ctx.lineWidth = 1;
+  for (let x = 0; x < 1024; x += 32) {
+    ctx.beginPath();
+    ctx.moveTo(x, 0);
+    ctx.lineTo(x, 512);
+    ctx.stroke();
+  }
+  for (let y = 0; y < 512; y += 32) {
+    ctx.beginPath();
+    ctx.moveTo(0, y);
+    ctx.lineTo(1024, y);
+    ctx.stroke();
+  }
+
+  // 3. Top Desktop Panel
+  ctx.fillStyle = 'rgba(3, 7, 18, 0.95)';
+  ctx.fillRect(0, 0, 1024, 34);
+  ctx.strokeStyle = 'rgba(6, 182, 212, 0.3)';
+  ctx.lineWidth = 1;
+  ctx.strokeRect(0, 0, 1024, 34);
+
+  ctx.fillStyle = '#ef4444';
+  ctx.font = 'bold 13px monospace';
+  ctx.textAlign = 'left';
+  ctx.fillText('⚠ DEFCON 1 // GLOBAL CYBER THREAT RADAR', 16, 22);
+
+  ctx.fillStyle = '#00f2fe';
+  ctx.textAlign = 'right';
+  ctx.fillText('SECURITY STATUS: ZERO-DAY EXPLOIT PIPELINE ACTIVE [UTC+05:30]', 1008, 22);
+
+  // 4. Left Window: ARM64 Low-Level Kernel Disassembly (IDA Pro / Ghidra Style)
+  ctx.fillStyle = 'rgba(4, 10, 24, 0.88)';
+  ctx.fillRect(28, 54, 480, 424);
+  ctx.strokeStyle = 'rgba(6, 182, 212, 0.35)';
+  ctx.lineWidth = 1.5;
+  ctx.strokeRect(28, 54, 480, 424);
+
+  // Title Bar
+  ctx.fillStyle = 'rgba(10, 18, 38, 0.9)';
+  ctx.fillRect(28, 54, 480, 28);
+  ctx.fillStyle = '#38bdf8';
+  ctx.font = 'bold 11px monospace';
+  ctx.textAlign = 'left';
+  ctx.fillText('IDA PRO 9.0 // DISASSEMBLY: boot.img -> vmlinux.aarch64', 44, 72);
+
+  const asmCode = [
+    { addr: '0xFFFFFF8008001000', hex: '48 89 E5 90', op: 'adrp', args: 'x0, __per_cpu_offset', col: '#00f2fe' },
+    { addr: '0xFFFFFF8008001004', hex: '48 83 EC 20', op: 'add ', args: 'x0, x0, #:lo12:__per_cpu', col: '#38bdf8' },
+    { addr: '0xFFFFFF8008001008', hex: 'D5 1E 41 00', op: 'msr ', args: 'tpidr_el1, x0', col: '#10b981' },
+    { addr: '0xFFFFFF800800100C', hex: '94 00 23 A1', op: 'bl  ', args: 'selinux_permissive_hook', col: '#ef4444' },
+    { addr: '0xFFFFFF8008001010', hex: '52 80 00 20', op: 'mov ', args: 'w0, #0x1 // BYPASS', col: '#f59e0b' },
+    { addr: '0xFFFFFF8008001014', hex: 'D6 5F 03 C0', op: 'ret ', args: '// RETURN ELEVATED ROOT', col: '#10b981' },
+    { addr: '0xFFFFFF8008001018', hex: 'AA 1F 03 E0', op: 'mov ', args: 'x0, xzr // ZERO CRITICAL', col: '#94a3b8' },
+    { addr: '0xFFFFFF800800101C', hex: '97 FF FE 80', op: 'b   ', args: 'kernel_exec_pipeline', col: '#00f2fe' },
+    { addr: '0xFFFFFF8008001020', hex: 'D5 03 20 1F', op: 'nop ', args: '// ALIGNMENT PADDING', col: '#64748b' },
+    { addr: '0xFFFFFF8008001024', hex: 'D5 03 20 1F', op: 'nop ', args: '// EXPLOIT JUMP TABLE', col: '#64748b' },
+    { addr: '0xFFFFFF8008001028', hex: 'AA 01 03 E1', op: 'mov ', args: 'x1, x1 // KERNELSU PRIMED', col: '#10b981' },
+  ];
+
+  let asmY = 105;
+  asmCode.forEach((item) => {
+    ctx.fillStyle = '#64748b';
+    ctx.font = '10px monospace';
+    ctx.fillText(item.addr, 40, asmY);
+
+    ctx.fillStyle = '#94a3b8';
+    ctx.fillText(item.hex, 185, asmY);
+
+    ctx.fillStyle = item.col;
+    ctx.font = 'bold 10px monospace';
+    ctx.fillText(item.op, 275, asmY);
+
+    ctx.fillStyle = '#e2e8f0';
+    ctx.font = '10px monospace';
+    ctx.fillText(item.args, 315, asmY);
+
+    asmY += 27;
+  });
+
+  ctx.fillStyle = '#10b981';
+  ctx.font = 'bold 11px monospace';
+  ctx.fillText('➔ STATUS: 0x0 PATCH INJECTED. SELINUX ENFORCING CRACKED.', 40, 435);
+  ctx.fillStyle = '#00f2fe';
+  ctx.fillText('➔ CHECKSUM SHA-256: 7f83b1657ff1fc53b92dc18148a1d65dfc2d4b1f', 40, 458);
+
+  // 5. Right Window: Global Threat Map & Tactical Satellite HUD
+  ctx.fillStyle = 'rgba(4, 10, 24, 0.88)';
+  ctx.fillRect(534, 54, 462, 424);
+  ctx.strokeStyle = 'rgba(6, 182, 212, 0.35)';
+  ctx.lineWidth = 1.5;
+  ctx.strokeRect(534, 54, 462, 424);
+
+  // Title Bar
+  ctx.fillStyle = 'rgba(10, 18, 38, 0.9)';
+  ctx.fillRect(534, 54, 462, 28);
+  ctx.fillStyle = '#00f2fe';
+  ctx.font = 'bold 11px monospace';
+  ctx.textAlign = 'left';
+  ctx.fillText('GLOBAL CYBER SATELLITE RADAR // INTERPOL ORBITAL LINK', 548, 72);
+
+  // World Vector Nodes (Simulated world network arcs)
+  const nodes = [
+    { name: 'SF (US-WEST)', x: 600, y: 160 },
+    { name: 'NYC (US-EAST)', x: 670, y: 155 },
+    { name: 'LONDON (EU)', x: 740, y: 140 },
+    { name: 'FRANKFURT (EU)', x: 775, y: 150 },
+    { name: 'TOKYO (APAC)', x: 910, y: 170 },
+    { name: 'MUMBAI (IN)', x: 820, y: 215 },
+    { name: 'SINGAPORE (SG)', x: 865, y: 250 },
+  ];
+
+  // Draw connecting vector attack lines
+  ctx.strokeStyle = 'rgba(0, 242, 254, 0.35)';
+  ctx.lineWidth = 1;
+  ctx.setLineDash([4, 4]);
+  for (let i = 0; i < nodes.length - 1; i++) {
+    ctx.beginPath();
+    ctx.moveTo(nodes[i].x, nodes[i].y);
+    ctx.quadraticCurveTo(
+      (nodes[i].x + nodes[i + 1].x) / 2,
+      (nodes[i].y + nodes[i + 1].y) / 2 - 25,
+      nodes[i + 1].x,
+      nodes[i + 1].y
+    );
+    ctx.stroke();
+  }
+  ctx.setLineDash([]);
+
+  // Draw nodes
+  nodes.forEach((nd) => {
+    ctx.fillStyle = '#00f2fe';
+    ctx.beginPath();
+    ctx.arc(nd.x, nd.y, 4, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.strokeStyle = '#10b981';
+    ctx.beginPath();
+    ctx.arc(nd.x, nd.y, 8, 0, Math.PI * 2);
+    ctx.stroke();
+
+    ctx.fillStyle = '#cbd5e1';
+    ctx.font = '9px monospace';
+    ctx.fillText(nd.name, nd.x - 20, nd.y + 16);
+  });
+
+  // Digital HUD Clock Widget (Right Bottom)
+  ctx.fillStyle = 'rgba(6, 182, 212, 0.15)';
+  ctx.fillRect(550, 310, 430, 100);
+  ctx.strokeStyle = 'rgba(0, 242, 254, 0.4)';
+  ctx.lineWidth = 1;
+  ctx.strokeRect(550, 310, 430, 100);
+
+  ctx.fillStyle = '#ffffff';
+  ctx.font = 'bold 36px monospace';
+  ctx.letterSpacing = '2px';
+  ctx.fillText('22 : 51 : 57', 635, 360);
+
+  ctx.fillStyle = '#00f2fe';
+  ctx.font = 'bold 12px monospace';
+  ctx.fillText('SUNDAY • OCTOBER 07, 2026 // TIMEZONE: UTC+05:30', 570, 390);
+
+  ctx.fillStyle = '#10b981';
+  ctx.font = '11px monospace';
+  ctx.fillText('● ALL DEFENSES ONLINE • ENCRYPTED TELEMETRY STREAMING', 555, 438);
+  ctx.fillText('● HARDWARE BOOT SIGNATURE: VERIFIED CRYPTOGRAPHIC MATCH', 555, 458);
+
+  return canvas;
+}
+
