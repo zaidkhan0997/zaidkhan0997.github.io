@@ -4,7 +4,7 @@ import { Canvas, useThree, useFrame } from '@react-three/fiber';
 import { useGLTF, useAnimations, Sparkles, useProgress } from '@react-three/drei';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { ChevronDown, Sparkles as SparklesIcon, ShieldCheck, Zap, Terminal } from 'lucide-react';
+import { ShieldCheck, Zap, Terminal } from 'lucide-react';
 import {
   createHackerThoughtsCanvas,
   createAnonymousMaskCanvas,
@@ -18,6 +18,7 @@ import {
   updateLeftHackerMonitorCanvas,
   updateRightHackerMonitorCanvas,
 } from './workstationPosters.js';
+import { ScrollDownIndicator } from './ScrollDownIndicator';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -853,24 +854,12 @@ export const HackerWorkstation3D = () => {
         </div>
       )}
 
-      {/* Bottom Scroll Indicator: Sleek, compact, fades upon scrolling */}
-      {scrollPromptOpacity > 0.05 && (
-        <div
-          className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-1 pointer-events-none transition-opacity duration-200 pb-[env(safe-area-inset-bottom,0px)] select-none"
-          style={{
-            opacity: scrollPromptOpacity,
-            transform: `translate(-50%, ${scrollProgressState * 15}px)`,
-          }}
-        >
-          <div
-            className="flex items-center gap-2 px-3 py-1 rounded-full bg-slate-950/80 border border-cyan-500/30 backdrop-blur-md shadow-[0_0_20px_rgba(6,182,212,0.2)] text-[10px] sm:text-[11px] text-cyan-400 font-mono tracking-widest"
-          >
-            <SparklesIcon className="w-3 h-3 text-cyan-400 animate-pulse" />
-            SCROLL TO ENTER
-          </div>
-          <ChevronDown className="w-4 h-4 text-cyan-400 animate-bounce" />
-        </div>
-      )}
+      {/* Reusable "Scroll Down" Hero Indicator Component (Scroll-only, tap disabled) */}
+      <ScrollDownIndicator
+        variant="default"
+        disableClick={true}
+        externalOpacity={scrollPromptOpacity}
+      />
 
       {/* Tall Scroll Spacer (Enables Smooth Scrubbing) */}
       <div

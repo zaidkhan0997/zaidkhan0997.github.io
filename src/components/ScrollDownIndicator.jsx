@@ -1,0 +1,136 @@
+import React, { useEffect, useState, useCallback } from 'react';
+import './ScrollDownIndicator.css';
+
+/**
+ * Reusable "Scroll Down" Indicator Component
+ * 
+ * @param {Object} props
+ * @param {'default' | 'minimal'} [props.variant='default'] - Visual style ('default' 56x92px or 'minimal' 30x48px)
+ * @param {string} [props.targetId='portfolio-content'] - DOM element ID to smooth-scroll to on click
+ * @param {number} [props.scrollThreshold=80] - Distance in px before indicator fades out
+ * @param {number} [props.externalOpacity] - Optional external opacity override (e.g. from WebGL scrubbers)
+ * @param {() => void} [props.onClick] - Optional custom click handler
+ * @param {string} [props.className=''] - Extra classes
+ */
+export const ScrollDownIndicator = ({
+  variant = 'default',
+  targetId,
+  scrollThreshold = 80,
+  externalOpacity,
+  disableClick = false,
+  onClick,
+  className = '',
+}) => {
+  const [scrollY, setScrollY] = useState(0);
+
+  useEffect(() => {
+    // Only bind scroll listener if externalOpacity is not provided
+    if (externalOpacity !== undefined) return;
+
+    const handleScroll = () => {
+      setScrollY(window.scrollY);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [externalOpacity]);
+
+  // Compute opacity: fades out smoothly after scrolling past threshold
+  const computedOpacity =
+    externalOpacity !== undefined
+      ? externalOpacity
+      : Math.max(0, 1 - scrollY / scrollThreshold);
+
+  const handleClick = useCallback(
+    (e) => {
+      if (disableClick) return;
+      e.preventDefault();
+      if (onClick) {
+        onClick();
+        return;
+      }
+      if (targetId) {
+        const el = document.getElementById(targetId);
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth' });
+          return;
+        }
+      }
+      // Fallback: smooth-scroll one viewport height down
+      window.scrollBy({ top: window.innerHeight, behavior: 'smooth' });
+    },
+    [disableClick, targetId, onClick]
+  );
+
+  // If fully faded, unmount / hide from pointer
+  if (computedOpacity <= 0.02) {
+    return null;
+  }
+
+  const isMinimal = variant === 'minimal';
+  const ComponentTag = disableClick ? 'div' : 'button';
+
+  return (
+    <ComponentTag
+      {...(!disableClick ? { type: 'button', onClick: handleClick, 'aria-label': 'Scroll down' } : {})}
+      className={`fixed bottom-5 sm:bottom-8 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center transition-opacity duration-300 pb-[env(safe-area-inset-bottom,0px)] group select-none ${
+        disableClick
+          ? 'pointer-events-none'
+          : 'cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 rounded-2xl'
+      } ${className}`}
+      style={{
+        opacity: computedOpacity,
+      }}
+    >
+      {/* 20% scale-down on mobile screens */}
+      <div className="relative flex flex-col items-center gap-2 transform scale-80 sm:scale-100 transition-transform origin-bottom">
+        {/* Soft Pulsing Radial Glow */}
+        <div className="scroll-indicator-glow" />
+
+        {/* Mouse Icon */}
+        {isMinimal ? (
+          <div className="scroll-mouse-minimal">
+            <span className="scroll-wheel-dot" />
+          </div>
+        ) : (
+          <div className="scroll-mouse-default">
+            <div className="scroll-mouse-default-inner">
+              <span className="scroll-wheel-bar" />
+            </div>
+          </div>
+        )}
+
+        {/* Three Stacked Cascading Chevrons */}
+        <div className="flex flex-col items-center -space-y-1.5 pt-0.5">
+          {[0, 1, 2].map((idx) => (
+            <svg
+              key={idx}
+              viewBox="0 0 14 8"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              className={`scroll-chevron-arrow scroll-chevron-${idx}`}
+            >
+              <path
+                d="M1 1L7 6L13 1"
+                stroke="currentColor"
+                strokeWidth="1.75"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          ))}
+        </div>
+
+        {/* Small lowercase 'scroll' label with wide letter-spacing */}
+        <span
+          className="font-mono text-[10px] tracking-[0.3em] lowercase text-slate-400 transition-colors group-hover:text-cyan-300 pt-0.5"
+          style={{ color: 'var(--scroll-muted)' }}
+        >
+          scroll
+        </span>
+      </div>
+    </ComponentTag>
+  );
+};
+
+export default ScrollDownIndicator;

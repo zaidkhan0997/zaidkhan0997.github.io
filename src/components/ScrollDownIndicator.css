@@ -1,0 +1,196 @@
+:root {
+  --scroll-cyan: #2fe3ff;
+  --scroll-violet: #9b82ff;
+  --scroll-dark: rgba(2, 6, 23, 0.85);
+  --scroll-muted: rgba(148, 163, 184, 0.7);
+}
+
+/* Ambient Radial Glow */
+.scroll-indicator-glow {
+  position: absolute;
+  top: 15%;
+  left: 50%;
+  width: 110px;
+  height: 110px;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(47, 227, 255, 0.28) 0%, rgba(155, 130, 255, 0.18) 45%, transparent 70%);
+  border-radius: 9999px;
+  filter: blur(12px);
+  pointer-events: none;
+  animation: scrollGlowPulse 3s ease-in-out infinite;
+}
+
+@keyframes scrollGlowPulse {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.55;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.25);
+    opacity: 0.95;
+  }
+}
+
+/* 56x92px Default Mouse Shell with 2px Gradient Outline */
+.scroll-mouse-default {
+  width: 56px;
+  height: 92px;
+  border-radius: 9999px;
+  padding: 2px;
+  background: linear-gradient(135deg, var(--scroll-cyan), var(--scroll-violet));
+  box-shadow: 0 0 20px rgba(47, 227, 255, 0.25), 0 0 35px rgba(155, 130, 255, 0.15);
+  display: flex;
+  justify-content: center;
+  position: relative;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.scroll-mouse-default-inner {
+  width: 100%;
+  height: 100%;
+  border-radius: 9999px;
+  background: var(--scroll-dark);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: center;
+  padding-top: 12px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* 6x16px Scroll Wheel Bar */
+.scroll-wheel-bar {
+  width: 6px;
+  height: 16px;
+  border-radius: 9999px;
+  background: linear-gradient(180deg, var(--scroll-cyan), var(--scroll-violet));
+  box-shadow: 0 0 10px rgba(47, 227, 255, 0.6);
+  animation: scrollWheelMotion 1.8s cubic-bezier(0.6, 0, 0.3, 1) infinite;
+}
+
+@keyframes scrollWheelMotion {
+  0% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+  20% {
+    opacity: 1;
+  }
+  70% {
+    opacity: 1;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(34px);
+  }
+}
+
+/* 30x48px Minimal-Line Variant */
+.scroll-mouse-minimal {
+  width: 30px;
+  height: 48px;
+  border-radius: 9999px;
+  border: 2px solid var(--scroll-cyan);
+  background: var(--scroll-dark);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  box-shadow: 0 0 14px rgba(47, 227, 255, 0.25);
+  display: flex;
+  justify-content: center;
+  padding-top: 7px;
+  position: relative;
+  overflow: hidden;
+}
+
+.scroll-wheel-dot {
+  width: 4px;
+  height: 7px;
+  border-radius: 9999px;
+  background: linear-gradient(180deg, var(--scroll-cyan), var(--scroll-violet));
+  box-shadow: 0 0 6px var(--scroll-cyan);
+  animation: scrollWheelDotMotion 1.5s cubic-bezier(0.6, 0, 0.3, 1) infinite;
+}
+
+@keyframes scrollWheelDotMotion {
+  0% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+  25% {
+    opacity: 1;
+  }
+  70% {
+    opacity: 1;
+    transform: translateY(14px);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+}
+
+/* Stacked Cascading Chevrons */
+.scroll-chevron-arrow {
+  width: 14px;
+  height: 8px;
+  animation: chevronDrift 1.8s ease-in-out infinite;
+}
+
+.scroll-chevron-0 {
+  color: var(--scroll-cyan);
+  animation-delay: 0s;
+}
+
+.scroll-chevron-1 {
+  color: var(--scroll-violet);
+  animation-delay: 0.2s;
+}
+
+.scroll-chevron-2 {
+  color: var(--scroll-cyan);
+  animation-delay: 0.4s;
+}
+
+@keyframes chevronDrift {
+  0% {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  30% {
+    opacity: 1;
+  }
+  70% {
+    opacity: 0.1;
+    transform: translateY(6px);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+/* Hover Micro-Interaction */
+button:hover .scroll-mouse-default {
+  box-shadow: 0 0 28px rgba(47, 227, 255, 0.4), 0 0 50px rgba(155, 130, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+button:hover .scroll-mouse-minimal {
+  border-color: #fff;
+  box-shadow: 0 0 20px rgba(47, 227, 255, 0.45);
+  transform: translateY(-2px);
+}
+
+/* Reduced Motion Respect */
+@media (prefers-reduced-motion: reduce) {
+  .scroll-indicator-glow,
+  .scroll-wheel-bar,
+  .scroll-wheel-dot,
+  .scroll-chevron-arrow {
+    animation: none !important;
+    opacity: 0.8 !important;
+    transform: none !important;
+  }
+}
