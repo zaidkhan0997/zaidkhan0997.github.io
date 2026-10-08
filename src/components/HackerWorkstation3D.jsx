@@ -4,7 +4,7 @@ import { Canvas, useThree, useFrame } from '@react-three/fiber';
 import { useGLTF, useAnimations, Sparkles, useProgress } from '@react-three/drei';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { ChevronDown, Sparkles as SparklesIcon, ArrowRight, ShieldCheck, Zap, Terminal } from 'lucide-react';
+import { ChevronDown, Sparkles as SparklesIcon, ShieldCheck, Zap, Terminal } from 'lucide-react';
 import {
   createHackerThoughtsCanvas,
   createAnonymousMaskCanvas,
@@ -69,14 +69,14 @@ function getResponsiveCameraConfig(aspect) {
   // 1. Initial wide room view (startPos)
   const startX = 0.50; // Perfectly centered horizontally with the hacker setup
   const startY = 3.12 + (isPortrait ? pullBack * 0.12 : 0.15); // Level with monitors & desk, not pointing down at floor
-  const startZ = 2.70 + (isPortrait ? pullBack * 0.85 : 0); // Smooth distance revealing the entire workstation
+  const startZ = 2.82 + (isPortrait ? pullBack * 0.85 : 0); // Smooth distance revealing the entire workstation
 
   // 2. Docked laptop view (endPos)
   const endX = 0.50;
   const endY = 2.731;
   const endZ = -1.35;
 
-  let baseFov = 46;
+  let baseFov = 50;
   if (aspect < 0.48) {
     baseFov = 84; // Galaxy Z Fold outer screen (~0.42 aspect)
   } else if (aspect < 0.65) {
@@ -84,9 +84,11 @@ function getResponsiveCameraConfig(aspect) {
   } else if (aspect < 0.85) {
     baseFov = 68; // Foldables inner screen / small tablets
   } else if (aspect < 1.2) {
-    baseFov = 56; // Tablets (iPad portrait/landscape)
-  } else if (aspect > 2.0) {
-    baseFov = 42; // Ultra-wide monitors
+    baseFov = 58; // Tablets (iPad portrait/landscape)
+  } else if (aspect < 1.5) {
+    baseFov = 52; // Square / 4:3 / 3:2 laptop screens
+  } else {
+    baseFov = 50; // Standard 16:9, 16:10, and wide / ultrawide displays
   }
 
   const targetEndFov = isPortrait ? Math.min(65, Math.round(baseFov * 0.82)) : 40;
@@ -742,14 +744,6 @@ export const HackerWorkstation3D = () => {
     };
   }, []);
 
-  // Smooth scroll down to portfolio
-  const scrollToPortfolio = useCallback(() => {
-    const el = document.getElementById('portfolio-content');
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
-    }
-  }, []);
-
   // Scroll indicator opacity: fades smoothly when scrolling starts
   const scrollPromptOpacity = Math.max(0, 1 - scrollProgressState * 8);
 
@@ -768,7 +762,11 @@ export const HackerWorkstation3D = () => {
 
   const isMobile =
     typeof window !== 'undefined' &&
-    (window.innerWidth < 768 || 'ontouchstart' in window);
+    (window.innerWidth < 768 ||
+      (window.innerWidth < 1024 &&
+        'ontouchstart' in window &&
+        navigator.maxTouchPoints > 1 &&
+        window.innerHeight > window.innerWidth));
 
   return (
     <div id="hacker-workstation-intro" className="relative w-full">
@@ -781,9 +779,9 @@ export const HackerWorkstation3D = () => {
           top: 0,
           left: 0,
           right: 0,
-          bottom: '-120px', // Overscan extends 120px past the screen bottom, eliminating any gap when mobile address bar hides or on bounce
-          height: 'calc(100% + 120px)',
-          minHeight: 'calc(100vh + 120px)',
+          bottom: isMobile ? '-120px' : 0,
+          height: isMobile ? 'calc(100% + 120px)' : '100%',
+          minHeight: isMobile ? 'calc(100vh + 120px)' : '100vh',
           backgroundColor: '#02050e',
           opacity: introOpacity,
           display: isIntroHidden ? 'none' : 'block',
@@ -855,35 +853,21 @@ export const HackerWorkstation3D = () => {
         </div>
       )}
 
-      {/* Top-Right "Skip Intro / Enter Portfolio" Button */}
-      {scrollProgressState < 0.90 && (
-        <div className="fixed top-5 right-5 z-50">
-          <button
-            onClick={scrollToPortfolio}
-            className="group flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-950/80 border border-cyan-500/40 text-cyan-300 hover:text-white hover:border-cyan-400 hover:bg-cyan-950/40 backdrop-blur-md shadow-[0_0_20px_rgba(6,182,212,0.25)] transition-all text-xs font-mono tracking-wider cursor-pointer active:scale-95"
-          >
-            <span>ENTER PORTFOLIO</span>
-            <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-          </button>
-        </div>
-      )}
-
-      {/* Bottom Scroll Indicator: Sleek, compact, clickable, fades upon scrolling */}
+      {/* Bottom Scroll Indicator: Sleek, compact, fades upon scrolling */}
       {scrollPromptOpacity > 0.05 && (
         <div
-          className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-1 pointer-events-auto transition-opacity duration-200 pb-[env(safe-area-inset-bottom,0px)]"
+          className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-1 pointer-events-none transition-opacity duration-200 pb-[env(safe-area-inset-bottom,0px)] select-none"
           style={{
             opacity: scrollPromptOpacity,
             transform: `translate(-50%, ${scrollProgressState * 15}px)`,
           }}
         >
-          <button
-            onClick={scrollToPortfolio}
-            className="flex items-center gap-2 px-3 py-1 rounded-full bg-slate-950/80 border border-cyan-500/30 backdrop-blur-md shadow-[0_0_20px_rgba(6,182,212,0.2)] text-[10px] sm:text-[11px] text-cyan-400 font-mono tracking-widest hover:border-cyan-400 hover:text-cyan-300 cursor-pointer active:scale-95 transition-all"
+          <div
+            className="flex items-center gap-2 px-3 py-1 rounded-full bg-slate-950/80 border border-cyan-500/30 backdrop-blur-md shadow-[0_0_20px_rgba(6,182,212,0.2)] text-[10px] sm:text-[11px] text-cyan-400 font-mono tracking-widest"
           >
             <SparklesIcon className="w-3 h-3 text-cyan-400 animate-pulse" />
-            SCROLL OR CLICK TO ENTER
-          </button>
+            SCROLL TO ENTER
+          </div>
           <ChevronDown className="w-4 h-4 text-cyan-400 animate-bounce" />
         </div>
       )}
