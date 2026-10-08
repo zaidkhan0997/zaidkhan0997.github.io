@@ -84,24 +84,57 @@ export const ScrollDownIndicator = ({
     >
       {/* 20% scale-down on mobile screens */}
       <div className="relative flex flex-col items-center gap-2 transform scale-80 sm:scale-100 transition-transform origin-bottom">
-        {/* Soft Pulsing Radial Glow */}
-        <div className="scroll-indicator-glow" />
+        {/* Mouse Icon with Centered Orbit Ring and Glow */}
+        <div className="scroll-mouse-wrapper">
+          {/* Soft Pulsing Radial Glow */}
+          <div className="scroll-indicator-glow" />
 
-        {/* Mouse Icon */}
-        {isMinimal ? (
-          <div className="scroll-mouse-minimal">
-            <span className="scroll-wheel-dot" />
+          {/* Rotating Dashed Gradient Orbit Ring */}
+          <div
+            className={`scroll-orbit-ring ${isMinimal ? 'scroll-orbit-ring-minimal' : ''}`}
+            aria-hidden="true"
+          >
+            <svg
+              className="scroll-orbit-svg"
+              viewBox="0 0 120 120"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <defs>
+                <linearGradient id="scrollOrbitGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="var(--scroll-violet)" />
+                  <stop offset="50%" stopColor="#7076f8" />
+                  <stop offset="100%" stopColor="var(--scroll-cyan)" />
+                </linearGradient>
+              </defs>
+              <circle
+                cx="60"
+                cy="60"
+                r="56"
+                stroke="url(#scrollOrbitGrad)"
+                strokeWidth="1.8"
+                strokeDasharray="8.5 11.05"
+                strokeLinecap="round"
+              />
+            </svg>
           </div>
-        ) : (
-          <div className="scroll-mouse-default">
-            <div className="scroll-mouse-default-inner">
-              <span className="scroll-wheel-bar" />
+
+          {/* Mouse Icon Shell */}
+          {isMinimal ? (
+            <div className="scroll-mouse-minimal">
+              <span className="scroll-wheel-dot" />
             </div>
-          </div>
-        )}
+          ) : (
+            <div className="scroll-mouse-default">
+              <div className="scroll-mouse-default-inner">
+                <span className="scroll-wheel-bar" />
+              </div>
+            </div>
+          )}
+        </div>
 
-        {/* Three Stacked Cascading Chevrons */}
-        <div className="flex flex-col items-center -space-y-1.5 pt-0.5">
+        {/* Three Stacked Cascading Chevrons - Positioned below orbit ring */}
+        <div className={`scroll-chevrons-container ${isMinimal ? 'scroll-chevrons-minimal' : ''}`}>
           {[0, 1, 2].map((idx) => (
             <svg
               key={idx}
@@ -121,11 +154,8 @@ export const ScrollDownIndicator = ({
           ))}
         </div>
 
-        {/* Small lowercase 'scroll' label with wide letter-spacing */}
-        <span
-          className="font-mono text-[10px] tracking-[0.3em] lowercase text-slate-400 transition-colors group-hover:text-cyan-300 pt-0.5"
-          style={{ color: 'var(--scroll-muted)' }}
-        >
+        {/* Highlighted 'scroll' label */}
+        <span className="scroll-indicator-label">
           scroll
         </span>
       </div>

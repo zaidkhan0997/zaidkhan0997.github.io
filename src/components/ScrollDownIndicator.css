@@ -8,16 +8,17 @@
 /* Ambient Radial Glow */
 .scroll-indicator-glow {
   position: absolute;
-  top: 15%;
+  top: 50%;
   left: 50%;
-  width: 110px;
-  height: 110px;
+  width: 120px;
+  height: 120px;
   transform: translate(-50%, -50%);
   background: radial-gradient(circle, rgba(47, 227, 255, 0.28) 0%, rgba(155, 130, 255, 0.18) 45%, transparent 70%);
   border-radius: 9999px;
-  filter: blur(12px);
+  filter: blur(14px);
   pointer-events: none;
   animation: scrollGlowPulse 3s ease-in-out infinite;
+  z-index: 0;
 }
 
 @keyframes scrollGlowPulse {
@@ -28,6 +29,52 @@
   50% {
     transform: translate(-50%, -50%) scale(1.25);
     opacity: 0.95;
+  }
+}
+
+/* Mouse Shell & Orbit Ring Container */
+.scroll-mouse-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 124px Orbit Ring Surrounding Mouse Shell */
+.scroll-orbit-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 124px;
+  height: 124px;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 0;
+}
+
+.scroll-orbit-ring-minimal {
+  width: 72px;
+  height: 72px;
+}
+
+.scroll-orbit-svg {
+  width: 100%;
+  height: 100%;
+  animation: scrollOrbitRotate 18s linear infinite;
+  transform-origin: center center;
+  filter: drop-shadow(0 0 6px rgba(47, 227, 255, 0.4)) drop-shadow(0 0 12px rgba(155, 130, 255, 0.2));
+  transition: filter 0.3s ease;
+}
+
+@keyframes scrollOrbitRotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
   }
 }
 
@@ -42,6 +89,7 @@
   display: flex;
   justify-content: center;
   position: relative;
+  z-index: 1;
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
@@ -101,6 +149,7 @@
   justify-content: center;
   padding-top: 7px;
   position: relative;
+  z-index: 1;
   overflow: hidden;
 }
 
@@ -131,11 +180,29 @@
   }
 }
 
-/* Stacked Cascading Chevrons */
+/* Stacked Cascading Chevrons - Cleared below 124px Orbit Ring */
+.scroll-chevrons-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 24px; /* 24px margin > 16px ring radius extension, perfectly clears bottom arc */
+  position: relative;
+  z-index: 2;
+}
+
+.scroll-chevrons-container > .scroll-chevron-arrow + .scroll-chevron-arrow {
+  margin-top: -6px;
+}
+
+.scroll-chevrons-minimal {
+  margin-top: 18px;
+}
+
 .scroll-chevron-arrow {
   width: 14px;
   height: 8px;
   animation: chevronDrift 1.8s ease-in-out infinite;
+  filter: drop-shadow(0 0 4px currentColor);
 }
 
 .scroll-chevron-0 {
@@ -171,6 +238,34 @@
   }
 }
 
+/* Highlighted & Readable 'scroll' Label */
+.scroll-indicator-label {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  text-transform: lowercase;
+  background: linear-gradient(180deg, #ffffff 0%, #38bdf8 55%, #c084fc 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.95)) drop-shadow(0 0 8px rgba(47, 227, 255, 0.7));
+  animation: scrollTextGlow 2.8s ease-in-out infinite;
+  display: inline-block;
+  margin-top: 6px;
+  transition: filter 0.3s ease;
+}
+
+@keyframes scrollTextGlow {
+  0%, 100% {
+    filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.95)) drop-shadow(0 0 6px rgba(47, 227, 255, 0.6));
+    opacity: 0.95;
+  }
+  50% {
+    filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.95)) drop-shadow(0 0 12px rgba(47, 227, 255, 0.95)) drop-shadow(0 0 18px rgba(155, 130, 255, 0.5));
+    opacity: 1;
+  }
+}
+
 /* Hover Micro-Interaction */
 button:hover .scroll-mouse-default {
   box-shadow: 0 0 28px rgba(47, 227, 255, 0.4), 0 0 50px rgba(155, 130, 255, 0.3);
@@ -183,14 +278,24 @@ button:hover .scroll-mouse-minimal {
   transform: translateY(-2px);
 }
 
+button:hover .scroll-orbit-svg {
+  filter: drop-shadow(0 0 10px rgba(47, 227, 255, 0.7)) drop-shadow(0 0 20px rgba(155, 130, 255, 0.45));
+}
+
+button:hover .scroll-indicator-label {
+  filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.95)) drop-shadow(0 0 14px rgba(47, 227, 255, 1)) drop-shadow(0 0 24px rgba(155, 130, 255, 0.8));
+}
+
 /* Reduced Motion Respect */
 @media (prefers-reduced-motion: reduce) {
   .scroll-indicator-glow,
   .scroll-wheel-bar,
   .scroll-wheel-dot,
-  .scroll-chevron-arrow {
+  .scroll-chevron-arrow,
+  .scroll-orbit-svg,
+  .scroll-indicator-label {
     animation: none !important;
-    opacity: 0.8 !important;
+    opacity: 0.9 !important;
     transform: none !important;
   }
 }
