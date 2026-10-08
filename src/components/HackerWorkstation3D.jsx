@@ -81,7 +81,7 @@ function getResponsiveCameraConfig(aspect) {
   if (aspect < 0.48) {
     baseFov = 84; // Galaxy Z Fold outer screen (~0.42 aspect)
   } else if (aspect < 0.65) {
-    baseFov = 76; // Standard smartphones portrait (iPhone, Android)
+    baseFov = 78; // Standard smartphones portrait (iPhone, Android)
   } else if (aspect < 0.85) {
     baseFov = 68; // Foldables inner screen / small tablets
   } else if (aspect < 1.2) {
@@ -272,6 +272,13 @@ const LaptopScene = ({
           meshName === 'Object_22' ||
           meshName === 'Object_23'
         ) {
+          // Slide the DEFCON poster slightly to the left (~22cm) closer to the right monitor
+          // so it stays 100% visible on narrow smartphone viewports without getting cut off
+          if (!mesh.userData.nudgedDefcon) {
+            mesh.position.x -= 0.22;
+            mesh.userData.nudgedDefcon = true;
+          }
+
           if (defconTexture) {
             mesh.material = new THREE.MeshStandardMaterial({
               map: defconTexture,
@@ -282,6 +289,25 @@ const LaptopScene = ({
               metalness: 0.1,
             });
           }
+        }
+
+        // Reposition DEFCON poster 3D frame border (Object_88 / frame.001) in sync with the poster canvas
+        if (
+          (meshName === 'Object_88' || matName === 'frame.001') &&
+          !mesh.userData.nudgedDefconFrame
+        ) {
+          const posAttr = mesh.geometry?.attributes?.position;
+          if (posAttr) {
+            for (let i = 0; i < posAttr.count; i++) {
+              const vx = posAttr.getX(i);
+              if (vx < 3.9) {
+                posAttr.setX(i, vx - 0.22);
+              }
+            }
+            posAttr.needsUpdate = true;
+            mesh.geometry.computeBoundingBox();
+          }
+          mesh.userData.nudgedDefconFrame = true;
         }
 
         // 3. Replace Wall Poster 2 ("OBEY THE FALSE GOD" -> Hacker Thoughts & Axioms)
