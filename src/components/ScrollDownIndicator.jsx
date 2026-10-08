@@ -102,17 +102,26 @@ export const ScrollDownIndicator = ({
             >
               <defs>
                 <linearGradient id="scrollOrbitGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="var(--scroll-violet)" />
-                  <stop offset="50%" stopColor="#7076f8" />
-                  <stop offset="100%" stopColor="var(--scroll-cyan)" />
+                  <stop offset="0%" stopColor="#c084fc" />
+                  <stop offset="50%" stopColor="#818cf8" />
+                  <stop offset="100%" stopColor="#38bdf8" />
                 </linearGradient>
               </defs>
+              {/* Dark backing track to guarantee 100% contrast over bright floors/scenes */}
+              <circle
+                cx="60"
+                cy="60"
+                r="56"
+                stroke="rgba(3, 7, 18, 0.85)"
+                strokeWidth="4.5"
+              />
+              {/* Vibrant glowing dashed orbit ring */}
               <circle
                 cx="60"
                 cy="60"
                 r="56"
                 stroke="url(#scrollOrbitGrad)"
-                strokeWidth="1.8"
+                strokeWidth="2.4"
                 strokeDasharray="8.5 11.05"
                 strokeLinecap="round"
               />
@@ -133,20 +142,20 @@ export const ScrollDownIndicator = ({
           )}
         </div>
 
-        {/* Three Stacked Cascading Chevrons - Positioned below orbit ring */}
+        {/* Three Stacked Cascading Chevrons - High Contrast & Positioned below orbit ring */}
         <div className={`scroll-chevrons-container ${isMinimal ? 'scroll-chevrons-minimal' : ''}`}>
           {[0, 1, 2].map((idx) => (
             <svg
               key={idx}
-              viewBox="0 0 14 8"
+              viewBox="0 0 16 9"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
               className={`scroll-chevron-arrow scroll-chevron-${idx}`}
             >
               <path
-                d="M1 1L7 6L13 1"
+                d="M1.5 1.5L8 7L14.5 1.5"
                 stroke="currentColor"
-                strokeWidth="1.75"
+                strokeWidth="2.2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
@@ -154,7 +163,7 @@ export const ScrollDownIndicator = ({
           ))}
         </div>
 
-        {/* Highlighted 'scroll' label */}
+        {/* High-Contrast Frosted 'scroll' Badge */}
         <span className="scroll-indicator-label">
           scroll
         </span>
